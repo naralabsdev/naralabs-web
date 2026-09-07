@@ -96,10 +96,7 @@ export function ResourcesContent({ domain }: { domain: string }) {
               })}
               icon={
                 <div className="shrink-0 rounded-md border border-neutral-200 bg-white/50 p-2.5 dark:border-white/20 dark:bg-white/10">
-                  <Icon
-                    variant="fill"
-                    className="size-4 text-neutral-600 transition-colors dark:text-white/60"
-                  />
+                  <Icon className="size-4 text-neutral-600 transition-colors dark:text-white/60" />
                 </div>
               }
               title={title}
@@ -125,10 +122,7 @@ export function ResourcesContent({ domain }: { domain: string }) {
               })}
               icon={
                 <div className="shrink-0 rounded-md border border-neutral-200 bg-white/50 p-2.5 dark:border-white/20 dark:bg-white/10">
-                  <Icon
-                    variant="fill"
-                    className="size-4 text-neutral-600 transition-colors dark:text-white/60"
-                  />
+                  <Icon className="size-4 text-neutral-600 transition-colors dark:text-white/60" />
                 </div>
               }
               title={title}

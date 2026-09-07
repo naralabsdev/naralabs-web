@@ -65,6 +65,16 @@ See [`.env.example`](./.env.example) for available variables.
 - **Website:** [https://naralabs.io](https://naralabs.io)
 - **Backend:** [github.com/naralabsdev/naralabs-atlas](https://github.com/naralabsdev/naralabs-atlas)
 
-## License
+## Deploy on Vercel
 
-Private — Naralabs, Inc.
+1. Import the [naralabs-web](https://github.com/naralabsdev/naralabs-web) repository
+2. Set **Root Directory** to `.` (repository root)
+3. Add environment variables:
+
+| Variable | Required | Example |
+|----------|----------|---------|
+| `ATLAS_API_URL` | Yes | `https://api.naralabs.io` |
+| `NEXT_PUBLIC_APP_URL` | Yes | `https://naralabs.io` |
+| `NEXT_PUBLIC_STELLAR_NETWORK` | No | `testnet` |
+
+4. Deploy — build command: `npm run build`, output: Next.js default
