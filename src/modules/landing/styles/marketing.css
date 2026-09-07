@@ -1,0 +1,105 @@
+.marketing-theme {
+  --background: #ffffff;
+  --foreground: #171717;
+  --surface: #ffffff;
+  --stats-card-half: 0px;
+  color-scheme: light only;
+  background-color: var(--surface);
+  color: var(--foreground);
+}
+
+@media (min-width: 1024px) {
+  .marketing-theme {
+    --stats-card-half: 3.25rem;
+  }
+}
+
+/* Hero: Dune-style gradient base + room for centered stats card on desktop */
+.hero-aurora {
+  background: #ffffff;
+  padding-bottom: 2rem;
+}
+
+.hero-aurora.hero-aurora--ready {
+  background: #0c1a33;
+}
+
+@media (min-width: 1024px) {
+  .hero-aurora {
+    padding-bottom: calc(var(--stats-card-half) + 2.5rem);
+  }
+}
+
+.hero-aurora-bg {
+  z-index: 0;
+}
+
+.hero-gradient-loading {
+  z-index: 0;
+}
+
+.hero-gradient-fallback {
+  z-index: 1;
+}
+
+.hero-gradient-canvas {
+  z-index: 1;
+}
+
+.network-stats-section {
+  position: relative;
+  z-index: 20;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.network-stats-card {
+  transform: none;
+}
+
+@media (min-width: 1024px) {
+  .network-stats-section {
+    margin-bottom: calc(var(--stats-card-half) * -1 + 1rem);
+  }
+
+  .network-stats-card {
+    transform: translateY(-50%);
+  }
+}
+
+.hero-search-field,
+.hero-search-field input,
+.hero-search-field button {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+@keyframes hero-word-enter {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+    filter: blur(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-word-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+    filter: blur(2px);
+  }
+}
+
