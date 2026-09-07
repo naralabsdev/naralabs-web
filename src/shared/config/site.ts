@@ -2,8 +2,8 @@ import { publicEnv } from "@/shared/config/public-env";
 
 export const siteConfig = {
   docsUrl: publicEnv.docsUrl ?? "https://docs.naralabs.com",
-  githubUrl: publicEnv.githubUrl ?? "https://github.com/naralabs/naralabs",
-  appUrl: publicEnv.appUrl ?? "https://naralabs.com",
+  githubUrl: publicEnv.githubUrl ?? "https://github.com/naralabsdev/naralabs-web",
+  appUrl: publicEnv.appUrl ?? "https://naralabs.io",
 } as const;
 
 export function getDocsUrl() {

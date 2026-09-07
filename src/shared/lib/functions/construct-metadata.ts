@@ -4,7 +4,7 @@ export function constructMetadata({
   title,
   fullTitle,
   description = "Naralabs is the Soroban events infrastructure and SDK for modern apps.",
-  image = "https://naralabs.com/thumbnail.jpg",
+  image = "https://naralabs.io/thumbnail.jpg",
   video,
   icons = [
     {
@@ -66,7 +66,7 @@ export function constructMetadata({
       creator: "@naralabs",
     },
     icons,
-    metadataBase: new URL("https://naralabs.com"),
+    metadataBase: new URL("https://naralabs.io"),
     ...((url || canonicalUrl) && {
       alternates: {
         canonical: url || canonicalUrl,

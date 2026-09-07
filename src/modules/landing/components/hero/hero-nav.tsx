@@ -22,9 +22,9 @@ function NaralabsLogoLink({ theme = "dark" }: { theme?: "dark" | "light" }) {
 export function HeroNav({ theme = "dark" }: { theme?: "dark" | "light" }) {
   return (
     <>
-      <NavMobile staticDomain="naralabs.com" navItems={naralabsNavItems} theme={theme} />
+      <NavMobile staticDomain="naralabs.io" navItems={naralabsNavItems} theme={theme} />
       <Nav
-        staticDomain="naralabs.com"
+        staticDomain="naralabs.io"
         navItems={naralabsNavItems}
         maxWidthWrapperClassName={MARKETING_CONTENT_CLASS}
         logo={<NaralabsLogoLink theme={theme} />}

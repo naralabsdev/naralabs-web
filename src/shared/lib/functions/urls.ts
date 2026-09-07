@@ -169,7 +169,12 @@ export const createHref = (
   // any params, doesn't have to be all of them
   utmParams?: Partial<Record<(typeof UTMTags)[number], string>>,
 ) => {
-  if (domain === "dub.co" || domain === "naralabs.com" || domain.startsWith("localhost")) {
+  if (
+    domain === "dub.co" ||
+    domain === "naralabs.com" ||
+    domain === "naralabs.io" ||
+    domain.startsWith("localhost")
+  ) {
     return href;
   }
   const url = new URL(href.startsWith("/") ? `https://dub.co${href}` : href);
@@ -184,6 +189,7 @@ export const createHref = (
 export function usesMarketingSession(domain: string) {
   return (
     domain === "naralabs.com" ||
+    domain === "naralabs.io" ||
     domain.endsWith("dub.co") ||
     domain.startsWith("localhost")
   );
@@ -192,6 +198,7 @@ export function usesMarketingSession(domain: string) {
 export function getMarketingAuthUrls(domain: string) {
   if (
     domain === "naralabs.com" ||
+    domain === "naralabs.io" ||
     domain === "dub.co" ||
     domain.startsWith("localhost")
   ) {

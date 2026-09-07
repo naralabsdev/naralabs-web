@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Naralabs Web
+
+Official web frontend for **[Naralabs](https://naralabs.io)** — a Stellar blockchain explorer for ledgers, transactions, and Soroban contracts.
+
+**Live:** [https://naralabs.io](https://naralabs.io)
+
+## Stack
+
+- [Next.js 16](https://nextjs.org/) (App Router)
+- [React 19](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- TypeScript
+
+## Features
+
+- Marketing landing page with network stats and recent activity
+- Event detail explorer (`/events/[id]`)
+- Contract detail explorer (`/contracts/[id]`)
+- Atlas API proxy via `/api/atlas/*` (BFF)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- [Naralabs Atlas](https://github.com/naralabsdev/naralabs-atlas) running locally (default: `http://localhost:8080`)
+
+### Setup
 
 ```bash
+cp .env.example .env
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server (webpack) |
+| `npm run dev:turbo` | Start dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run typecheck` | Run TypeScript check |
+| `npm run validate` | Full CI validation pipeline |
+| `npm run generate:favicons` | Regenerate favicon assets |
+| `npm run clean:assets-cache` | Clear Next.js image optimizer cache |
 
-## Learn More
+## Environment
 
-To learn more about Next.js, take a look at the following resources:
+See [`.env.example`](./.env.example) for available variables.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Description |
+|----------|-------------|
+| `ATLAS_API_URL` | Backend Atlas URL (server-only) |
+| `NEXT_PUBLIC_APP_URL` | Public app origin |
+| `NEXT_PUBLIC_STELLAR_NETWORK` | Stellar network (`testnet` / `mainnet`) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Repository
 
-## Deploy on Vercel
+- **GitHub:** [github.com/naralabsdev/naralabs-web](https://github.com/naralabsdev/naralabs-web)
+- **Website:** [https://naralabs.io](https://naralabs.io)
+- **Backend:** [github.com/naralabsdev/naralabs-atlas](https://github.com/naralabsdev/naralabs-atlas)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private — Naralabs, Inc.
