@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { EventsListTable } from "@/modules/events/components/events-list-table";
+import { RecentEventsTable } from "@/shared/ui/explorer-table";
 import type { EventsListViewModel } from "@/modules/events/domain/events-list-view-model";
 import { fetchEventsList } from "@/modules/events/services/fetch-events-list";
 import { cn } from "@/shared/lib/cn";
@@ -106,8 +106,12 @@ export function EventsListPanel({
 
       {error ? <p className="px-5 text-sm text-red-600 sm:px-6">{error}</p> : null}
 
-      <div className={cn(loading && "opacity-60")}>
-        <EventsListTable rows={rows} />
+      <div className={cn("overflow-x-auto px-5 pb-2 sm:px-6", loading && "opacity-60")}>
+        <RecentEventsTable
+          rows={rows}
+          showStatus
+          emptyMessage="No events match the current filters."
+        />
       </div>
 
       <div className="border-t border-neutral-100 px-5 py-4 sm:px-6">

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { ContractsListTable } from "@/modules/contracts/components/contracts-list-table";
+import { ActiveContractsTable } from "@/shared/ui/explorer-table";
 import type { ContractsListViewModel } from "@/modules/contracts/domain/contracts-list-view-model";
 import { fetchContractsList } from "@/modules/contracts/services/fetch-contracts-list";
 import { cn } from "@/shared/lib/cn";
@@ -106,8 +106,11 @@ export function ContractsListPanel({
 
       {error ? <p className="px-5 text-sm text-red-600 sm:px-6">{error}</p> : null}
 
-      <div className={cn(loading && "opacity-60")}>
-        <ContractsListTable rows={rows} />
+      <div className={cn("overflow-x-auto px-5 pb-2 sm:px-6", loading && "opacity-60")}>
+        <ActiveContractsTable
+          rows={rows}
+          emptyMessage="No contracts match the current filters."
+        />
       </div>
 
       <div className="border-t border-neutral-100 px-5 py-4 sm:px-6">

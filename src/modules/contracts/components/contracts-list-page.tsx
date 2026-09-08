@@ -2,10 +2,11 @@
 
 import { ContractsListPanel } from "@/modules/contracts/components/contracts-list-panel";
 import type { ContractsListViewModel } from "@/modules/contracts/domain/contracts-list-view-model";
-import { ExplorerListSummary } from "@/modules/explore/components/explorer-list-summary";
+import { ExplorerPageHeader } from "@/modules/explore/components/explorer-page-header";
 import { ExplorerPageShell } from "@/modules/explore/components/explorer-page-shell";
+import { ExplorerStatGrid } from "@/modules/explore/components/explorer-stat-grid";
+import { ExplorerTableCard } from "@/modules/explore/components/explorer-table-card";
 import type { NetworkStatsSummary } from "@/modules/explore/domain/map-network-stats";
-import { DetailSectionCard } from "@/shared/ui/detail-section-card";
 
 export function ContractsListPage({
   stats,
@@ -18,21 +19,14 @@ export function ContractsListPage({
 }) {
   return (
     <ExplorerPageShell>
-      <div>
-        <ExplorerListSummary
-          title="All Contracts"
-          description="Explore Soroban contracts ranked by recent indexed event activity."
-          stats={stats}
-        />
-
-        <DetailSectionCard
-          title="Contracts"
-          description="Active contracts with indexed events on the network."
-          flushContent
-        >
-          <ContractsListPanel network={network} initialData={contracts} />
-        </DetailSectionCard>
-      </div>
+      <ExplorerPageHeader
+        title="All Contracts"
+        description="Explore Soroban contracts ranked by recent indexed event activity."
+      />
+      <ExplorerStatGrid stats={stats} />
+      <ExplorerTableCard>
+        <ContractsListPanel network={network} initialData={contracts} />
+      </ExplorerTableCard>
     </ExplorerPageShell>
   );
 }

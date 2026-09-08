@@ -2,10 +2,11 @@
 
 import { EventsListPanel } from "@/modules/events/components/events-list-panel";
 import type { EventsListViewModel } from "@/modules/events/domain/events-list-view-model";
-import { ExplorerListSummary } from "@/modules/explore/components/explorer-list-summary";
+import { ExplorerPageHeader } from "@/modules/explore/components/explorer-page-header";
 import { ExplorerPageShell } from "@/modules/explore/components/explorer-page-shell";
+import { ExplorerStatGrid } from "@/modules/explore/components/explorer-stat-grid";
+import { ExplorerTableCard } from "@/modules/explore/components/explorer-table-card";
 import type { NetworkStatsSummary } from "@/modules/explore/domain/map-network-stats";
-import { DetailSectionCard } from "@/shared/ui/detail-section-card";
 
 export function EventsListPage({
   stats,
@@ -18,21 +19,14 @@ export function EventsListPage({
 }) {
   return (
     <ExplorerPageShell>
-      <div>
-        <ExplorerListSummary
-          title="All Events"
-          description="Browse Soroban contract events indexed and decoded by NaraLabs."
-          stats={stats}
-        />
-
-        <DetailSectionCard
-          title="Events"
-          description="Recently ingested events across all tracked contracts."
-          flushContent
-        >
-          <EventsListPanel network={network} initialData={events} />
-        </DetailSectionCard>
-      </div>
+      <ExplorerPageHeader
+        title="All Events"
+        description="Browse Soroban contract events indexed and decoded by NaraLabs."
+      />
+      <ExplorerStatGrid stats={stats} />
+      <ExplorerTableCard>
+        <EventsListPanel network={network} initialData={events} />
+      </ExplorerTableCard>
     </ExplorerPageShell>
   );
 }
