@@ -4,6 +4,7 @@ import type {
   ContractsListViewModel,
 } from "@/modules/contracts/domain/contracts-list-view-model";
 import { truncateMiddle } from "@/modules/landing/components/activity/borderless-table";
+import { normalizePaginatedPayload } from "@/shared/lib/functions/normalize-paginated-payload";
 import { timeAgo } from "@/shared/lib/functions/time-ago";
 
 function mapSchemaLabel(status: string): string {
@@ -25,11 +26,16 @@ function mapContractRow(contract: ContractsListPayload["items"][number]): Contra
   };
 }
 
-export function mapContractsList(payload: ContractsListPayload): ContractsListViewModel {
+export function mapContractsList(
+  payload: ContractsListPayload,
+  meta: { page: number; pageSize: number },
+): ContractsListViewModel {
+  const normalized = normalizePaginatedPayload(payload, meta);
+
   return {
-    items: payload.items.map(mapContractRow),
-    total: payload.total,
-    page: payload.page,
-    pageSize: payload.page_size,
+    items: normalized.items.map(mapContractRow),
+    total: normalized.total,
+    page: normalized.page,
+    pageSize: normalized.pageSize,
   };
 }

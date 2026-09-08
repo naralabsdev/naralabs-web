@@ -13,9 +13,11 @@ export type FetchContractsListOptions = {
 
 export async function fetchContractsList(options: FetchContractsListOptions = {}) {
   const network = options.network ?? getDefaultNetwork();
+  const page = options.page ?? 1;
+  const pageSize = options.pageSize ?? 20;
   const params = new URLSearchParams({ network });
-  params.set("page", String(options.page ?? 1));
-  params.set("page_size", String(options.pageSize ?? 20));
+  params.set("page", String(page));
+  params.set("page_size", String(pageSize));
 
   if (options.search?.trim()) {
     params.set("search", options.search.trim());
@@ -25,5 +27,5 @@ export async function fetchContractsList(options: FetchContractsListOptions = {}
   }
 
   const payload = await fetchApi<ContractsListPayload>(`/v1/contracts?${params.toString()}`);
-  return mapContractsList(payload);
+  return mapContractsList(payload, { page, pageSize });
 }

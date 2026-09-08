@@ -2,9 +2,9 @@ import type { NetworkStats } from "@/modules/landing/domain/atlas-types";
 
 export type PaginatedListPayload<T> = {
   items: T[];
-  total: number;
-  page: number;
-  page_size: number;
+  total?: number;
+  page?: number;
+  page_size?: number;
 };
 
 export type EventsListPayload = PaginatedListPayload<{

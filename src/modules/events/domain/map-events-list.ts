@@ -1,6 +1,7 @@
 import type { EventsListPayload } from "@/modules/explore/domain/atlas-types";
 import type { EventsListRow, EventsListViewModel } from "@/modules/events/domain/events-list-view-model";
 import { truncateMiddle } from "@/modules/landing/components/activity/borderless-table";
+import { normalizePaginatedPayload } from "@/shared/lib/functions/normalize-paginated-payload";
 import { timeAgo } from "@/shared/lib/functions/time-ago";
 
 function formatEventLabel(raw: string): string {
@@ -28,11 +29,16 @@ function mapEventRow(event: EventsListPayload["items"][number]): EventsListRow {
   };
 }
 
-export function mapEventsList(payload: EventsListPayload): EventsListViewModel {
+export function mapEventsList(
+  payload: EventsListPayload,
+  meta: { page: number; pageSize: number },
+): EventsListViewModel {
+  const normalized = normalizePaginatedPayload(payload, meta);
+
   return {
-    items: payload.items.map(mapEventRow),
-    total: payload.total,
-    page: payload.page,
-    pageSize: payload.page_size,
+    items: normalized.items.map(mapEventRow),
+    total: normalized.total,
+    page: normalized.page,
+    pageSize: normalized.pageSize,
   };
 }

@@ -13,9 +13,11 @@ export type FetchEventsListOptions = {
 
 export async function fetchEventsList(options: FetchEventsListOptions = {}) {
   const network = options.network ?? getDefaultNetwork();
+  const page = options.page ?? 1;
+  const pageSize = options.pageSize ?? 20;
   const params = new URLSearchParams({ network });
-  params.set("page", String(options.page ?? 1));
-  params.set("page_size", String(options.pageSize ?? 20));
+  params.set("page", String(page));
+  params.set("page_size", String(pageSize));
 
   if (options.search?.trim()) {
     params.set("search", options.search.trim());
@@ -25,5 +27,5 @@ export async function fetchEventsList(options: FetchEventsListOptions = {}) {
   }
 
   const payload = await fetchApi<EventsListPayload>(`/v1/events?${params.toString()}`);
-  return mapEventsList(payload);
+  return mapEventsList(payload, { page, pageSize });
 }

@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { ActiveContractsTable } from "@/shared/ui/explorer-table";
 import type { ContractsListViewModel } from "@/modules/contracts/domain/contracts-list-view-model";
 import { fetchContractsList } from "@/modules/contracts/services/fetch-contracts-list";
 import { cn } from "@/shared/lib/cn";
+import { ActiveContractsTable } from "@/shared/ui/explorer-table";
 import { InputSearch } from "@/shared/ui/icons/nucleo";
 import { Input } from "@/shared/ui/input";
 import { PaginationControls } from "@/shared/ui/pagination-controls";
@@ -22,6 +22,7 @@ export function ContractsListPanel({
   network: string;
   initialData: ContractsListViewModel;
 }) {
+  const skipInitialFetchRef = useRef(true);
   const [pagination, setPagination] = useState({
     pageIndex: initialData.page,
     pageSize: initialData.pageSize,
@@ -29,7 +30,9 @@ export function ContractsListPanel({
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [schemaStatus, setSchemaStatus] = useState<"" | "decoded" | "raw_only">("");
-  const [totalCount, setTotalCount] = useState(initialData.total);
+  const [totalCount, setTotalCount] = useState(
+    initialData.total ?? initialData.items.length,
+  );
   const [rows, setRows] = useState(initialData.items);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +43,9 @@ export function ContractsListPanel({
   }, [searchInput]);
 
   useEffect(() => {
-    setPagination((current) => ({ ...current, pageIndex: 1 }));
+    setPagination((current) =>
+      current.pageIndex === 1 ? current : { ...current, pageIndex: 1 },
+    );
   }, [debouncedSearch, schemaStatus]);
 
   const loadContracts = useCallback(async () => {
@@ -66,6 +71,10 @@ export function ContractsListPanel({
   }, [network, pagination.pageIndex, pagination.pageSize, debouncedSearch, schemaStatus]);
 
   useEffect(() => {
+    if (skipInitialFetchRef.current) {
+      skipInitialFetchRef.current = false;
+      return;
+    }
     void loadContracts();
   }, [loadContracts]);
 

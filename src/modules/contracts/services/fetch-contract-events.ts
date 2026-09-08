@@ -32,5 +32,5 @@ export async function fetchContractEvents(
   const payload = await fetchApi<ContractEventsListPayload>(
     `/v1/contracts/${encodeURIComponent(contractId)}/events?${params.toString()}`,
   );
-  return mapContractEventsList(payload);
+  return mapContractEventsList(payload, { page, pageSize });
 }

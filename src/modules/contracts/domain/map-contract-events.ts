@@ -6,6 +6,7 @@ import type {
   ContractEventsListViewModel,
   ContractRecentEventRow,
 } from "@/modules/contracts/domain/contract-view-model";
+import { normalizePaginatedPayload } from "@/shared/lib/functions/normalize-paginated-payload";
 import { timeAgo } from "@/shared/lib/functions/time-ago";
 
 function formatEventLabel(raw: string): string {
@@ -33,11 +34,14 @@ function mapEventRow(event: ContractEventPayload): ContractRecentEventRow {
 
 export function mapContractEventsList(
   payload: ContractEventsListPayload,
+  meta: { page: number; pageSize: number },
 ): ContractEventsListViewModel {
+  const normalized = normalizePaginatedPayload(payload, meta);
+
   return {
-    items: payload.items.map(mapEventRow),
-    total: payload.total,
-    page: payload.page,
-    pageSize: payload.page_size,
+    items: normalized.items.map(mapEventRow),
+    total: normalized.total,
+    page: normalized.page,
+    pageSize: normalized.pageSize,
   };
 }

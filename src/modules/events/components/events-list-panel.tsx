@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { RecentEventsTable } from "@/shared/ui/explorer-table";
 import type { EventsListViewModel } from "@/modules/events/domain/events-list-view-model";
 import { fetchEventsList } from "@/modules/events/services/fetch-events-list";
 import { cn } from "@/shared/lib/cn";
+import { RecentEventsTable } from "@/shared/ui/explorer-table";
 import { InputSearch } from "@/shared/ui/icons/nucleo";
 import { Input } from "@/shared/ui/input";
 import { PaginationControls } from "@/shared/ui/pagination-controls";
@@ -22,6 +22,7 @@ export function EventsListPanel({
   network: string;
   initialData: EventsListViewModel;
 }) {
+  const skipInitialFetchRef = useRef(true);
   const [pagination, setPagination] = useState({
     pageIndex: initialData.page,
     pageSize: initialData.pageSize,
@@ -29,7 +30,9 @@ export function EventsListPanel({
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [decodeStatus, setDecodeStatus] = useState<"" | "decoded" | "raw">("");
-  const [totalCount, setTotalCount] = useState(initialData.total);
+  const [totalCount, setTotalCount] = useState(
+    initialData.total ?? initialData.items.length,
+  );
   const [rows, setRows] = useState(initialData.items);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +43,9 @@ export function EventsListPanel({
   }, [searchInput]);
 
   useEffect(() => {
-    setPagination((current) => ({ ...current, pageIndex: 1 }));
+    setPagination((current) =>
+      current.pageIndex === 1 ? current : { ...current, pageIndex: 1 },
+    );
   }, [debouncedSearch, decodeStatus]);
 
   const loadEvents = useCallback(async () => {
@@ -66,6 +71,10 @@ export function EventsListPanel({
   }, [network, pagination.pageIndex, pagination.pageSize, debouncedSearch, decodeStatus]);
 
   useEffect(() => {
+    if (skipInitialFetchRef.current) {
+      skipInitialFetchRef.current = false;
+      return;
+    }
     void loadEvents();
   }, [loadEvents]);
 
