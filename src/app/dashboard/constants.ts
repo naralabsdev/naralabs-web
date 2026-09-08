@@ -79,6 +79,10 @@ export const dashboardPageTitleClass =
 
 export const dashboardPageHeaderClass = "mb-7 sm:mb-8";
 
+/** Grey panel header for dashboard content cards — distinct from page bg (#fafbfd). */
+export const dashboardSectionCardHeaderClass =
+  "border-neutral-200 bg-neutral-100";
+
 /** Aligns content cards with sidebar; DetailSectionCard's default mt-3 is reset here. */
 export const dashboardContentColumnClass =
   "min-w-0 flex-1 flex flex-col gap-3 [&>section]:mt-0";

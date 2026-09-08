@@ -9,6 +9,7 @@ export function DetailSectionCard({
   action,
   children,
   className,
+  headerClassName,
   contentClassName,
   flushContent = false,
 }: {
@@ -17,6 +18,7 @@ export function DetailSectionCard({
   action?: ReactNode;
   children: ReactNode;
   className?: string;
+  headerClassName?: string;
   contentClassName?: string;
   flushContent?: boolean;
 }) {
@@ -31,7 +33,12 @@ export function DetailSectionCard({
       )}
     >
       {hasHeader ? (
-        <div className="flex flex-col gap-3 border-b border-neutral-100 px-5 py-3 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+        <div
+          className={cn(
+            "flex flex-col gap-3 border-b border-neutral-100 px-5 py-3 sm:flex-row sm:items-start sm:justify-between sm:px-6",
+            headerClassName,
+          )}
+        >
           <div className="min-w-0">
             {title ? (
               <h2 className="text-sm font-semibold text-neutral-900">{title}</h2>
