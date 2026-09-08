@@ -28,7 +28,9 @@ import {
 import { useScroll } from "../hooks";
 import { MaxWidthWrapper } from "../max-width-wrapper";
 import { NavWordmark } from "../nav-wordmark";
+import type { AuthUser } from "@/modules/auth/lib/auth-user";
 import { SignInLink } from "./sign-in-link";
+import { UserMenu } from "./user-menu";
 import { ProductContent } from "./content/product-content";
 import { ResourcesContent } from "./content/resources-content";
 import { SolutionsContent } from "./content/solutions-content";
@@ -124,6 +126,7 @@ export function Nav({
   solidBackground = false,
   transparent = false,
   isAuthenticated = false,
+  user = null,
 }: {
   theme?: NavTheme;
   staticDomain?: string;
@@ -134,6 +137,7 @@ export function Nav({
   solidBackground?: boolean;
   transparent?: boolean;
   isAuthenticated?: boolean;
+  user?: AuthUser | null;
 }) {
   let { domain = "dub.co" } = useParams() as { domain: string };
   if (staticDomain) {
@@ -271,7 +275,15 @@ export function Nav({
                   </div>
                 </NavigationMenuPrimitive.Root>
 
-                {!isAuthenticated ? (
+                {user ? (
+                  <>
+                    <div
+                      className="mx-2 h-5 w-px bg-neutral-200 dark:bg-white/15"
+                      aria-hidden
+                    />
+                    <UserMenu email={user.email} theme={theme} />
+                  </>
+                ) : !isAuthenticated ? (
                   <>
                     <div
                       className="mx-2 h-5 w-px bg-neutral-200 dark:bg-white/15"

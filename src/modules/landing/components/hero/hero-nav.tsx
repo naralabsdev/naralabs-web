@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthSession } from "@/modules/auth/hooks/use-auth-session";
 import { MARKETING_CONTENT_CLASS } from "@/modules/landing/components/chrome/marketing-content";
 import { naralabsNavItems } from "@/modules/landing/components/chrome/nav-items";
 import { Logo } from "@/shared/ui/logo";
@@ -20,9 +21,17 @@ function NaralabsLogoLink({ theme = "dark" }: { theme?: "dark" | "light" }) {
 }
 
 export function HeroNav({ theme = "dark" }: { theme?: "dark" | "light" }) {
+  const { user, isAuthenticated } = useAuthSession();
+
   return (
     <>
-      <NavMobile staticDomain="naralabs.io" navItems={naralabsNavItems} theme={theme} />
+      <NavMobile
+        staticDomain="naralabs.io"
+        navItems={naralabsNavItems}
+        theme={theme}
+        user={user}
+        isAuthenticated={isAuthenticated}
+      />
       <Nav
         staticDomain="naralabs.io"
         navItems={naralabsNavItems}
@@ -31,6 +40,8 @@ export function HeroNav({ theme = "dark" }: { theme?: "dark" | "light" }) {
         theme={theme}
         sticky={false}
         transparent
+        user={user}
+        isAuthenticated={isAuthenticated}
       />
     </>
   );

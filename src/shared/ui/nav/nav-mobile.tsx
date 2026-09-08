@@ -20,7 +20,12 @@ import {
   DubLinksIcon,
   DubPartnersIcon,
 } from "../icons";
+import {
+  getEmailDisplayName,
+  type AuthUser,
+} from "@/modules/auth/lib/auth-user";
 import { navItems, type NavItem, type NavTheme } from "./nav";
+import { UserMenu } from "./user-menu";
 
 const specialIcons: Record<string, ReactNode> = {
   "Dub Links": (
@@ -50,11 +55,13 @@ export function NavMobile({
   staticDomain,
   navItems: items = navItems,
   isAuthenticated = false,
+  user = null,
 }: {
   theme?: NavTheme;
   staticDomain?: string;
   navItems?: NavItem[];
   isAuthenticated?: boolean;
+  user?: AuthUser | null;
 }) {
   let { domain = "dub.co" } = useParams() as { domain: string };
   if (staticDomain) {
@@ -80,7 +87,18 @@ export function NavMobile({
         theme === "dark" && "dark",
       )}
     >
-      {!isAuthenticated ? (
+      {user ? (
+        <div className="max-[280px]:hidden">
+          <UserMenu
+            email={user.email}
+            theme={theme}
+            className={cn(
+              theme === "dark" &&
+                "[&_button]:border-transparent [&_button]:bg-transparent [&_button]:text-white/90 [&_button]:shadow-none [&_button]:hover:bg-white/10 [&_button]:hover:text-white",
+            )}
+          />
+        </div>
+      ) : !isAuthenticated ? (
         <AuthButton
           href={authUrls.login}
           variant="secondary"
@@ -126,7 +144,48 @@ export function NavMobile({
             />
           ))}
 
-          {!isAuthenticated ? (
+          {user ? (
+            <li className="py-3 min-[281px]:hidden">
+              <div className="flex items-center gap-1.5 font-semibold">
+                <CircleUser className="size-[18px]" aria-hidden />
+                {getEmailDisplayName(user.email)}
+              </div>
+              <div className="mt-3 space-y-1 border-l border-neutral-200 pl-4 dark:border-white/10">
+                <Link
+                  href="/dashboard"
+                  className="block py-1.5 text-sm text-neutral-600 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  Account Overview
+                </Link>
+                <Link
+                  href="/dashboard/settings/profile"
+                  className="block py-1.5 text-sm text-neutral-600 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  Profile
+                </Link>
+                <Link
+                  href="/dashboard/developers"
+                  className="block py-1.5 text-sm text-neutral-600 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  API Dashboard
+                </Link>
+                <button
+                  type="button"
+                  className="block py-1.5 text-left text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                  onClick={async () => {
+                    setOpen(false);
+                    await fetch("/api/auth/logout", { method: "POST" });
+                    window.location.href = "/";
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            </li>
+          ) : !isAuthenticated ? (
             <li className="py-3 min-[281px]:hidden">
               <Link
                 href={authUrls.login}
