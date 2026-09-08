@@ -1,0 +1,36 @@
+---
+title: Decoding Events
+description: How NaraLabs decodes Soroban events with SEP-0048 schemas
+---
+
+# Decoding Events
+
+NaraLabs uses **SEP-0048** event schemas to turn raw Soroban event payloads into readable fields and summaries.
+
+## Decode pipeline
+
+1. **Index** — Atlas worker ingests events from Stellar RPC
+2. **Match schema** — Registry lookup by contract + event type
+3. **Decode** — Map topics and value to semantic fields
+4. **Preview** — Generate `summary_preview` for list views
+
+## Decode status
+
+| Status | Meaning |
+| --- | --- |
+| `decoded` | Schema matched; semantic fields available |
+| `raw` | Indexed but no schema or partial decode |
+
+## Schema registry
+
+The schema registry (Atlas registry module) stores SEP-0048 definitions submitted by contract authors. When a schema is registered for a contract event type, newly ingested events are decoded automatically.
+
+## Raw vs decoded in the UI
+
+- **Homepage & list tables** show decode badges and summaries
+- **Event detail** shows full JSON topics/value plus decode metadata
+- **Filters** on `/events` let you narrow to decoded or raw-only events
+
+## Contributing schemas
+
+Schema registration API is part of the Atlas registry module. See the Atlas README and OpenAPI docs for `POST /v1/schemas` endpoints (authenticated).

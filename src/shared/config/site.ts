@@ -1,7 +1,5 @@
 export function getDocsUrl() {
-  return (
-    process.env.NEXT_PUBLIC_DOCS_URL ?? "https://docs.naralabs.com"
-  );
+  return process.env.NEXT_PUBLIC_DOCS_URL ?? "/docs";
 }
 
 export function getGithubUrl() {

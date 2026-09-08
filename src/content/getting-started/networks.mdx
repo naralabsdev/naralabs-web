@@ -1,0 +1,37 @@
+---
+title: Networks
+description: Stellar networks supported by NaraLabs Atlas indexer
+---
+
+# Networks
+
+Atlas indexes Soroban events per Stellar network. Pass the `network` query parameter on all read API calls.
+
+## Supported networks
+
+| Network | Query value | Status |
+| --- | --- | --- |
+| Testnet | `testnet` | Supported |
+| Mainnet | `mainnet` | Supported |
+| Futurenet | `futurenet` | Planned |
+
+## Default network
+
+The web app uses `NEXT_PUBLIC_STELLAR_NETWORK` (default: `testnet`) for SSR and client requests.
+
+Example API call:
+
+```bash
+curl "http://localhost:8080/v1/stats?network=testnet"
+```
+
+## Network stats
+
+The `/v1/stats` endpoint returns per-network metrics:
+
+- Total indexed events
+- Contracts tracked
+- Events in the last 24 hours
+- Last ingested ledger and timestamp
+
+These stats appear on the homepage and list pages (`/events`, `/contracts`).

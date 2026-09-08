@@ -1,6 +1,6 @@
 "use client";
 
-import { NavigationProgressScript } from "@/app/navigation-progress-script";
+import { NavigationProgressScript } from "@/app/(site)/navigation-progress-script";
 import { TooltipProvider } from "@/shared/ui/tooltip";
 import { Toaster } from "sonner";
 

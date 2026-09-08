@@ -1,0 +1,41 @@
+---
+title: Events
+description: Browse and filter Soroban events in NaraLabs
+---
+
+# Events
+
+The events explorer surfaces Soroban contract events indexed by Atlas.
+
+## List page (`/events`)
+
+Each row shows:
+
+- Event type and summary preview
+- Contract reference
+- Decode status (Decoded / Raw)
+- Ledger, transaction hash, and age
+
+### Filters
+
+- **Search** — event ID, contract ID, txn hash, or payload text
+- **Decode status** — all, decoded only, or raw only
+
+Pagination uses `page` and `page_size` (max 100) on the Atlas API.
+
+## Event detail (`/events/[id]`)
+
+The detail page includes:
+
+- Event metadata (network, ledger, txn, ingested time)
+- Topics and value (JSON)
+- Raw XDR when available
+- Link back to the source contract
+
+## API equivalent
+
+```bash
+GET /v1/events?network=testnet&page=1&page_size=20&decode_status=decoded
+```
+
+See [Events API](/docs/api/events-api) for full parameters.

@@ -1,0 +1,52 @@
+---
+title: Events API
+description: GET /v1/events — paginated Soroban events
+---
+
+# Events API
+
+List and retrieve indexed Soroban events.
+
+## List events
+
+```
+GET /v1/events
+```
+
+### Query parameters
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `network` | string | **Required.** `testnet` or `mainnet` |
+| `page` | int | Page number (default `1`) |
+| `page_size` | int | Page size (default `20`, max `100`) |
+| `search` | string | Search event ID, contract ID, txn hash, payload |
+| `event_type` | string | Filter by event type symbol (e.g. `transfer`) |
+| `decode_status` | string | `decoded` or `raw` |
+
+### Example
+
+```bash
+curl "http://localhost:8080/v1/events?network=testnet&page=1&page_size=10&decode_status=raw"
+```
+
+### Response item fields
+
+| Field | Description |
+| --- | --- |
+| `id` | Soroban event identifier |
+| `contract_id` | Emitting contract |
+| `ledger` | Stellar ledger sequence |
+| `txn_hash` | Host transaction hash |
+| `event_type` | Decoded type symbol |
+| `summary_preview` | Human-readable one-line summary |
+| `decode_status` | `decoded` or `raw` |
+| `ingested_at` | Index timestamp (ISO 8601) |
+
+## Get event detail
+
+```
+GET /v1/events/{id}?network=testnet
+```
+
+Returns full topics, value JSON, XDR, and decode metadata.

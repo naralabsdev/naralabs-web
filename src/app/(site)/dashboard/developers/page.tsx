@@ -1,4 +1,4 @@
-import { DASHBOARD_USAGE_LIMITS } from "@/app/dashboard/constants";
+import { DASHBOARD_USAGE_LIMITS } from "@/app/(site)/dashboard/constants";
 import { DetailSectionCard } from "@/shared/ui/detail-section-card";
 import { Button } from "@/shared/ui/button";
 

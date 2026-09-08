@@ -1,0 +1,48 @@
+---
+title: Introduction
+description: Get started with NaraLabs explorer and Atlas API
+---
+
+# Introduction
+
+NaraLabs helps you explore **Soroban smart contract activity** on Stellar without reading raw XDR or JSON payloads.
+
+## Prerequisites
+
+- A modern browser (Chrome, Firefox, Safari, Edge)
+- For local development: Node.js 20+, Docker (Atlas backend)
+
+## Local development
+
+1. **Start Atlas** (API + indexer):
+
+```bash
+cd naralabs-atlas
+docker compose up -d
+```
+
+2. **Start the web app**:
+
+```bash
+cd naralabs-frontend
+cp .env.example .env
+npm install
+npm run dev
+```
+
+3. Open [http://localhost:3000](http://localhost:3000) for the explorer and [http://localhost:3000/docs](http://localhost:3000/docs) for documentation.
+
+## Environment variables
+
+| Variable | Description |
+| --- | --- |
+| `ATLAS_API_URL` | Atlas server URL (server-only, default `http://localhost:8080`) |
+| `NEXT_PUBLIC_STELLAR_NETWORK` | Default network (`testnet`, `mainnet`) |
+| `NEXT_PUBLIC_APP_URL` | Public app origin |
+
+See `.env.example` in `naralabs-frontend` for the full list.
+
+## Next steps
+
+- [Networks](/docs/getting-started/networks) — supported Stellar networks
+- [Explorer overview](/docs/explorer/overview) — UI walkthrough

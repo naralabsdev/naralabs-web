@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "nextra-theme-docs/style.css";
+
 html {
   color-scheme: light only;
 }

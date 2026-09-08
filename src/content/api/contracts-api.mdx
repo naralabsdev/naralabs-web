@@ -1,0 +1,58 @@
+---
+title: Contracts API
+description: GET /v1/contracts — paginated active Soroban contracts
+---
+
+# Contracts API
+
+List contracts with indexed activity and fetch contract details.
+
+## List contracts
+
+```
+GET /v1/contracts
+```
+
+### Query parameters
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `network` | string | **Required.** `testnet` or `mainnet` |
+| `page` | int | Page number (default `1`) |
+| `page_size` | int | Page size (default `20`, max `100`) |
+| `search` | string | Search by contract ID |
+| `schema_status` | string | `decoded` or `raw_only` |
+
+### Example
+
+```bash
+curl "http://localhost:8080/v1/contracts?network=testnet&page=1&page_size=20"
+```
+
+### Response item fields
+
+| Field | Description |
+| --- | --- |
+| `contract_id` | Soroban contract address |
+| `display_name` | Optional friendly name |
+| `event_count` | Total indexed events |
+| `first_ledger` | First seen ledger |
+| `last_ledger` | Most recent ledger |
+| `last_seen` | Last activity timestamp |
+| `schema_status` | Schema decode status |
+
+## Get contract detail
+
+```
+GET /v1/contracts/{id}?network=testnet
+```
+
+Returns activity summary, type breakdown, and schema info.
+
+## List contract events
+
+```
+GET /v1/contracts/{id}/events?network=testnet&page=1&page_size=20
+```
+
+Supports the same filters as `/v1/events` (`search`, `event_type`, `decode_status`).

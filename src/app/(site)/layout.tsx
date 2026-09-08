@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { AppProviders } from "@/app/providers";
 
+import { AppProviders } from "@/app/(site)/providers";
 import { siteConfig } from "@/shared/config/site";
 
-import "./globals.css";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: "Naralabs Explorer",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default function SiteRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

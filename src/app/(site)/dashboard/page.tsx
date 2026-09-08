@@ -1,7 +1,7 @@
 import {
   DASHBOARD_USAGE_LIMITS,
   DETAIL_ROW_CLASS,
-} from "@/app/dashboard/constants";
+} from "@/app/(site)/dashboard/constants";
 import { getEmailDisplayName } from "@/modules/auth/lib/auth-user";
 import { getAuthSession } from "@/modules/auth/lib/session.server";
 import { DetailSectionCard } from "@/shared/ui/detail-section-card";

@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 
-import { dashboardSectionCardHeaderClass } from "@/app/dashboard/constants";
+import { dashboardSectionCardHeaderClass } from "@/app/(site)/dashboard/constants";
 import { DetailSectionCard } from "@/shared/ui/detail-section-card";
 import { cn } from "@/shared/lib/cn";
 

@@ -1,0 +1,39 @@
+---
+title: Contracts
+description: Explore Soroban contracts and their indexed activity
+---
+
+# Contracts
+
+The contracts explorer lists Soroban contracts with indexed event activity.
+
+## List page (`/contracts`)
+
+Each row shows:
+
+- Contract ID (with avatar)
+- Total indexed events
+- Schema status (Decoded / Raw only)
+- Last activity and ledger range
+
+### Filters
+
+- **Search** — contract ID
+- **Schema status** — decoded or raw-only contracts
+
+## Contract detail (`/contracts/[id]`)
+
+Includes:
+
+- Activity summary and ledger range
+- Event type breakdown chart/table
+- Paginated recent events for the contract
+- Schema registration status
+
+## API equivalent
+
+```bash
+GET /v1/contracts?network=testnet&page=1&page_size=20&schema_status=decoded
+```
+
+See [Contracts API](/docs/api/contracts-api) for full parameters.

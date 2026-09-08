@@ -29,7 +29,10 @@ const config: Pick<Config, "presets" | "safelist"> = {
   presets: [
     {
       ...sharedConfig,
-      content: ["./src/**/*.{js,ts,jsx,tsx}"],
+      content: [
+        "./src/**/*.{js,ts,jsx,tsx,mdx}",
+        "./node_modules/nextra-theme-docs/dist/**/*.{js,jsx,ts,tsx}",
+      ],
       theme: {
         extend: {
           ...sharedConfig?.theme?.extend,

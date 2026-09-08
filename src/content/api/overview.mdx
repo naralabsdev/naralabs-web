@@ -1,0 +1,59 @@
+---
+title: Atlas API Overview
+description: REST read API for NaraLabs indexed Soroban data
+---
+
+# Atlas API Overview
+
+Atlas exposes a **read-only REST API** for explorer data. All endpoints live under `/v1` and require a `network` query parameter.
+
+## Base URL
+
+| Environment | URL |
+| --- | --- |
+| Local | `http://localhost:8080` |
+| Production | Configure via `ATLAS_API_URL` |
+
+The web app proxies browser requests through `/api/atlas/*` (BFF).
+
+## Common parameters
+
+| Parameter | Description |
+| --- | --- |
+| `network` | Stellar network (`testnet`, `mainnet`) |
+| `page` | Page number (1-based, default `1`) |
+| `page_size` | Items per page (default `20`, max `100`) |
+
+## Paginated response
+
+List endpoints return:
+
+```json
+{
+  "items": [],
+  "total": 0,
+  "page": 1,
+  "page_size": 20
+}
+```
+
+## Endpoints
+
+| Method | Path | Description |
+| --- | --- | --- |
+| GET | `/health` | Service health |
+| GET | `/v1/stats` | Network statistics |
+| GET | `/v1/home` | Homepage aggregate payload |
+| GET | `/v1/events` | Paginated events list |
+| GET | `/v1/events/{id}` | Event detail |
+| GET | `/v1/contracts` | Paginated contracts list |
+| GET | `/v1/contracts/{id}` | Contract detail |
+| GET | `/v1/contracts/{id}/events` | Contract events (paginated) |
+
+## OpenAPI / Scalar
+
+In development, Atlas serves interactive API docs at `/docs` on the Atlas server (Scalar UI).
+
+## Authentication
+
+Public read endpoints do not require authentication. Account and registry endpoints use JWT bearer tokens (see dashboard developers section).

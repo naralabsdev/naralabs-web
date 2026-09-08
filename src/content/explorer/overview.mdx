@@ -1,0 +1,43 @@
+---
+title: Explorer Overview
+description: How the NaraLabs explorer UI is organized
+---
+
+# Explorer Overview
+
+The NaraLabs explorer is the public-facing UI at [naralabs.io](https://naralabs.io).
+
+## Main sections
+
+### Homepage
+
+- **Network stats** — total events, contracts, 24h activity, last indexed ledger
+- **Recent events** — latest Soroban events with decoded summaries
+- **Active contracts** — contracts ranked by recent event activity
+
+### List pages
+
+| Route | Description |
+| --- | --- |
+| `/events` | Paginated events with search and decode-status filter |
+| `/contracts` | Paginated contracts with search and schema filter |
+
+### Detail pages
+
+| Route | Description |
+| --- | --- |
+| `/events/[id]` | Full event payload, topics, value, decode status |
+| `/contracts/[id]` | Contract summary, type breakdown, recent events |
+
+## Decode status
+
+Events may appear as:
+
+- **Decoded** — semantic fields resolved via registered SEP-0048 schemas
+- **Raw** — indexed but not yet decoded (no schema or partial match)
+
+Contract schema status follows the same pattern at the contract level.
+
+## Account dashboard
+
+Signed-in users can access `/dashboard` for watchlists, private tags, API keys, and profile settings.

@@ -1,0 +1,14 @@
+/* NaraLabs brand overrides for Nextra docs theme */
+:root {
+  --nextra-primary-hue: 160deg;
+  --nextra-primary-saturation: 72%;
+}
+
+.nextra-nav-container a[data-active="true"] {
+  color: #1ba374;
+}
+
+.nextra-sidebar-container a[data-active="true"] {
+  color: #1ba374;
+  background-color: rgb(27 163 116 / 0.08);
+}

@@ -54,7 +54,6 @@ export const naralabsNavItems: NavItem[] = [
   {
     name: "Docs",
     href: getDocsUrl(),
-    target: "_blank",
-    external: true,
+    segments: ["/docs"],
   },
 ];

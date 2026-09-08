@@ -1,6 +1,6 @@
 import { getEmailDisplayName } from "@/modules/auth/lib/auth-user";
 import { getAuthSession } from "@/modules/auth/lib/session.server";
-import { DETAIL_ROW_CLASS } from "@/app/dashboard/constants";
+import { DETAIL_ROW_CLASS } from "@/app/(site)/dashboard/constants";
 import { DetailSectionCard } from "@/shared/ui/detail-section-card";
 import { Button } from "@/shared/ui/button";
 

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { DashboardLayoutClient } from "@/app/dashboard/layout-client";
+import { DashboardLayoutClient } from "@/app/(site)/dashboard/layout-client";
 import { getAuthSession } from "@/modules/auth/lib/session.server";
 
 export default async function DashboardLayout({

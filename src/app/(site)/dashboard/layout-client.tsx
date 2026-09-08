@@ -15,7 +15,7 @@ import {
   dashboardSidebarColumnClass,
   getDashboardPageMeta,
   type DashboardNavItem,
-} from "@/app/dashboard/constants";
+} from "@/app/(site)/dashboard/constants";
 import { getEmailDisplayName, type AuthUser } from "@/modules/auth/lib/auth-user";
 import { MarketingChrome } from "@/modules/landing/components/chrome/marketing-chrome";
 import { MarketingContent } from "@/modules/landing/components/chrome/marketing-content";

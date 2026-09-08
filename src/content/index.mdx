@@ -1,0 +1,34 @@
+---
+title: NaraLabs Documentation
+description: Product documentation for the NaraLabs Stellar Soroban explorer
+---
+
+# NaraLabs Documentation
+
+Welcome to the official docs for **NaraLabs** — a Stellar blockchain explorer focused on Soroban smart contracts, decoded events, and contract activity.
+
+## What is NaraLabs?
+
+NaraLabs indexes Soroban contract events from the Stellar network, decodes them when schemas are available, and presents them in a readable explorer UI.
+
+Use NaraLabs to:
+
+- Browse **recent Soroban events** across tracked contracts
+- Inspect **contract activity**, schemas, and event history
+- Query the **Atlas read API** for stats, events, and contracts
+
+## Quick links
+
+- [Getting started](/docs/getting-started/introduction) — networks, setup, and first steps
+- [Explorer overview](/docs/explorer/overview) — how the UI is organized
+- [Atlas API](/docs/api/overview) — REST endpoints for indexed data
+
+## Stack overview
+
+| Component | Role |
+| --- | --- |
+| **NaraLabs Web** | Next.js frontend (`naralabs.io`) |
+| **Atlas Server** | Read API for stats, events, contracts |
+| **Atlas Worker** | Indexes Soroban events from Stellar RPC |
+
+Need help? Open an issue on [GitHub](https://github.com/naralabsdev/naralabs-web) or reach out to the team.
