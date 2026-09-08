@@ -20,7 +20,18 @@ const dropdownContentClassName =
 const dropdownItemClassName =
   "block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-neutral-500 transition-colors hover:bg-white hover:text-neutral-500";
 
-export function UserMenu({ email, className, theme: _theme = "light" }: UserMenuProps) {
+const triggerClassNameByTheme = {
+  light:
+    "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-600 [&_svg]:text-current",
+  dark: "text-white/90 hover:bg-white/10 hover:text-white [&_svg]:text-current",
+} as const;
+
+const chevronClassNameByTheme = {
+  light: "text-neutral-400",
+  dark: "text-white/70",
+} as const;
+
+export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -75,7 +86,7 @@ export function UserMenu({ email, className, theme: _theme = "light" }: UserMenu
             type="button"
             className={cn(
               "group/user-menu flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-              "text-neutral-500 hover:bg-white hover:text-neutral-500",
+              triggerClassNameByTheme[theme],
             )}
             onPointerDown={(event) => event.preventDefault()}
           >
@@ -86,7 +97,8 @@ export function UserMenu({ email, className, theme: _theme = "light" }: UserMenu
             <span className="max-w-[9rem] truncate">{displayName}</span>
             <ChevronDown
               className={cn(
-                "size-3.5 text-neutral-400 transition-transform duration-150",
+                "size-3.5 transition-transform duration-150",
+                chevronClassNameByTheme[theme],
                 open && "rotate-180",
               )}
               aria-hidden

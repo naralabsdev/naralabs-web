@@ -89,14 +89,7 @@ export function NavMobile({
     >
       {user ? (
         <div className="max-[280px]:hidden">
-          <UserMenu
-            email={user.email}
-            theme={theme}
-            className={cn(
-              theme === "dark" &&
-                "[&_button]:border-transparent [&_button]:bg-transparent [&_button]:text-neutral-500 [&_button]:shadow-none [&_button]:hover:bg-neutral-50 [&_button]:hover:text-neutral-600",
-            )}
-          />
+          <UserMenu email={user.email} theme={theme} />
         </div>
       ) : !isAuthenticated ? (
         <AuthButton
