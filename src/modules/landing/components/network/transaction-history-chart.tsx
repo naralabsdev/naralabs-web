@@ -39,7 +39,7 @@ export function TransactionHistoryChart({
         />
         <polyline
           fill="none"
-          stroke="var(--primary)"
+          stroke="#3b82f6"
           strokeWidth="1.5"
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -47,8 +47,8 @@ export function TransactionHistoryChart({
         />
         <defs>
           <linearGradient id="networkChartFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>

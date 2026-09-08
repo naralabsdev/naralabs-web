@@ -41,24 +41,50 @@ export const NETWORK_OVERVIEW = {
   totalEvents: {
     value: "12,450",
     sublabel: "indexed from Soroban",
+    tooltip:
+      "Total Soroban contract events indexed by NaraLabs across all tracked contracts.",
   },
   contractsTracked: {
     value: "87",
     sublabel: "with events",
+    tooltip: "Smart contracts that have emitted at least one indexed event.",
   },
   lastIndexedLedger: {
     sequence: 5_284_917,
     ago: "~5s ago",
+    tooltip:
+      "Latest Stellar ledger sequence processed by the NaraLabs indexer.",
   },
   eventsToday: {
     value: "1,284",
     sublabel: "last 24 hours",
+    tooltip: "Contract events captured by the indexer in the last 24 hours.",
   },
   eventActivityTitle: "Event activity",
+  eventActivityTooltip:
+    "Daily volume of indexed Soroban events over the selected period.",
   chartStartDate: "22.02",
   chartEndDate: "08.03",
   chartData: [42, 38, 55, 48, 62, 58, 71, 65, 78, 72, 85, 80, 88, 92],
 };
+
+export const LANDING_TABLE_TOOLTIPS = {
+  events: {
+    event: "Decoded event type emitted by the Soroban contract.",
+    summary: "Human-readable summary of what happened in this event.",
+    contract: "The Soroban contract that emitted this event.",
+    ledger: "Stellar ledger sequence where this event was recorded.",
+    txn: "Transaction hash for the invocation that produced this event.",
+    age: "Time elapsed since this event was indexed.",
+  },
+  contracts: {
+    contract: "Contract display name and on-chain Soroban contract ID.",
+    events: "Total number of indexed events from this contract.",
+    schema: "Whether events are decoded with a registered schema or shown as raw data.",
+    lastActivity: "Time since the most recent event from this contract.",
+    ledgers: "Ledger range covered by this contract's indexed events.",
+  },
+} as const;
 
 export const ACTIVITY_SECTION = {
   eventsTitle: "Recent Events",

@@ -2,20 +2,25 @@ export type NetworkOverviewView = {
   totalEvents: {
     value: string;
     sublabel: string;
+    tooltip: string;
   };
   contractsTracked: {
     value: string;
     sublabel: string;
+    tooltip: string;
   };
   lastIndexedLedger: {
     sequence: number;
     ago: string;
+    tooltip: string;
   };
   eventsToday: {
     value: string;
     sublabel: string;
+    tooltip: string;
   };
   eventActivityTitle: string;
+  eventActivityTooltip: string;
   chartStartDate: string;
   chartEndDate: string;
   chartData: number[];

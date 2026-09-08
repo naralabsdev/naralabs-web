@@ -4,6 +4,7 @@ import type {
   HomePageViewModel,
   RecentEventRow,
 } from "@/modules/landing/domain/home-view-model";
+import { NETWORK_OVERVIEW } from "@/modules/landing/constants/homepage-content";
 import { nFormatter } from "@/shared/lib/functions/nformatter";
 import { timeAgo } from "@/shared/lib/functions/time-ago";
 
@@ -79,23 +80,28 @@ export function mapHomePayload(payload: HomePayload): HomePageViewModel {
     networkOverview: {
       totalEvents: {
         value: nFormatter(payload.stats.total_events, { full: true }),
-        sublabel: "indexed from Soroban",
+        sublabel: NETWORK_OVERVIEW.totalEvents.sublabel,
+        tooltip: NETWORK_OVERVIEW.totalEvents.tooltip,
       },
       contractsTracked: {
         value: nFormatter(payload.stats.contract_count, { full: true }),
-        sublabel: "with events",
+        sublabel: NETWORK_OVERVIEW.contractsTracked.sublabel,
+        tooltip: NETWORK_OVERVIEW.contractsTracked.tooltip,
       },
       lastIndexedLedger: {
         sequence: payload.stats.last_ingested_ledger,
         ago: payload.stats.last_indexed_at
           ? timeAgo(new Date(payload.stats.last_indexed_at), { withAgo: true })
           : "—",
+        tooltip: NETWORK_OVERVIEW.lastIndexedLedger.tooltip,
       },
       eventsToday: {
         value: nFormatter(payload.stats.events_24h, { full: true }),
-        sublabel: "last 24 hours",
+        sublabel: NETWORK_OVERVIEW.eventsToday.sublabel,
+        tooltip: NETWORK_OVERVIEW.eventsToday.tooltip,
       },
-      eventActivityTitle: "Event activity",
+      eventActivityTitle: NETWORK_OVERVIEW.eventActivityTitle,
+      eventActivityTooltip: NETWORK_OVERVIEW.eventActivityTooltip,
       chartStartDate: formatChartLabel(activity[0]?.bucket),
       chartEndDate: formatChartLabel(activity[activity.length - 1]?.bucket),
       chartData: chartData.length > 0 ? chartData : [0],

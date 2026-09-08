@@ -1,4 +1,5 @@
 import { cn } from "@/shared/lib/cn";
+import { LandingInfoTooltip } from "@/modules/landing/components/shared/landing-info-tooltip";
 import { ArrowRight, CircleInfo } from "@/shared/ui/icons/nucleo";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -67,16 +68,22 @@ export function BorderlessHeaderRow({ children }: { children: ReactNode }) {
 export function BorderlessHeaderCell({
   children,
   className,
+  infoTooltip,
   withInfo,
 }: {
   children: ReactNode;
   className?: string;
+  infoTooltip?: string;
   withInfo?: boolean;
 }) {
   return (
     <th className={cn("pb-3 pr-4 font-medium last:pr-0", className)}>
       <span className="inline-flex items-center gap-1.5">
-        {withInfo ? <CircleInfo className="size-3.5 text-neutral-400" aria-hidden /> : null}
+        {infoTooltip ? (
+          <LandingInfoTooltip content={infoTooltip} />
+        ) : withInfo ? (
+          <CircleInfo className="size-3.5 text-neutral-400" aria-hidden />
+        ) : null}
         {children}
       </span>
     </th>

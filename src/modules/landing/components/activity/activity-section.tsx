@@ -1,5 +1,8 @@
 import { MarketingContent } from "@/modules/landing/components/chrome/marketing-content";
-import { ACTIVITY_SECTION } from "@/modules/landing/constants/homepage-content";
+import {
+  ACTIVITY_SECTION,
+  LANDING_TABLE_TOOLTIPS,
+} from "@/modules/landing/constants/homepage-content";
 import type {
   ActiveContractRow,
   RecentEventRow,
@@ -37,12 +40,24 @@ export function ActivitySection({
             <BorderlessTable className="min-w-[40rem]">
               <BorderlessTableHead>
                 <BorderlessHeaderRow>
-                  <BorderlessHeaderCell withInfo>Event</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Summary</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Contract</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Ledger</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Txn</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Age</BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.events.event}>
+                    Event
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.events.summary}>
+                    Summary
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.events.contract}>
+                    Contract
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.events.ledger}>
+                    Ledger
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.events.txn}>
+                    Txn
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.events.age}>
+                    Age
+                  </BorderlessHeaderCell>
                 </BorderlessHeaderRow>
               </BorderlessTableHead>
               <BorderlessTableBody>
@@ -107,11 +122,23 @@ export function ActivitySection({
             <BorderlessTable className="min-w-[32rem]">
               <BorderlessTableHead>
                 <BorderlessHeaderRow>
-                  <BorderlessHeaderCell withInfo>Contract</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Events</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Schema</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Last Activity</BorderlessHeaderCell>
-                  <BorderlessHeaderCell withInfo>Ledgers</BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.contracts.contract}>
+                    Contract
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.contracts.events}>
+                    Events
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.contracts.schema}>
+                    Schema
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell
+                    infoTooltip={LANDING_TABLE_TOOLTIPS.contracts.lastActivity}
+                  >
+                    Last Activity
+                  </BorderlessHeaderCell>
+                  <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.contracts.ledgers}>
+                    Ledgers
+                  </BorderlessHeaderCell>
                 </BorderlessHeaderRow>
               </BorderlessTableHead>
               <BorderlessTableBody>

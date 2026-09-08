@@ -10,7 +10,7 @@ export function PaymentGateway() {
       <div className="origin-top scale-[0.72] sm:scale-[0.80]">
         <BrowserPreviewFrame url={`${getAppUrl()}/c/demo`} className="w-[400px]">
           <div className="flex flex-col gap-4 p-4">
-            <div className="rounded-md bg-[var(--sandbox-banner)] px-3 py-2 text-center text-xs font-medium text-white">
+            <div className="rounded-md bg-[#0f3359] px-3 py-2 text-center text-xs font-medium text-white">
               Sandbox checkout
             </div>
             <div className="flex items-center justify-between">
