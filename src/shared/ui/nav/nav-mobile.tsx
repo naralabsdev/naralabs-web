@@ -94,7 +94,7 @@ export function NavMobile({
             theme={theme}
             className={cn(
               theme === "dark" &&
-                "[&_button]:border-transparent [&_button]:bg-transparent [&_button]:text-white/90 [&_button]:shadow-none [&_button]:hover:bg-white/10 [&_button]:hover:text-white",
+                "[&_button]:border-transparent [&_button]:bg-transparent [&_button]:text-neutral-500 [&_button]:shadow-none [&_button]:hover:bg-neutral-50 [&_button]:hover:text-neutral-600",
             )}
           />
         </div>
@@ -150,31 +150,31 @@ export function NavMobile({
                 <CircleUser className="size-[18px]" aria-hidden />
                 {getEmailDisplayName(user.email)}
               </div>
-              <div className="mt-3 space-y-1 border-l border-neutral-200 pl-4 dark:border-white/10">
+              <div className="mt-3 space-y-1 border-l border-neutral-100 pl-4">
                 <Link
                   href="/dashboard"
-                  className="block py-1.5 text-sm text-neutral-600 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                  className="block py-1.5 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-500"
                   onClick={() => setOpen(false)}
                 >
                   Account Overview
                 </Link>
                 <Link
                   href="/dashboard/settings/profile"
-                  className="block py-1.5 text-sm text-neutral-600 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                  className="block py-1.5 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-500"
                   onClick={() => setOpen(false)}
                 >
                   Profile
                 </Link>
                 <Link
                   href="/dashboard/developers"
-                  className="block py-1.5 text-sm text-neutral-600 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                  className="block py-1.5 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-500"
                   onClick={() => setOpen(false)}
                 >
                   API Dashboard
                 </Link>
                 <button
                   type="button"
-                  className="block py-1.5 text-left text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                  className="block py-1.5 text-left text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-500"
                   onClick={async () => {
                     setOpen(false);
                     await fetch("/api/auth/logout", { method: "POST" });

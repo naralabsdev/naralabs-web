@@ -14,7 +14,13 @@ type UserMenuProps = {
   theme?: "light" | "dark";
 };
 
-export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
+const dropdownContentClassName =
+  "z-50 min-w-[11rem] rounded-lg border border-neutral-100 bg-white p-1 shadow-md outline-none animate-slide-up-fade";
+
+const dropdownItemClassName =
+  "block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-neutral-500 transition-colors hover:bg-white hover:text-neutral-500";
+
+export function UserMenu({ email, className, theme: _theme = "light" }: UserMenuProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -69,8 +75,7 @@ export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
             type="button"
             className={cn(
               "group/user-menu flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-              "text-neutral-700 hover:bg-neutral-900/5 hover:text-neutral-900",
-              "dark:text-white/90 dark:hover:bg-white/10 dark:hover:text-white",
+              "text-neutral-500 hover:bg-white hover:text-neutral-500",
             )}
             onPointerDown={(event) => event.preventDefault()}
           >
@@ -81,7 +86,7 @@ export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
             <span className="max-w-[9rem] truncate">{displayName}</span>
             <ChevronDown
               className={cn(
-                "size-3.5 text-neutral-500 transition-transform duration-150 dark:text-white/70",
+                "size-3.5 text-neutral-400 transition-transform duration-150",
                 open && "rotate-180",
               )}
               aria-hidden
@@ -95,35 +100,32 @@ export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
             sideOffset={8}
             onMouseEnter={openMenu}
             onMouseLeave={scheduleClose}
-            className={cn(
-              "z-50 min-w-[11rem] rounded-lg bg-white p-1 shadow-md outline-none animate-slide-up-fade",
-              theme === "dark" && "dark border border-white/10 bg-neutral-950",
-            )}
+            className={dropdownContentClassName}
           >
             <Link
               href="/dashboard"
-              className="block rounded-md px-3 py-2 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
+              className={dropdownItemClassName}
               onClick={() => setOpen(false)}
             >
               Account Overview
             </Link>
             <Link
               href="/dashboard/settings/profile"
-              className="block rounded-md px-3 py-2 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
+              className={dropdownItemClassName}
               onClick={() => setOpen(false)}
             >
               Profile
             </Link>
             <Link
               href="/dashboard/developers"
-              className="block rounded-md px-3 py-2 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
+              className={dropdownItemClassName}
               onClick={() => setOpen(false)}
             >
               API Dashboard
             </Link>
             <button
               type="button"
-              className="block w-full rounded-md px-3 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-300"
+              className={dropdownItemClassName}
               onClick={() => void handleLogout()}
               disabled={isLoggingOut}
             >
