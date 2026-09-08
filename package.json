@@ -93,7 +93,8 @@
     "tailwind-merge": "^3.6.0",
     "three": "^0.185.1",
     "use-debounce": "^8.0.4",
-    "vaul": "^1.1.2"
+    "vaul": "^1.1.2",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@tailwindcss/container-queries": "^0.1.1",

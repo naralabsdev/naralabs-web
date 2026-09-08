@@ -1,19 +1,22 @@
-import { publicEnv } from "@/shared/config/public-env";
-
-export const siteConfig = {
-  docsUrl: publicEnv.docsUrl ?? "https://docs.naralabs.com",
-  githubUrl: publicEnv.githubUrl ?? "https://github.com/naralabsdev/naralabs-web",
-  appUrl: publicEnv.appUrl ?? "https://naralabs.io",
-} as const;
-
 export function getDocsUrl() {
-  return siteConfig.docsUrl;
+  return (
+    process.env.NEXT_PUBLIC_DOCS_URL ?? "https://docs.naralabs.com"
+  );
 }
 
 export function getGithubUrl() {
-  return siteConfig.githubUrl;
+  return (
+    process.env.NEXT_PUBLIC_GITHUB_URL ??
+    "https://github.com/naralabsdev/naralabs-web"
+  );
 }
 
 export function getAppUrl() {
-  return siteConfig.appUrl;
+  return process.env.NEXT_PUBLIC_APP_URL ?? "https://naralabs.io";
 }
+
+export const siteConfig = {
+  docsUrl: getDocsUrl(),
+  githubUrl: getGithubUrl(),
+  appUrl: getAppUrl(),
+} as const;
