@@ -1,7 +1,14 @@
-/* NaraLabs brand overrides for Nextra docs theme */
+/* NaraLabs brand + Nextra theme tokens (replaces nextra/components Head) */
 :root {
   --nextra-primary-hue: 160deg;
   --nextra-primary-saturation: 72%;
+  --nextra-primary-lightness: 38%;
+  --nextra-bg: 250, 250, 250;
+  --nextra-content-width: 90rem;
+}
+
+html {
+  background: rgb(var(--nextra-bg));
 }
 
 .nextra-nav-container a[data-active="true"] {

@@ -1,13 +1,11 @@
 import { Footer, Layout, Navbar } from "nextra-theme-docs";
-import { Head } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { getGithubUrl } from "@/shared/config/site";
 
-import "../globals.css";
 import "./docs/docs.css";
 
 export const metadata: Metadata = {
@@ -16,6 +14,10 @@ export const metadata: Metadata = {
     template: "%s | NaraLabs Docs",
   },
   description: "Documentation for the NaraLabs Stellar Soroban explorer and Atlas API",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#fafafa",
 };
 
 const navbar = (
@@ -55,13 +57,9 @@ const footer = (
 export default async function DocsRootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <Head
-        color={{
-          hue: { dark: 160, light: 160 },
-          saturation: { dark: 72, light: 72 },
-          lightness: { dark: 45, light: 38 },
-        }}
-      />
+      <head>
+        <link rel="stylesheet" href="/nextra-docs.css" />
+      </head>
       <body>
         <Layout
           navbar={navbar}
@@ -71,6 +69,12 @@ export default async function DocsRootLayout({ children }: { children: ReactNode
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           editLink="Edit this page on GitHub"
           darkMode={false}
+          nextThemes={{
+            forcedTheme: "light",
+            defaultTheme: "light",
+            attribute: "class",
+            disableTransitionOnChange: true,
+          }}
         >
           {children}
         </Layout>

@@ -17,6 +17,7 @@
 /.next/
 /out/
 /public/_pagefind
+/public/nextra-docs.css
 
 # production
 /build

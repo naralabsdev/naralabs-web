@@ -12,11 +12,12 @@
     "url": "https://github.com/naralabsdev/naralabs-web/issues"
   },
   "scripts": {
-    "dev": "next dev --webpack",
+    "dev": "npm run sync:nextra-css && next dev --webpack",
     "dev:turbo": "next dev",
-    "build": "next build",
+    "build": "npm run sync:nextra-css && next build",
+    "sync:nextra-css": "node scripts/sync-nextra-css.mjs",
     "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind",
-    "postinstall": "patch-package",
+    "postinstall": "patch-package && npm run sync:nextra-css",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
