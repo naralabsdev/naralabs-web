@@ -6,6 +6,7 @@ import Link from "next/link";
 import {
   AUTH_ERROR_CODES,
   AUTH_ERROR_MESSAGES,
+  resolveAuthErrorMessage,
 } from "@/modules/auth/constants/auth-errors";
 import { PasswordRequirements } from "@/modules/auth/components/password-requirements";
 import {
@@ -143,7 +144,13 @@ export function RegisterForm() {
         return;
       }
 
-      toast.error(data.error ?? "Unable to create account. Please try again.");
+      toast.error(
+        resolveAuthErrorMessage(
+          data.code,
+          data.error,
+          "Unable to create account. Please try again.",
+        ),
+      );
       return;
     }
 

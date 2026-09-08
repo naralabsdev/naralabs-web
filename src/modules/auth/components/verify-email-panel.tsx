@@ -3,6 +3,7 @@
 import {
   AUTH_ERROR_CODES,
   AUTH_ERROR_MESSAGES,
+  resolveAuthErrorMessage,
 } from "@/modules/auth/constants/auth-errors";
 import {
   authButtonClass,
@@ -70,7 +71,13 @@ export function VerifyEmailPanel() {
         return;
       }
 
-      toast.error(data.error ?? "Unable to resend verification email.");
+      toast.error(
+        resolveAuthErrorMessage(
+          data.code,
+          data.error,
+          "Unable to resend verification email.",
+        ),
+      );
       return;
     }
 

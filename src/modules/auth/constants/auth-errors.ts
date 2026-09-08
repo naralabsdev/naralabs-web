@@ -18,3 +18,20 @@ export const AUTH_ERROR_MESSAGES = {
 
 export type AuthErrorCode =
   (typeof AUTH_ERROR_CODES)[keyof typeof AUTH_ERROR_CODES];
+
+export function resolveAuthErrorMessage(
+  code?: string | null,
+  message?: string | null,
+  defaultMessage = "Something went wrong. Please try again.",
+): string {
+  if (code && code in AUTH_ERROR_MESSAGES) {
+    return AUTH_ERROR_MESSAGES[code as AuthErrorCode];
+  }
+
+  const trimmed = message?.trim();
+  if (trimmed && trimmed !== "Request failed") {
+    return trimmed;
+  }
+
+  return defaultMessage;
+}

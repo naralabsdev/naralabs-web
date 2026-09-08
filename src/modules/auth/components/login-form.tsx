@@ -3,6 +3,7 @@
 import {
   AUTH_ERROR_CODES,
   AUTH_ERROR_MESSAGES,
+  resolveAuthErrorMessage,
 } from "@/modules/auth/constants/auth-errors";
 import {
   authButtonClass,
@@ -60,11 +61,19 @@ export function LoginForm() {
       body: JSON.stringify({ email, password, callbackUrl }),
     });
 
-    const data = (await response.json()) as {
+    let data: {
       error?: string;
       code?: string;
       redirectTo?: string;
-    };
+    } = {};
+
+    try {
+      data = (await response.json()) as typeof data;
+    } catch {
+      setIsSubmitting(false);
+      toast.error(AUTH_ERROR_MESSAGES.INVALID_CREDENTIALS);
+      return;
+    }
 
     setIsSubmitting(false);
 
@@ -77,12 +86,15 @@ export function LoginForm() {
       }
 
       toast.error(
-        data.error ?? AUTH_ERROR_MESSAGES.INVALID_CREDENTIALS,
+        resolveAuthErrorMessage(
+          data.code,
+          data.error,
+          AUTH_ERROR_MESSAGES.INVALID_CREDENTIALS,
+        ),
       );
       return;
     }
 
-    toast.success("Welcome back");
     router.push(data.redirectTo ?? callbackUrl);
     router.refresh();
   }

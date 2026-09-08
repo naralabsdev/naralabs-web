@@ -14,12 +14,65 @@ type AtlasAuthResponse<T> = {
 type HumaErrorBody = {
   detail?: string;
   title?: string;
+  message?: string;
+  code?: string;
   errors?: Array<{
     message?: string;
     value?: string;
     location?: string;
   }>;
 };
+
+function isJsonContentType(contentType: string): boolean {
+  return contentType.toLowerCase().includes("json");
+}
+
+function defaultAtlasErrorMessage(status: number): string {
+  switch (status) {
+    case 400:
+      return "Invalid request. Please check your input and try again.";
+    case 401:
+      return "Invalid email or password.";
+    case 403:
+      return "Please verify your email before signing in.";
+    case 404:
+      return "Auth API not found. Restart Atlas server with the latest build.";
+    case 409:
+      return "An account with this email already exists.";
+    case 429:
+      return "Please wait before trying again.";
+    default:
+      return "Something went wrong. Please try again.";
+  }
+}
+
+function parseAtlasErrorPayload(
+  payload: unknown,
+  status: number,
+): { code?: string; message: string } {
+  if (!payload || typeof payload !== "object") {
+    return { message: defaultAtlasErrorMessage(status) };
+  }
+
+  const problem = payload as HumaErrorBody;
+  const codeEntry = problem.errors?.find((entry) => entry.location === "code");
+  const code =
+    (typeof codeEntry?.value === "string" ? codeEntry.value : undefined) ??
+    (typeof problem.code === "string" ? problem.code : undefined);
+
+  const message =
+    problem.detail?.trim() ||
+    codeEntry?.message?.trim() ||
+    (typeof problem.message === "string" ? problem.message.trim() : "") ||
+    problem.errors?.[0]?.message?.trim() ||
+    problem.title?.trim() ||
+    defaultAtlasErrorMessage(status);
+
+  return {
+    code,
+    message,
+  };
+}
 
 export async function proxyAtlasGet<T>(
   path: string,
@@ -40,27 +93,18 @@ export async function proxyAtlasGet<T>(
   });
 
   const contentType = response.headers.get("content-type") ?? "";
-  const isJson = contentType.includes("application/json");
-  const payload = isJson
+  const payload = isJsonContentType(contentType)
     ? ((await response.json()) as T | HumaErrorBody)
     : null;
 
   if (!response.ok) {
-    const problem = (payload ?? {}) as HumaErrorBody;
-    const code =
-      problem.errors?.find((entry) => entry.location === "code")?.value ??
-      problem.errors?.[0]?.value;
-    const message =
-      problem.detail ??
-      problem.title ??
-      problem.errors?.[0]?.message ??
-      "Request failed";
+    const { code, message } = parseAtlasErrorPayload(payload, response.status);
 
     return {
       ok: false,
       status: response.status,
       data: payload as T,
-      code: typeof code === "string" ? code : undefined,
+      code,
       message,
     };
   }
@@ -90,38 +134,23 @@ export async function proxyAtlasPost<T>(
   });
 
   const contentType = response.headers.get("content-type") ?? "";
-  const isJson = contentType.includes("application/json");
-  const payload = isJson
+  const payload = isJsonContentType(contentType)
     ? ((await response.json()) as T | HumaErrorBody)
     : null;
 
   if (!response.ok) {
-    const problem = (payload ?? {}) as HumaErrorBody;
-    const code =
-      problem.errors?.find((entry) => entry.location === "code")?.value ??
-      problem.errors?.[0]?.value;
-    let message =
-      problem.detail ??
-      problem.title ??
-      problem.errors?.[0]?.message ??
-      "Request failed";
-
-    if (response.status === 404) {
-      message =
-        "Auth API not found. Restart Atlas server with the latest build.";
-    }
+    const status = response.status === 404 ? 503 : response.status;
+    const { code, message } = parseAtlasErrorPayload(payload, response.status);
 
     return {
       ok: false,
-      status: response.status === 404 ? 503 : response.status,
+      status,
       data: payload as T,
-      code:
+      code: response.status === 404 ? "AUTH_API_UNAVAILABLE" : code,
+      message:
         response.status === 404
-          ? "AUTH_API_UNAVAILABLE"
-          : typeof code === "string"
-            ? code
-            : undefined,
-      message,
+          ? "Auth API not found. Restart Atlas server with the latest build."
+          : message,
     };
   }
 
