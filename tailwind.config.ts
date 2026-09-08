@@ -23,12 +23,8 @@ const config: Pick<Config, "presets" | "safelist"> = {
     "focus-visible:border-primary",
     "bg-primary/10",
     "bg-primary/15",
-    "bg-primary-subtle",
-    "text-primary-subtle-foreground",
-    "border-primary-subtle",
-    "from-primary",
-    "to-primary-hover",
-    "hover:ring-primary/20",
+    "text-primary",
+    "shadow-[0_0_0_1px_var(--primary)_inset]",
   ],
   presets: [
     {
@@ -52,10 +48,6 @@ const config: Pick<Config, "presets" | "safelist"> = {
             primary: {
               DEFAULT: "var(--primary)",
               foreground: "var(--primary-foreground)",
-              hover: "var(--primary-hover)",
-              subtle: "var(--primary-subtle)",
-              "subtle-foreground": "var(--primary-subtle-foreground)",
-              border: "var(--primary-border)",
             },
             secondary: {
               DEFAULT: "var(--secondary)",

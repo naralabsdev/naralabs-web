@@ -227,12 +227,12 @@ button[data-naralabs-variant="primary"]:not(:disabled):hover {
 
 /* Auth pages: charcoal buttons (login, register, verify email) */
 button.auth-button:not(:disabled) {
-  border-color: #737373 !important;
-  background-color: #737373 !important;
+  border-color: #525252 !important;
+  background-color: #525252 !important;
   color: #ffffff !important;
 }
 
 button.auth-button:not(:disabled):hover {
-  border-color: #525252 !important;
-  background-color: #525252 !important;
+  border-color: #404040 !important;
+  background-color: #404040 !important;
 }

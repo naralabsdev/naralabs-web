@@ -15,7 +15,7 @@ export const buttonVariants = cva("transition-all", {
       ),
       outline: "border-transparent text-content-default hover:bg-neutral-900/5",
       success:
-        "border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:ring-4 hover:ring-primary/20",
+        "border-blue-500 bg-blue-500 text-white hover:bg-blue-600 hover:ring-4 hover:ring-blue-100",
       danger:
         "border-red-500 bg-red-500 text-white hover:bg-red-600 hover:ring-4 hover:ring-red-100",
       "danger-outline":

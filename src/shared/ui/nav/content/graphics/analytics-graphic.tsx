@@ -4,7 +4,7 @@ import { CursorRays } from "../../../icons";
 
 const data = {
   clicks: {
-    color: "var(--primary)",
+    color: "#3B82F6",
     value: "12.5K",
   },
   leads: {
