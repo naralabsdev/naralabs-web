@@ -14,13 +14,10 @@ body {
 
 @layer base {
   :root {
-    /* Brand primary: single source of truth (NaraLabs emerald) */
-    --primary: #1ba374;
-    --primary-hover: #158f63;
+    /* Brand primary: single source of truth */
+    --primary: #054fbf;
+    --primary-hover: #043a99;
     --primary-foreground: #ffffff;
-    --primary-subtle: #e7f7ef;
-    --primary-subtle-foreground: #0f5132;
-    --primary-border: #b8e6cf;
 
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -52,24 +49,21 @@ body {
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: var(--primary);
-    --sandbox-banner: #0f3d2e;
-    --sandbox-banner-border: #0b2f24;
+    --sandbox-banner: #0f3359;
+    --sandbox-banner-border: #0a2644;
     --sandbox-banner-foreground: #ffffff;
     --checkout-error-banner: #b42318;
     --checkout-error-banner-border: #912018;
     --checkout-error-banner-foreground: #ffffff;
-    --checkout-info-banner: var(--primary);
-    --checkout-info-banner-border: var(--primary-hover);
+    --checkout-info-banner: #175cd3;
+    --checkout-info-banner-border: #1849a9;
     --checkout-info-banner-foreground: #ffffff;
   }
 
   .dark {
-    --primary: #1ba374;
-    --primary-hover: #158f63;
+    --primary: #054fbf;
+    --primary-hover: #043a99;
     --primary-foreground: #ffffff;
-    --primary-subtle: #123528;
-    --primary-subtle-foreground: #b8e6cf;
-    --primary-border: #1f4d3b;
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
@@ -161,26 +155,6 @@ body {
   .ring-primary {
     --tw-ring-color: var(--primary);
   }
-
-  .bg-primary-hover {
-    background-color: var(--primary-hover);
-  }
-
-  .bg-primary-subtle {
-    background-color: var(--primary-subtle);
-  }
-
-  .text-primary-subtle-foreground {
-    color: var(--primary-subtle-foreground);
-  }
-
-  .border-primary-subtle {
-    border-color: var(--primary-border);
-  }
-
-  .outline-primary {
-    outline-color: var(--primary);
-  }
 }
 
 .dub-scrollbar {
@@ -249,4 +223,16 @@ button[data-naralabs-variant="primary"]:not(:disabled):hover {
 
 [data-slot="button"]:not(:disabled).bg-primary:hover {
   background-color: var(--primary-hover) !important;
+}
+
+/* Auth pages: charcoal buttons (login, register, verify email) */
+button.auth-button:not(:disabled) {
+  border-color: #262626 !important;
+  background-color: #262626 !important;
+  color: #ffffff !important;
+}
+
+button.auth-button:not(:disabled):hover {
+  border-color: #171717 !important;
+  background-color: #171717 !important;
 }

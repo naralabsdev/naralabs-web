@@ -1,3 +1,5 @@
+import { cn } from "@/shared/lib/cn";
+
 export const authPageTitleClass = "text-center text-xl font-semibold";
 
 export const authPageBodyClass = "text-base font-medium text-neutral-500";
@@ -21,4 +23,4 @@ export const authPageContainerClass = "w-full max-w-sm";
 
 export const authInputClass = "w-full max-w-none";
 
-export const authButtonClass = "h-10 w-full rounded-lg";
+export const authButtonClass = cn("auth-button h-10 w-full rounded-lg");

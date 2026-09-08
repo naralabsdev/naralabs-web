@@ -117,7 +117,6 @@ export function VerifyEmailPanel() {
 
               <Button
                 type="button"
-                variant="secondary"
                 text="Resend verification email"
                 onClick={() => void handleResend()}
                 loading={isResending}
