@@ -8,7 +8,7 @@ const badgeVariants = cva(
       variant: {
         default: "border-neutral-400 text-neutral-500",
         violet: "border-violet-600 bg-violet-600 text-white",
-        blue: "border-blue-500 bg-blue-500 text-white",
+        blue: "border-primary bg-primary text-primary-foreground",
         green: "border-green-100 bg-green-100 text-green-900",
         red: "border-red-100 bg-red-100 text-red-800",
         sky: "border-sky-900 bg-sky-900 text-white",
@@ -17,7 +17,7 @@ const badgeVariants = cva(
         neutral: "border-neutral-400 text-neutral-500",
         amber: "border-amber-800 bg-amber-800 text-white",
         blueGradient:
-          "bg-gradient-to-r from-blue-100 via-blue-100/50 to-blue-100 border border-blue-200 text-blue-900",
+          "bg-gradient-to-r from-primary-subtle via-primary-subtle/50 to-primary-subtle border border-primary-subtle text-primary-subtle-foreground",
         rainbow:
           "bg-gradient-to-r from-violet-600 to-pink-600 text-white border-transparent",
       },

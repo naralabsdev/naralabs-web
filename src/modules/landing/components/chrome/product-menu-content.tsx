@@ -21,8 +21,8 @@ const productMeta: Record<
   }
 > = {
   Events: {
-    color: "#3B82F6",
-    iconClass: "bg-gradient-to-b from-blue-500 to-blue-600",
+    color: "var(--primary)",
+    iconClass: "bg-gradient-to-b from-primary to-primary-hover",
     graphic: PaymentsGraphic,
   },
   Contracts: {

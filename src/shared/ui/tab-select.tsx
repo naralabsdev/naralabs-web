@@ -11,7 +11,7 @@ const tabSelectButtonVariants = cva("p-4 transition-colors duration-75", {
       default:
         "text-content-subtle data-[selected=true]:text-content-emphasis data-[selected=false]:hover:text-content-default",
       accent:
-        "text-content-subtle transition-[color,font-weight] data-[selected=true]:text-blue-600 data-[selected=false]:hover:text-content-default data-[selected=true]:font-medium",
+        "text-content-subtle transition-[color,font-weight] data-[selected=true]:text-primary data-[selected=false]:hover:text-content-default data-[selected=true]:font-medium",
     },
   },
   defaultVariants: {
@@ -23,7 +23,7 @@ const tabSelectIndicatorVariants = cva("absolute bottom-0 w-full px-1.5", {
   variants: {
     variant: {
       default: "text-bg-inverted",
-      accent: "text-blue-600",
+      accent: "text-primary",
     },
   },
   defaultVariants: {

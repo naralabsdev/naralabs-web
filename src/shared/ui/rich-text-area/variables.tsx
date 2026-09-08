@@ -195,7 +195,7 @@ const Menu = forwardRef(
     if (pendingVar) {
       return (
         <div className="border-border-subtle flex w-64 flex-col gap-2 rounded-lg border bg-white p-2 shadow-sm">
-          <span className="w-fit rounded bg-blue-100 px-1 py-0.5 font-mono text-xs font-semibold text-blue-700">
+          <span className="w-fit rounded bg-primary-subtle px-1 py-0.5 font-mono text-xs font-semibold text-primary-subtle-foreground">
             {pendingVar}
           </span>
 

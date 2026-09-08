@@ -266,7 +266,7 @@ const config: Config = {
         "content-emphasis":
           "rgb(var(--content-emphasis, 23 23 23) / <alpha-value>)",
 
-        "content-info": "rgb(var(--content-info, 37 99 235) / <alpha-value>)",
+        "content-info": "rgb(var(--content-info, 27 163 116) / <alpha-value>)",
         "content-success":
           "rgb(var(--content-success, 22 163 74) / <alpha-value>)",
         "content-attention":

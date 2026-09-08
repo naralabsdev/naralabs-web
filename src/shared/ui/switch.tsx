@@ -40,8 +40,8 @@ export function Switch({
       {...(fn && { onCheckedChange: fn })}
       disabled={switchDisabled}
       className={cn(
-        "radix-state-checked:bg-blue-500 radix-state-unchecked:bg-neutral-200 relative inline-flex h-4 w-8 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out",
-        "focus:outline-none focus-visible:ring focus-visible:ring-blue-500 focus-visible:ring-opacity-75",
+        "radix-state-checked:bg-primary radix-state-unchecked:bg-neutral-200 relative inline-flex h-4 w-8 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out",
+        "focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-opacity-75",
         "data-[disabled]:cursor-not-allowed",
         trackDimensions,
       )}

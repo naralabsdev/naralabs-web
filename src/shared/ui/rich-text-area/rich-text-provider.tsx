@@ -234,7 +234,7 @@ export const RichTextProvider = forwardRef<
                     "span",
                     {
                       class:
-                        "px-1 py-0.5 bg-blue-100 text-blue-700 rounded font-semibold",
+                        "px-1 py-0.5 bg-primary-subtle text-primary-subtle-foreground rounded font-semibold",
                       "data-type": "mention",
                       "data-id": node.attrs.id,
                       ...(node.attrs.fallback
@@ -262,7 +262,7 @@ export const RichTextProvider = forwardRef<
             "max-w-none focus:outline-none",
             "prose prose-sm prose-neutral",
             PROSE_STYLES[style],
-            "[&_.ProseMirror-selectednode]:outline [&_.ProseMirror-selectednode]:outline-2 [&_.ProseMirror-selectednode]:outline-blue-500 [&_.ProseMirror-selectednode]:outline-offset-2",
+            "[&_.ProseMirror-selectednode]:outline [&_.ProseMirror-selectednode]:outline-2 [&_.ProseMirror-selectednode]:outline-primary [&_.ProseMirror-selectednode]:outline-offset-2",
             "[&_.ProseMirror-selectednode:has(img)]:outline-none",
             editorClassName,
           ),

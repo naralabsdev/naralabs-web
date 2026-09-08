@@ -7,7 +7,7 @@
   --bg-emphasis: 229 229 229;
   --bg-inverted: 23 23 23;
 
-  --bg-info: 219 234 254;
+  --bg-info: 231 247 239;
   --bg-success: 220 252 231;
   --bg-attention: 255 237 213;
   --bg-warning: 254 249 195;
@@ -24,7 +24,7 @@
   --content-default: 64 64 64;
   --content-emphasis: 23 23 23;
 
-  --content-info: 37 99 235;
+  --content-info: 27 163 116;
   --content-success: 22 163 74;
   --content-attention: 234 88 12;
   --content-warning: 202 138 4;
@@ -39,7 +39,7 @@
   --bg-emphasis: 64 64 64;
   --bg-inverted: 250 250 250;
 
-  --bg-info: 23 37 84;
+  --bg-info: 18 53 40;
   --bg-success: 5 46 22;
   --bg-attention: 67 20 7;
   --bg-warning: 66 32 6;
@@ -56,7 +56,7 @@
   --content-default: 212 212 212;
   --content-emphasis: 250 250 250;
 
-  --content-info: 147 197 253;
+  --content-info: 184 230 207;
   --content-success: 134 239 172;
   --content-attention: 253 186 116;
   --content-warning: 253 224 71;

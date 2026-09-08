@@ -2,7 +2,7 @@
   if (window.__naralabsNavigationProgress) return;
   window.__naralabsNavigationProgress = true;
 
-  var BRAND = "#054fbf";
+  var BRAND = "#1ba374";
   var progress = 0;
   var bar = null;
   var trickleTimer = null;

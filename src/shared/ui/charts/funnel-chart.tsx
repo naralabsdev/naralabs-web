@@ -118,7 +118,7 @@ function FunnelChartInner({
                   y={0}
                   width={width / steps.length}
                   height={height}
-                  className="fill-transparent transition-colors hover:fill-blue-600/5"
+                  className="fill-transparent transition-colors hover:fill-primary/5"
                   onPointerEnter={() => setTooltip(id)}
                   onPointerDown={() => setTooltip(id)}
                   onPointerLeave={() =>

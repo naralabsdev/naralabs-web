@@ -47,7 +47,7 @@ const tableCellClassName = (
     !["select", "menu"].includes(columnId) &&
       (hasSelectBefore ? "pl-1 pr-4" : "px-4"),
     clickable && "group-hover/row:bg-bg-muted transition-colors duration-75",
-    "group-data-[selected=true]/row:bg-blue-50",
+    "group-data-[selected=true]/row:bg-primary-subtle",
   ]);
 
 const resizingClassName = cn([

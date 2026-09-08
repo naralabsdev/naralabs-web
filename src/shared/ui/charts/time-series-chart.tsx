@@ -206,7 +206,7 @@ function TimeSeriesChartInner<T extends Datum>({
                         cx={xScale(tooltipData.date)}
                         cy={yScale(s.valueAccessor(tooltipData))}
                         r={4}
-                        className={s.colorClassName ?? "text-blue-800"}
+                        className={s.colorClassName ?? "text-primary-subtle-foreground"}
                         fill="currentColor"
                       />
                     ))}

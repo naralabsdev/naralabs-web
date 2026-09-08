@@ -60,7 +60,7 @@ export function ImageAltNodeView({
       <div
         className={cn(
           "group relative w-fit max-w-full rounded-lg",
-          selected && "ring-2 ring-blue-500 ring-offset-2",
+          selected && "ring-2 ring-primary ring-offset-2",
         )}
       >
         <img
