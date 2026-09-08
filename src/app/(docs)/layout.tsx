@@ -66,7 +66,7 @@ export default async function DocsRootLayout({ children }: { children: ReactNode
         <Layout
           navbar={navbar}
           footer={footer}
-          pageMap={await getPageMap("/docs")}
+          pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/naralabsdev/naralabs-web/tree/main/naralabs-frontend/src/content"
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           editLink="Edit this page on GitHub"
