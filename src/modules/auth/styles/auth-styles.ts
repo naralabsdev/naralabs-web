@@ -21,6 +21,15 @@ export const authFormWrapperClass = "flex flex-col gap-3 p-1";
 
 export const authPageContainerClass = "w-full max-w-sm";
 
+/** Top offset for login/register content */
+export const authPageSpaciousOffsetClass =
+  "mt-[clamp(5.25rem,21vh,10.5rem)]";
+
+/** Gap between auth form and footer — explicit height spacer (reliable vs main mb) */
+export const authPageFooterSpacerClass = "h-80 sm:h-[26rem]";
+
+export const authPageFooterTopSpacingClass = "mt-0";
+
 export const authInputClass = "w-full max-w-none";
 
 export const authButtonClass = cn("auth-button h-10 w-full rounded-lg");

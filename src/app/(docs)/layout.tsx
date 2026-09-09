@@ -6,8 +6,6 @@ import type { ReactNode } from "react";
 
 import { getGithubUrl } from "@/shared/config/site";
 
-import "./docs/docs.css";
-
 export const metadata: Metadata = {
   title: {
     default: "NaraLabs Docs",
@@ -59,6 +57,8 @@ export default async function DocsRootLayout({ children }: { children: ReactNode
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href="/nextra-docs.css" />
+        {/* Loaded after Nextra base styles so overrides always win */}
+        <link rel="stylesheet" href="/docs-theme.css" />
       </head>
       <body>
         <Layout

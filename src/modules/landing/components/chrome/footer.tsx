@@ -4,6 +4,7 @@ import { ArrowUpRight2 } from "@/shared/ui/icons";
 import Link from "next/link";
 import { Logo } from "@/shared/ui/logo";
 import { getDocsUrl, getGithubUrl } from "@/shared/config/site";
+import { cn } from "@/shared/lib/cn";
 
 function resolveFooterHref(href: string, githubUrl: string) {
   if (href === "docs") return getDocsUrl();
@@ -11,7 +12,7 @@ function resolveFooterHref(href: string, githubUrl: string) {
   return href;
 }
 
-export function Footer() {
+export function Footer({ className }: { className?: string }) {
   const githubUrl = getGithubUrl();
   const socials: { label: string; href: string; path: string }[] = [
     {
@@ -22,7 +23,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative mt-20 border-t border-neutral-200/80 bg-white">
+    <footer className={cn("relative mt-20 border-t border-neutral-200/80 bg-white", className)}>
       <MarketingContent className="py-16">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">

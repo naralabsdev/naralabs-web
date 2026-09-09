@@ -18,6 +18,7 @@
 /out/
 /public/_pagefind
 /public/nextra-docs.css
+/public/docs-theme.css
 
 # production
 /build

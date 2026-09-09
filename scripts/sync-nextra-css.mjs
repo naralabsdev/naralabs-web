@@ -9,4 +9,9 @@ copyFileSync(
   join(root, "public/nextra-docs.css"),
 );
 
-console.log("Synced nextra-docs.css to public/");
+copyFileSync(
+  join(root, "src/app/(docs)/docs/docs.css"),
+  join(root, "public/docs-theme.css"),
+);
+
+console.log("Synced nextra-docs.css and docs-theme.css to public/");

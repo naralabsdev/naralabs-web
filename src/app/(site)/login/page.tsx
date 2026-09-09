@@ -5,7 +5,7 @@ import { LoginForm } from "@/modules/auth/components/login-form";
 
 export default function LoginPage() {
   return (
-    <AuthPageShell>
+    <AuthPageShell spaciousLayout>
       <Suspense
         fallback={
           <div className="h-64 w-full animate-pulse rounded-xl bg-neutral-100" />

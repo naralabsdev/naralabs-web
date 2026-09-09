@@ -39,6 +39,8 @@ List endpoints return:
 
 ## Endpoints
 
+### Explore (read)
+
 | Method | Path | Description |
 | --- | --- | --- |
 | GET | `/health` | Service health |
@@ -50,10 +52,31 @@ List endpoints return:
 | GET | `/v1/contracts/{id}` | Contract detail |
 | GET | `/v1/contracts/{id}/events` | Contract events (paginated) |
 
+### Schema registry (SEP-0048)
+
+| Method | Path | Description |
+| --- | --- | --- |
+| POST | `/v1/schemas` | Publish new schema version |
+| GET | `/v1/schemas` | List schemas (`limit`, `offset`, `search`) |
+| GET | `/v1/schemas/{contract_id}` | Latest schema per event on a contract |
+| GET | `/v1/schemas/{contract_id}/{event_name}` | Get schema (`?version=` optional) |
+
+Registry list pagination uses `limit` / `offset`, not `page` / `page_size`.
+
+### Auth
+
+| Method | Path | Description |
+| --- | --- | --- |
+| POST | `/v1/auth/register` | Register account |
+| POST | `/v1/auth/login` | Login |
+| POST | `/v1/auth/verify-email` | Verify email token |
+| POST | `/v1/auth/resend-verification` | Resend verification |
+| GET | `/v1/auth/me` | Current user (Bearer JWT) |
+
 ## OpenAPI / Scalar
 
 In development, Atlas serves interactive API docs at `/docs` on the Atlas server (Scalar UI).
 
 ## Authentication
 
-Public read endpoints do not require authentication. Account and registry endpoints use JWT bearer tokens (see dashboard developers section).
+Explore and schema registry read/publish endpoints do not require authentication today. Auth endpoints (`/v1/auth/*`) issue and validate JWT sessions for the web app login flow; `GET /v1/auth/me` requires a Bearer token.

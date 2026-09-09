@@ -15,10 +15,13 @@ type UserMenuProps = {
 };
 
 const dropdownContentClassName =
-  "z-50 min-w-[11rem] rounded-lg border border-neutral-100 bg-white p-1 shadow-md outline-none animate-slide-up-fade";
+  "z-50 min-w-[11rem] rounded-lg bg-white p-1 shadow-md outline-none animate-slide-up-fade";
 
 const dropdownItemClassName =
-  "block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-neutral-500 transition-colors hover:bg-white hover:text-neutral-500";
+  "block w-full rounded-md border-0 px-3 py-2 text-left text-sm font-medium text-neutral-700 outline-none transition-colors hover:bg-neutral-50 hover:text-neutral-900 focus:outline-none focus-visible:outline-none";
+
+const logoutItemClassName =
+  "block w-full rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm font-medium text-red-600 outline-none transition-colors hover:bg-red-50 hover:text-red-700 focus:outline-none focus-visible:outline-none disabled:opacity-50";
 
 const triggerClassNameByTheme = {
   light:
@@ -85,7 +88,7 @@ export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
           <button
             type="button"
             className={cn(
-              "group/user-menu flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "group/user-menu flex items-center gap-1.5 rounded-lg border-0 px-3 py-2 text-sm font-medium outline-none transition-colors focus:outline-none focus-visible:outline-none",
               triggerClassNameByTheme[theme],
             )}
             onPointerDown={(event) => event.preventDefault()}
@@ -137,7 +140,7 @@ export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
             </Link>
             <button
               type="button"
-              className={dropdownItemClassName}
+              className={logoutItemClassName}
               onClick={() => void handleLogout()}
               disabled={isLoggingOut}
             >

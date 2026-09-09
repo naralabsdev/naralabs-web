@@ -146,28 +146,28 @@ export function NavMobile({
               <div className="mt-3 space-y-1 border-l border-neutral-100 pl-4">
                 <Link
                   href="/dashboard"
-                  className="block py-1.5 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-500"
+                  className="block rounded-md py-1.5 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
                   onClick={() => setOpen(false)}
                 >
                   Account Overview
                 </Link>
                 <Link
                   href="/dashboard/settings/profile"
-                  className="block py-1.5 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-500"
+                  className="block rounded-md py-1.5 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
                   onClick={() => setOpen(false)}
                 >
                   Profile
                 </Link>
                 <Link
                   href="/dashboard/developers"
-                  className="block py-1.5 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-500"
+                  className="block rounded-md py-1.5 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
                   onClick={() => setOpen(false)}
                 >
                   API Dashboard
                 </Link>
                 <button
                   type="button"
-                  className="block py-1.5 text-left text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-500"
+                  className="block w-full rounded-md border-0 bg-transparent py-1.5 text-left text-sm font-medium text-red-600 outline-none transition-colors hover:bg-red-50 hover:text-red-700 focus:outline-none focus-visible:outline-none"
                   onClick={async () => {
                     setOpen(false);
                     await fetch("/api/auth/logout", { method: "POST" });

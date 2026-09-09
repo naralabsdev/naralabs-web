@@ -46,6 +46,7 @@ export function AuthPageTransitionProvider({ children }: PropsWithChildren) {
   return (
     <AuthPageTransitionContext.Provider value={{ navigateWithFade, isExiting }}>
       <motion.div
+        className="flex w-full flex-col items-center"
         initial={{ opacity: 0, y: 10 }}
         animate={{
           opacity: isExiting ? 0 : 1,
