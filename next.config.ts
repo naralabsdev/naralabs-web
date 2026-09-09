@@ -17,12 +17,12 @@ const nextConfig: NextConfig = {
   },
   webpack(config, { isServer }) {
     // Webpack dev can resolve the react-server entry for client libraries (floating-ui, swr).
-    // Use exact aliases so subpaths like react/jsx-runtime still resolve normally.
+    // Alias to package dirs (not index.js) so watchpack and react/jsx-runtime keep working.
     if (!isServer) {
       config.resolve.alias = {
         ...config.resolve.alias,
-        "react$": path.join(monorepoRoot, "node_modules/react/index.js"),
-        "react-dom$": path.join(monorepoRoot, "node_modules/react-dom/index.js"),
+        react: path.join(monorepoRoot, "node_modules/react"),
+        "react-dom": path.join(monorepoRoot, "node_modules/react-dom"),
       };
     }
 
