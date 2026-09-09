@@ -11,6 +11,18 @@
   "bugs": {
     "url": "https://github.com/naralabsdev/naralabs-web/issues"
   },
+  "browserslist": {
+    "development": [
+      "chrome >= 118",
+      "last 1 chrome version"
+    ],
+    "production": [
+      "chrome >= 118",
+      "edge >= 118",
+      "firefox >= 115",
+      "safari >= 17"
+    ]
+  },
   "scripts": {
     "dev": "npm run sync:nextra-css && next dev --webpack",
     "dev:turbo": "next dev",

@@ -1,5 +1,6 @@
 "use client";
 
+import { ExplorerAuroraBackdrop } from "@/modules/explore/components/explorer-aurora-backdrop";
 import { MarketingChrome } from "@/modules/landing/components/chrome/marketing-chrome";
 import { MarketingContent } from "@/modules/landing/components/chrome/marketing-content";
 import { HeroNav } from "@/modules/landing/components/hero/hero-nav";
@@ -19,13 +20,17 @@ export function ExplorerPageShell({ children }: { children: ReactNode }) {
       style={{ backgroundColor: "#fafbfd" }}
     >
       <MarketingChrome>
-        <header className="bg-white">
+        <header className="relative z-30 bg-white">
           <HeroNav theme="light" />
         </header>
 
-        <main className="pb-14 pt-12">
-          <MarketingContent>{children}</MarketingContent>
-        </main>
+        <div className="relative flex-1 bg-[#fafbfd]">
+          <ExplorerAuroraBackdrop />
+
+          <main className="relative z-10 pb-14 pt-6 sm:pt-8">
+            <MarketingContent>{children}</MarketingContent>
+          </main>
+        </div>
       </MarketingChrome>
     </div>
   );

@@ -15,6 +15,19 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: monorepoRoot,
   },
+  webpack(config, { isServer }) {
+    // Webpack dev can resolve the react-server entry for client libraries (floating-ui, swr).
+    // Use exact aliases so subpaths like react/jsx-runtime still resolve normally.
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "react$": path.join(monorepoRoot, "node_modules/react/index.js"),
+        "react-dom$": path.join(monorepoRoot, "node_modules/react-dom/index.js"),
+      };
+    }
+
+    return config;
+  },
   ...(isDev
     ? {
         experimental: {
