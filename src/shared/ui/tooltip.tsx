@@ -4,7 +4,14 @@ import { cn } from "@/shared/lib";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { CircleInfo } from "@/shared/ui/icons/nucleo";
 import Link from "next/link";
-import { isValidElement, ReactNode, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  isValidElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import ReactMarkdown from "react-markdown";
 import { Badge } from "./badge";
 import { Button, ButtonProps, buttonVariants } from "./button";
@@ -65,6 +72,19 @@ const TooltipMarkdown = ({
     </div>
   );
 };
+/** Radix Trigger with asChild cannot merge refs onto Fragment or custom components. */
+function getTooltipTriggerChild(children: ReactNode) {
+  if (
+    isValidElement(children) &&
+    children.type !== Fragment &&
+    typeof children.type === "string"
+  ) {
+    return children;
+  }
+
+  return <span className="inline-flex">{children}</span>;
+}
+
 export interface TooltipProps
   extends Omit<TooltipPrimitive.TooltipContentProps, "content"> {
   content:
@@ -105,7 +125,7 @@ export function Tooltip({
           setOpen(false);
         }}
       >
-        {children}
+        {getTooltipTriggerChild(children)}
       </TooltipPrimitive.Trigger>
       <TooltipPrimitive.Portal>
         <TooltipPrimitive.Content
@@ -173,7 +193,13 @@ export function TooltipContent({
 export function InfoTooltip(props: Omit<TooltipProps, "children">) {
   return (
     <Tooltip {...props}>
-      <CircleInfo className="h-4 w-4 text-neutral-500" />
+      <button
+        type="button"
+        className="inline-flex rounded-sm text-neutral-500 transition-colors hover:text-neutral-700"
+        aria-label="More information"
+      >
+        <CircleInfo className="h-4 w-4" aria-hidden />
+      </button>
     </Tooltip>
   );
 }
@@ -225,9 +251,7 @@ export function DynamicTooltipWrapper({
   tooltipProps?: TooltipProps;
 }) {
   return tooltipProps ? (
-    <Tooltip {...tooltipProps}>
-      {isValidElement(children) ? children : <span>{children}</span>}
-    </Tooltip>
+    <Tooltip {...tooltipProps}>{children}</Tooltip>
   ) : (
     children
   );

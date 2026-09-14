@@ -896,7 +896,7 @@ function HeaderWithTooltip({
   tooltip?: string;
 }) {
   if (!tooltip) {
-    return <>{children}</>;
+    return children;
   }
 
   return (
