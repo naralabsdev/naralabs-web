@@ -15,7 +15,7 @@ export function EventOverviewSummary({ event }: { event: EventDetailViewModel })
       <DicebearAvatar seed={event.id} style="waves" className="size-7 shrink-0" />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-1.5">
-          <h1 className="text-sm font-semibold text-neutral-900">{event.eventType}</h1>
+          <h2 className="text-sm font-semibold text-neutral-900">{event.eventType}</h2>
           <span
             className={cn(
               "inline-flex rounded-full px-1.5 py-px text-[10px] font-medium ring-1 ring-inset",

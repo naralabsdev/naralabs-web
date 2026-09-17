@@ -4,29 +4,11 @@ import type { DetailFieldRow } from "@/modules/events/domain/event-view-model";
 import { cn } from "@/shared/lib/cn";
 import { CopyFeedbackButton } from "@/shared/ui/copy-feedback-button";
 import { TimestampFormatsPopover } from "@/shared/ui/timestamp-formats-popover";
-import { CircleInfo } from "@/shared/ui/icons/nucleo";
-import { Tooltip } from "@/shared/ui/tooltip";
+import { LandingInfoTooltip } from "@/modules/landing/components/shared/landing-info-tooltip";
 import Link from "next/link";
 
 function FieldLabelTip({ tip }: { tip: string }) {
-  return (
-    <Tooltip
-      content={
-        <p className="max-w-[240px] px-3 py-2 text-left text-xs leading-relaxed text-neutral-700">
-          {tip}
-        </p>
-      }
-      side="top"
-    >
-      <button
-        type="button"
-        className="inline-flex shrink-0 rounded-sm text-neutral-400 transition-colors hover:text-neutral-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
-        aria-label={tip}
-      >
-        <CircleInfo className="size-3.5" aria-hidden />
-      </button>
-    </Tooltip>
-  );
+  return <LandingInfoTooltip content={tip} side="top" />;
 }
 
 function StatusBadge({
