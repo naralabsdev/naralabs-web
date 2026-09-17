@@ -26,7 +26,6 @@ export const SITE_FOOTER = {
       links: [
         { label: "API Reference", href: "/developers" },
         { label: "Schemas", href: "/schemas" },
-        { label: "Playground", href: "/playground" },
         { label: "GitHub", href: "github", external: true },
       ],
     },
@@ -70,19 +69,44 @@ export const NETWORK_OVERVIEW = {
 
 export const LANDING_TABLE_TOOLTIPS = {
   events: {
-    event: "Decoded event type emitted by the Soroban contract.",
-    summary: "Human-readable summary of what happened in this event.",
-    contract: "The Soroban contract that emitted this event.",
-    ledger: "Stellar ledger sequence where this event was recorded.",
-    txn: "Transaction hash for the invocation that produced this event.",
-    age: "Time elapsed since this event was indexed.",
+    event:
+      "The event name emitted by the Soroban contract, parsed from its on-chain topics (for example Transfer or Swap).",
+    summary:
+      "A readable preview of what happened. When a schema is registered, payload fields are decoded into plain language.",
+    contract:
+      "The Soroban contract that emitted this event. Open the contract page to browse its full event history.",
+    status:
+      "Whether NaraLabs decoded this event with a registered schema, or is showing the raw XDR payload instead.",
+    ledger:
+      "The Stellar ledger sequence where this event was recorded. Higher numbers are more recent ledgers.",
+    txn:
+      "The transaction hash for the contract invocation that produced this event. Click to inspect the full transaction.",
+    age:
+      "How long ago NaraLabs indexed this event. Reflects indexer timing, not necessarily when the transaction was submitted.",
   },
   contracts: {
-    contract: "Contract display name and on-chain Soroban contract ID.",
-    events: "Total number of indexed events from this contract.",
-    schema: "Whether events are decoded with a registered schema or shown as raw data.",
-    lastActivity: "Time since the most recent event from this contract.",
-    ledgers: "Ledger range covered by this contract's indexed events.",
+    contract:
+      "Display name and Soroban contract ID. Contracts here are ranked by how recently they emitted indexed events.",
+    events:
+      "Total Soroban contract events NaraLabs has indexed for this address across all stored ledgers.",
+    schema:
+      "Decode coverage for this contract. Decoded means payloads can be read with a registered schema; Raw only means events are stored as unparsed data.",
+    lastActivity:
+      "Time since the most recent event from this contract was indexed. Helps you spot contracts that are still active.",
+    ledgers:
+      "Ledger range from this contract's first indexed event to its latest one on the Stellar network.",
+  },
+  schemas: {
+    contract:
+      "Soroban contract with one or more published SEP-0048 event schemas in the NaraLabs registry.",
+    schemas:
+      "Number of published event schema bundles registered for this contract.",
+    events:
+      "Indexed Soroban events NaraLabs has stored for this contract address.",
+    status:
+      "Whether the schema publisher is verified on-chain or published as a community schema.",
+    updated:
+      "When the most recent schema bundle for this contract was last updated in the registry.",
   },
 } as const;
 
