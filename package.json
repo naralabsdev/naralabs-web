@@ -24,12 +24,12 @@
     ]
   },
   "scripts": {
-    "dev": "npm run sync:nextra-css && next dev --webpack",
-    "dev:turbo": "next dev",
+    "dev": "npm run sync:nextra-css && next dev",
+    "dev:webpack": "npm run sync:nextra-css && next dev --webpack",
     "build": "npm run sync:nextra-css && next build",
     "sync:nextra-css": "node scripts/sync-nextra-css.mjs",
     "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind",
-    "postinstall": "node scripts/patch-nextra-theme-docs.mjs && npm run sync:nextra-css",
+    "postinstall": "node scripts/patch-nextra-theme-docs.mjs && node scripts/patch-radix-presence.mjs && node scripts/patch-radix-slot.mjs && npm run sync:nextra-css",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -41,6 +41,7 @@
     "clean:assets-cache": "rm -rf .next/dev/cache/images .next/cache/images"
   },
   "dependencies": {
+    "@creit.tech/stellar-wallets-kit": "^1.9.5",
     "@designcodeio/threeui": "^1.2.0",
     "@floating-ui/dom": "^1.6.12",
     "@floating-ui/react": "^0.26.20",
@@ -60,6 +61,7 @@
     "@react-aria/datepicker": "^3.10.0",
     "@react-stately/datepicker": "^3.9.3",
     "@sindresorhus/slugify": "^2.2.1",
+    "@stellar/stellar-sdk": "^14.6.1",
     "@tanstack/react-table": "^8.17.3",
     "@tiptap/extension-file-handler": "^3.15.3",
     "@tiptap/extension-image": "^3.15.3",
