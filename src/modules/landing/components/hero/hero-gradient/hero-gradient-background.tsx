@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { drawGradientLayers, type LayerOffsets } from "@/modules/landing/components/hero/hero-gradient/draw-layers";
+import { AURORA_THEMES, type AuroraTheme } from "@/modules/landing/components/hero/aurora-themes";
 import {
   BLUR_SHADER,
   COMPOSITE_SHADER,
@@ -15,8 +16,6 @@ import {
   readViewportLimit,
 } from "@/modules/landing/components/hero/hero-gradient/webgl-utils";
 
-const COLOR_A = "#0c1a33";
-const COLOR_B = "#1BA374";
 const SEED = 3920;
 const VERTICAL_BLUR_OFFSETS = [0.4, 0.7, 1, 1.3, 1.6];
 const UPSCALE_BLUR_OFFSETS = [1.6, 1.3, 1, 0.7];
@@ -24,6 +23,7 @@ const UPSCALE_BLUR_OFFSETS = [1.6, 1.3, 1, 0.7];
 type HeroGradientBackgroundProps = {
   className?: string;
   onReady?: () => void;
+  theme?: AuroraTheme;
 };
 
 type RuntimeState = {
@@ -88,7 +88,11 @@ function createFramebuffer(gl: WebGL2RenderingContext, texture: WebGLTexture) {
   return status === gl.FRAMEBUFFER_COMPLETE ? framebuffer : null;
 }
 
-export function HeroGradientBackground({ className, onReady }: HeroGradientBackgroundProps) {
+export function HeroGradientBackground({
+  className,
+  onReady,
+  theme = "default",
+}: HeroGradientBackgroundProps) {
   const displayCanvasRef = useRef<HTMLCanvasElement>(null);
   const sourceCanvasRef = useRef<HTMLCanvasElement>(null);
   const offsetsRef = useRef<AnimatedOffsets>({
@@ -133,12 +137,14 @@ export function HeroGradientBackground({ className, onReady }: HeroGradientBackg
     }
   }, [webglSupported]);
 
+  const themeConfig = AURORA_THEMES[theme];
+
   const colors = useMemo(
     () => ({
-      colorARgb: hexToRgb(COLOR_A),
-      colorBRgb: hexToRgb(COLOR_B),
+      colorARgb: hexToRgb(themeConfig.colorA),
+      colorBRgb: hexToRgb(themeConfig.colorB),
     }),
-    [],
+    [themeConfig.colorA, themeConfig.colorB],
   );
 
   useEffect(() => {
@@ -662,14 +668,16 @@ export function HeroGradientBackground({ className, onReady }: HeroGradientBackg
       displayCanvas.removeEventListener("webglcontextrestored", handleContextRestored);
       deleteAllResources();
     };
-  }, [colors]);
+  }, [colors, theme]);
 
   if (!webglSupported) {
     return (
       <div
         aria-hidden
         className="hero-gradient-fallback pointer-events-none absolute inset-0 size-full"
-        style={{ background: `linear-gradient(180deg, ${COLOR_A} 0%, ${COLOR_B} 100%)` }}
+        style={{
+          background: `linear-gradient(180deg, ${themeConfig.colorA} 0%, ${themeConfig.colorB} 100%)`,
+        }}
       />
     );
   }
