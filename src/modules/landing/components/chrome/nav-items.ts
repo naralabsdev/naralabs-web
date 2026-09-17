@@ -3,7 +3,6 @@
 import {
   Bolt,
   BracketsCurly,
-  InputSearch,
 } from "@/shared/ui/icons/nucleo";
 import type { NavItem } from "@/shared/ui/nav/nav";
 import { getDocsUrl } from "@/shared/config/site";
@@ -21,12 +20,6 @@ export const NARALABS_EXPLORE_CHILD_ITEMS = [
     href: "/contracts",
     icon: BracketsCurly,
   },
-  {
-    title: "Search",
-    description: "Look up contract IDs, event IDs, and transaction hashes",
-    href: "/search",
-    icon: InputSearch,
-  },
 ] as const;
 
 export const naralabsNavItems: NavItem[] = [
@@ -34,17 +27,12 @@ export const naralabsNavItems: NavItem[] = [
     name: "Explore",
     dropdownVariant: "simple",
     childItems: [...NARALABS_EXPLORE_CHILD_ITEMS],
-    segments: ["/events", "/contracts", "/search"],
+    segments: ["/events", "/contracts"],
   },
   {
     name: "Schemas",
     href: "/schemas",
     segments: ["/schemas"],
-  },
-  {
-    name: "Playground",
-    href: "/playground",
-    segments: ["/playground"],
   },
   {
     name: "API",
@@ -55,5 +43,7 @@ export const naralabsNavItems: NavItem[] = [
     name: "Docs",
     href: getDocsUrl(),
     segments: ["/docs"],
+    target: "_blank",
+    external: true,
   },
 ];

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Logo } from "@/shared/ui/logo";
 import { getDocsUrl, getGithubUrl } from "@/shared/config/site";
 import { cn } from "@/shared/lib/cn";
+import { isDocsHref } from "@/shared/lib/docs-link";
 
 function resolveFooterHref(href: string, githubUrl: string) {
   if (href === "docs") return getDocsUrl();
@@ -44,10 +45,11 @@ export function Footer({ className }: { className?: string }) {
               <ul className="mt-3 flex flex-col gap-2.5">
                 {links.map((link) => {
                   const href = resolveFooterHref(link.href, githubUrl);
+                  const isExternal = link.external || isDocsHref(href);
 
                   return (
                     <li key={link.label}>
-                      {link.external ? (
+                      {isExternal ? (
                         <a
                           href={href}
                           target="_blank"
