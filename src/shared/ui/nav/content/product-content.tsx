@@ -1,4 +1,4 @@
-import { cn, createHref } from "@/shared/lib";
+import { cn, createHref, getDocsLinkProps } from "@/shared/lib";
 import { Link as NavigationMenuLink } from "@radix-ui/react-navigation-menu";
 import Image from "next/image";
 import Link from "next/link";
@@ -142,7 +142,10 @@ export function ProductContent({ domain }: { domain: string }) {
         )}
       </div>
       <div className="grid grow grid-cols-2 gap-4">
-        {largeLinks.map(({ title, description, href, graphic }) => (
+        {largeLinks.map(({ title, description, href, graphic }) => {
+          const docsProps = getDocsLinkProps(href);
+
+          return (
           <NavigationMenuLink asChild key={title}>
             <Link
               href={createHref(href, domain, {
@@ -150,6 +153,8 @@ export function ProductContent({ domain }: { domain: string }) {
                 utm_campaign: domain,
                 utm_content: title,
               })}
+              target={docsProps.target}
+              rel={docsProps.rel}
               className="group relative flex flex-col justify-center rounded-xl border border-neutral-100 bg-neutral-50 transition-colors duration-150 hover:bg-neutral-100 active:bg-neutral-200 dark:border-white/20 dark:bg-white/10 dark:hover:bg-white/15 dark:active:bg-white/20"
             >
               <Grid
@@ -175,7 +180,8 @@ export function ProductContent({ domain }: { domain: string }) {
               </div>
             </Link>
           </NavigationMenuLink>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -3,7 +3,6 @@
 import {
   PaymentsGraphic,
   QRGraphic,
-  WebhooksGraphic,
 } from "@/modules/landing/components/chrome/nav-feature-graphics";
 import { NARALABS_EXPLORE_CHILD_ITEMS } from "@/modules/landing/components/chrome/nav-items";
 import { Grid } from "@/shared/ui/grid";
@@ -29,11 +28,6 @@ const productMeta: Record<
     color: "#F4950C",
     iconClass: "bg-gradient-to-b from-orange-500 to-orange-600",
     graphic: QRGraphic,
-  },
-  Search: {
-    color: "#F43F5E",
-    iconClass: "bg-gradient-to-b from-rose-500 to-rose-600",
-    graphic: WebhooksGraphic,
   },
 };
 

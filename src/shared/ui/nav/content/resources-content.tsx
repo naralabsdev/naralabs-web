@@ -1,4 +1,4 @@
-import { cn, createHref } from "@/shared/lib";
+import { cn, createHref, getDocsLinkProps } from "@/shared/lib";
 import { Link as NavigationMenuLink } from "@radix-ui/react-navigation-menu";
 import Link from "next/link";
 import { RESOURCES } from "../../content";
@@ -33,7 +33,10 @@ export function ResourcesContent({ domain }: { domain: string }) {
       <div className="flex h-full flex-col p-4">
         <p className={cn(contentHeadingClassName, "mb-4 ml-2")}>Explore</p>
         <div className="grid grow grid-cols-2 gap-4">
-          {mainLinks.map(({ icon: Icon, title, description, href }) => (
+          {mainLinks.map(({ icon: Icon, title, description, href }) => {
+            const docsProps = getDocsLinkProps(href);
+
+            return (
             <NavigationMenuLink key={title} asChild>
               <Link
                 key={title}
@@ -42,6 +45,8 @@ export function ResourcesContent({ domain }: { domain: string }) {
                   utm_campaign: domain,
                   utm_content: title,
                 })}
+                target={docsProps.target}
+                rel={docsProps.rel}
                 className={cn(
                   "group relative isolate z-0 flex flex-col justify-between overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50 px-5 py-4 transition-colors duration-75",
                   "dark:border-white/20 dark:bg-neutral-900",
@@ -76,7 +81,8 @@ export function ResourcesContent({ domain }: { domain: string }) {
                 </div>
               </Link>
             </NavigationMenuLink>
-          ))}
+            );
+          })}
         </div>
       </div>
 
