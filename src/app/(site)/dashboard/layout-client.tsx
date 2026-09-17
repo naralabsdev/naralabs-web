@@ -10,10 +10,12 @@ import {
   dashboardBreadcrumbNavClass,
   dashboardBreadcrumbSeparatorClass,
   dashboardContentColumnClass,
+  dashboardFullWidthContentClass,
   dashboardPageHeaderClass,
   dashboardPageTitleClass,
   dashboardSidebarColumnClass,
   getDashboardPageMeta,
+  isDashboardFullWidthPath,
   type DashboardNavItem,
 } from "@/app/(site)/dashboard/constants";
 import { getEmailDisplayName, type AuthUser } from "@/modules/auth/lib/auth-user";
@@ -82,6 +84,7 @@ export function DashboardLayoutClient({
 }) {
   const pathname = usePathname();
   const displayName = getEmailDisplayName(user.email);
+  const fullWidth = isDashboardFullWidthPath(pathname);
 
   return (
     <div
@@ -106,62 +109,66 @@ export function DashboardLayoutClient({
             <MarketingContent>
               <DashboardPageHeader pathname={pathname} />
 
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
-                <aside className={dashboardSidebarColumnClass}>
-                  <DetailSummaryCard className="sticky top-24">
-                    <div className="border-b border-neutral-100 px-5 py-4 sm:px-6">
-                      <Link
-                        href="/"
-                        className="text-xs font-semibold uppercase tracking-wide text-neutral-500 transition-colors hover:text-neutral-900"
-                      >
-                        Back Home
-                      </Link>
-                      <p className="mt-3 text-base font-semibold text-neutral-900">
-                        {displayName}
-                      </p>
-                      <p className="mt-1 break-all text-sm text-neutral-500">
-                        {user.email}
-                      </p>
-                    </div>
+              {fullWidth ? (
+                <div className={dashboardFullWidthContentClass}>{children}</div>
+              ) : (
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+                  <aside className={dashboardSidebarColumnClass}>
+                    <DetailSummaryCard className="sticky top-24">
+                      <div className="border-b border-neutral-100 px-5 py-4 sm:px-6">
+                        <Link
+                          href="/"
+                          className="text-xs font-semibold uppercase tracking-wide text-neutral-500 transition-colors hover:text-neutral-900"
+                        >
+                          Back Home
+                        </Link>
+                        <p className="mt-3 text-base font-semibold text-neutral-900">
+                          {displayName}
+                        </p>
+                        <p className="mt-1 break-all text-sm text-neutral-500">
+                          {user.email}
+                        </p>
+                      </div>
 
-                    <nav className="space-y-5 px-3 py-4">
-                      {DASHBOARD_NAV_GROUPS.map((group) => (
-                        <div key={group.title}>
-                          <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-neutral-400">
-                            {group.title}
-                          </p>
-                          <div className="space-y-1">
-                            {group.items.map((item: DashboardNavItem) => {
-                              const Icon = item.icon;
-                              const active = isActivePath(pathname, item.href);
+                      <nav className="space-y-5 px-3 py-4">
+                        {DASHBOARD_NAV_GROUPS.map((group) => (
+                          <div key={group.title}>
+                            <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-neutral-400">
+                              {group.title}
+                            </p>
+                            <div className="space-y-1">
+                              {group.items.map((item: DashboardNavItem) => {
+                                const Icon = item.icon;
+                                const active = isActivePath(pathname, item.href);
 
-                              return (
-                                <Link
-                                  key={item.href}
-                                  href={item.href}
-                                  className={cn(
-                                    "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900",
-                                    active &&
-                                      "bg-neutral-100 text-neutral-900 hover:bg-neutral-100",
-                                  )}
-                                >
-                                  <Icon
-                                    className="size-4 shrink-0 text-neutral-400"
-                                    aria-hidden
-                                  />
-                                  <span>{item.label}</span>
-                                </Link>
-                              );
-                            })}
+                                return (
+                                  <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className={cn(
+                                      "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900",
+                                      active &&
+                                        "bg-neutral-100 text-neutral-900 hover:bg-neutral-100",
+                                    )}
+                                  >
+                                    <Icon
+                                      className="size-4 shrink-0 text-neutral-400"
+                                      aria-hidden
+                                    />
+                                    <span>{item.label}</span>
+                                  </Link>
+                                );
+                              })}
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </nav>
-                  </DetailSummaryCard>
-                </aside>
+                        ))}
+                      </nav>
+                    </DetailSummaryCard>
+                  </aside>
 
-                <div className={dashboardContentColumnClass}>{children}</div>
-              </div>
+                  <div className={dashboardContentColumnClass}>{children}</div>
+                </div>
+              )}
             </MarketingContent>
           </main>
         </div>

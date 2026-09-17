@@ -1,12 +1,10 @@
 import type { ComponentType } from "react";
 
 import {
-  BadgeCheck,
+  BracketsCurly,
   DatabaseKey,
-  Eye,
-  InputSearch,
   Page2,
-  Receipt2,
+  ShieldKeyhole,
   UserCheck,
 } from "@/shared/ui/icons/nucleo";
 
@@ -23,43 +21,33 @@ export type DashboardNavGroup = {
 
 export const DASHBOARD_NAV_GROUPS: DashboardNavGroup[] = [
   {
+    title: "Developer",
+    items: [
+      { label: "Schema Registry", href: "/dashboard/schemas", icon: BracketsCurly },
+      { label: "API Dashboard", href: "/dashboard/developers", icon: DatabaseKey },
+    ],
+  },
+  {
     title: "Account",
     items: [
       { label: "Account Overview", href: "/dashboard", icon: Page2 },
-      { label: "Watch List", href: "/dashboard/watchlist", icon: Eye },
-    ],
-  },
-  {
-    title: "Tools",
-    items: [
-      { label: "Private Name Tags", href: "/dashboard/tags", icon: InputSearch },
-      { label: "Txn Private Notes", href: "/dashboard/notes", icon: Receipt2 },
-      {
-        label: "Verified Addresses",
-        href: "/dashboard/verified-addresses",
-        icon: BadgeCheck,
-      },
-    ],
-  },
-  {
-    title: "Others",
-    items: [
-      { label: "API Dashboard", href: "/dashboard/developers", icon: DatabaseKey },
       {
         label: "Profile Settings",
         href: "/dashboard/settings/profile",
         icon: UserCheck,
+      },
+      {
+        label: "Security Settings",
+        href: "/dashboard/settings/security",
+        icon: ShieldKeyhole,
       },
     ],
   },
 ];
 
 export const DASHBOARD_USAGE_LIMITS = {
-  emailNotificationsDaily: 100,
-  watchListAddresses: 50,
-  txnPrivateNotes: 2000,
-  addressTags: 1000,
   apiKeys: 3,
+  publishTokens: 5,
 } as const;
 
 export const DETAIL_ROW_CLASS =
@@ -87,25 +75,35 @@ export const dashboardSectionCardHeaderClass =
 export const dashboardContentColumnClass =
   "min-w-0 flex-1 flex flex-col gap-3 [&>section]:mt-0";
 
+/** Full-width dashboard content (no sidebar), e.g. schema detail. */
+export const dashboardFullWidthContentClass =
+  "min-w-0 w-full flex flex-col gap-3 [&>section]:mt-0";
+
+export function isDashboardFullWidthPath(pathname: string) {
+  return /^\/dashboard\/schemas\/[^/]+$/.test(pathname);
+}
+
 export const dashboardSidebarColumnClass = "w-full shrink-0 lg:w-[280px]";
 
 const DASHBOARD_PAGE_META: Record<string, { title: string; breadcrumb: string }> = {
   "/dashboard": { title: "Account Overview", breadcrumb: "My Account" },
-  "/dashboard/watchlist": { title: "Watch List", breadcrumb: "Watch List" },
-  "/dashboard/tags": { title: "Private Name Tags", breadcrumb: "Private Name Tags" },
-  "/dashboard/notes": { title: "Txn Private Notes", breadcrumb: "Txn Private Notes" },
-  "/dashboard/verified-addresses": {
-    title: "Verified Addresses",
-    breadcrumb: "Verified Addresses",
-  },
   "/dashboard/developers": { title: "API Dashboard", breadcrumb: "API Dashboard" },
+  "/dashboard/schemas": { title: "Schema Registry", breadcrumb: "Schema Registry" },
   "/dashboard/settings/profile": {
     title: "Profile Settings",
     breadcrumb: "Profile Settings",
   },
+  "/dashboard/settings/security": {
+    title: "Security Settings",
+    breadcrumb: "Security Settings",
+  },
 };
 
 export function getDashboardPageMeta(pathname: string) {
+  if (pathname.startsWith("/dashboard/schemas/") && pathname !== "/dashboard/schemas") {
+    return { title: "Schema Details", breadcrumb: "Schema Registry" };
+  }
+
   return (
     DASHBOARD_PAGE_META[pathname] ?? {
       title: "My Account",
