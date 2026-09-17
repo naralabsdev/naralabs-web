@@ -4,16 +4,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { EventsListViewModel } from "@/modules/events/domain/events-list-view-model";
 import { fetchEventsList } from "@/modules/events/services/fetch-events-list";
+import {
+  explorerListErrorClass,
+  explorerListFilterLabelClass,
+  explorerListFiltersClass,
+  explorerListPaginationClass,
+  explorerListPanelRootClass,
+  explorerListTableWrapClass,
+} from "@/modules/explore/components/explorer-list-section";
 import { cn } from "@/shared/lib/cn";
 import { RecentEventsTable } from "@/shared/ui/explorer-table";
 import { InputSearch } from "@/shared/ui/icons/nucleo";
 import { Input } from "@/shared/ui/input";
 import { PaginationControls } from "@/shared/ui/pagination-controls";
-
-const selectClassName = cn(
-  "h-9 rounded-md border border-neutral-300 bg-white px-2.5 text-sm text-neutral-900",
-  "focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500",
-);
+import { SimpleSelect } from "@/shared/ui/simple-select";
+import { useSearchParams } from "next/navigation";
 
 export function EventsListPanel({
   network,
@@ -22,13 +27,15 @@ export function EventsListPanel({
   network: string;
   initialData: EventsListViewModel;
 }) {
-  const skipInitialFetchRef = useRef(true);
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get("search") ?? "";
+  const skipInitialFetchRef = useRef(!initialSearch.trim());
   const [pagination, setPagination] = useState({
     pageIndex: initialData.page,
     pageSize: initialData.pageSize,
   });
-  const [searchInput, setSearchInput] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [searchInput, setSearchInput] = useState(initialSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch.trim());
   const [decodeStatus, setDecodeStatus] = useState<"" | "decoded" | "raw">("");
   const [totalCount, setTotalCount] = useState(
     initialData.total ?? initialData.items.length,
@@ -79,10 +86,10 @@ export function EventsListPanel({
   }, [loadEvents]);
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 px-5 pt-4 sm:flex-row sm:flex-wrap sm:items-end sm:px-6">
+    <div className={explorerListPanelRootClass}>
+      <div className={explorerListFiltersClass}>
         <label className="block min-w-[14rem] flex-1">
-          <span className="mb-1.5 block text-xs font-medium text-neutral-500">Search</span>
+          <span className={explorerListFilterLabelClass}>Search</span>
           <div className="relative">
             <InputSearch
               className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400"
@@ -98,24 +105,27 @@ export function EventsListPanel({
         </label>
 
         <label className="block min-w-[10rem]">
-          <span className="mb-1.5 block text-xs font-medium text-neutral-500">Decode status</span>
-          <select
+          <span className={explorerListFilterLabelClass}>Decode status</span>
+          <SimpleSelect
+            aria-label="Decode status"
             value={decodeStatus}
-            onChange={(event) =>
-              setDecodeStatus(event.target.value as "" | "decoded" | "raw")
+            onValueChange={(nextValue) =>
+              setDecodeStatus(nextValue as "" | "decoded" | "raw")
             }
-            className={selectClassName}
-          >
-            <option value="">All statuses</option>
-            <option value="decoded">Decoded</option>
-            <option value="raw">Raw only</option>
-          </select>
+            className="min-w-[10rem]"
+            placeholder="All statuses"
+            options={[
+              { value: "", label: "All statuses" },
+              { value: "decoded", label: "Decoded" },
+              { value: "raw", label: "Raw only" },
+            ]}
+          />
         </label>
       </div>
 
-      {error ? <p className="px-5 text-sm text-red-600 sm:px-6">{error}</p> : null}
+      {error ? <p className={explorerListErrorClass}>{error}</p> : null}
 
-      <div className={cn("overflow-x-auto px-5 pb-2 sm:px-6", loading && "opacity-60")}>
+      <div className={cn(explorerListTableWrapClass, loading && "opacity-60")}>
         <RecentEventsTable
           rows={rows}
           showStatus
@@ -123,7 +133,7 @@ export function EventsListPanel({
         />
       </div>
 
-      <div className="border-t border-neutral-100 px-5 py-4 sm:px-6">
+      <div className={explorerListPaginationClass}>
         <PaginationControls
           pagination={pagination}
           setPagination={setPagination}
