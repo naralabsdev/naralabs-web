@@ -4,16 +4,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { ContractsListViewModel } from "@/modules/contracts/domain/contracts-list-view-model";
 import { fetchContractsList } from "@/modules/contracts/services/fetch-contracts-list";
+import {
+  explorerListErrorClass,
+  explorerListFilterLabelClass,
+  explorerListFiltersClass,
+  explorerListPaginationClass,
+  explorerListPanelRootClass,
+  explorerListTableWrapClass,
+} from "@/modules/explore/components/explorer-list-section";
 import { cn } from "@/shared/lib/cn";
 import { ActiveContractsTable } from "@/shared/ui/explorer-table";
 import { InputSearch } from "@/shared/ui/icons/nucleo";
 import { Input } from "@/shared/ui/input";
 import { PaginationControls } from "@/shared/ui/pagination-controls";
-
-const selectClassName = cn(
-  "h-9 rounded-md border border-neutral-300 bg-white px-2.5 text-sm text-neutral-900",
-  "focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500",
-);
+import { SimpleSelect } from "@/shared/ui/simple-select";
 
 export function ContractsListPanel({
   network,
@@ -79,10 +83,10 @@ export function ContractsListPanel({
   }, [loadContracts]);
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 px-5 pt-4 sm:flex-row sm:flex-wrap sm:items-end sm:px-6">
+    <div className={explorerListPanelRootClass}>
+      <div className={explorerListFiltersClass}>
         <label className="block min-w-[14rem] flex-1">
-          <span className="mb-1.5 block text-xs font-medium text-neutral-500">Search</span>
+          <span className={explorerListFilterLabelClass}>Search</span>
           <div className="relative">
             <InputSearch
               className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400"
@@ -98,31 +102,34 @@ export function ContractsListPanel({
         </label>
 
         <label className="block min-w-[10rem]">
-          <span className="mb-1.5 block text-xs font-medium text-neutral-500">Schema status</span>
-          <select
+          <span className={explorerListFilterLabelClass}>Schema status</span>
+          <SimpleSelect
+            aria-label="Schema status"
             value={schemaStatus}
-            onChange={(event) =>
-              setSchemaStatus(event.target.value as "" | "decoded" | "raw_only")
+            onValueChange={(nextValue) =>
+              setSchemaStatus(nextValue as "" | "decoded" | "raw_only")
             }
-            className={selectClassName}
-          >
-            <option value="">All contracts</option>
-            <option value="decoded">Decoded</option>
-            <option value="raw_only">Raw only</option>
-          </select>
+            className="min-w-[10rem]"
+            placeholder="All contracts"
+            options={[
+              { value: "", label: "All contracts" },
+              { value: "decoded", label: "Decoded" },
+              { value: "raw_only", label: "Raw only" },
+            ]}
+          />
         </label>
       </div>
 
-      {error ? <p className="px-5 text-sm text-red-600 sm:px-6">{error}</p> : null}
+      {error ? <p className={explorerListErrorClass}>{error}</p> : null}
 
-      <div className={cn("overflow-x-auto px-5 pb-2 sm:px-6", loading && "opacity-60")}>
+      <div className={cn(explorerListTableWrapClass, loading && "opacity-60")}>
         <ActiveContractsTable
           rows={rows}
           emptyMessage="No contracts match the current filters."
         />
       </div>
 
-      <div className="border-t border-neutral-100 px-5 py-4 sm:px-6">
+      <div className={explorerListPaginationClass}>
         <PaginationControls
           pagination={pagination}
           setPagination={setPagination}

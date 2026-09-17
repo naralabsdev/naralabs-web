@@ -12,22 +12,22 @@ import { cn } from "@/shared/lib/cn";
 import { InputSearch } from "@/shared/ui/icons/nucleo";
 import { Input } from "@/shared/ui/input";
 import { PaginationControls } from "@/shared/ui/pagination-controls";
+import { SimpleSelect } from "@/shared/ui/simple-select";
 
-const selectClassName = cn(
-  "h-9 rounded-md border border-neutral-300 bg-white px-2.5 text-sm text-neutral-900",
-  "focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500",
-);
+const filterLabelClass = "mb-1.5 block text-[13px] text-neutral-500";
 
 type ContractEventsPanelProps = {
   contractId: string;
   network: string;
   eventTypes: EventTypeBreakdownRow[];
+  indexed?: boolean;
 };
 
 export function ContractEventsPanel({
   contractId,
   network,
   eventTypes,
+  indexed = true,
 }: ContractEventsPanelProps) {
   const [pagination, setPagination] = useState({ pageIndex: 1, pageSize: 20 });
   const [searchInput, setSearchInput] = useState("");
@@ -92,15 +92,22 @@ export function ContractEventsPanel({
   ]);
 
   useEffect(() => {
+    if (!indexed) {
+      setLoading(false);
+      setError(null);
+      setRows([]);
+      setTotalCount(0);
+      return;
+    }
     void loadEvents();
-  }, [loadEvents]);
+  }, [indexed, loadEvents]);
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:flex-wrap">
           <label className="block min-w-[14rem] flex-1">
-            <span className="mb-1.5 block text-xs font-medium text-neutral-500">Search</span>
+            <span className={filterLabelClass}>Search</span>
             <div className="relative">
               <InputSearch
                 className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-neutral-400"
@@ -116,34 +123,39 @@ export function ContractEventsPanel({
           </label>
 
           <label className="block min-w-[10rem]">
-            <span className="mb-1.5 block text-xs font-medium text-neutral-500">Event type</span>
-            <select
+            <span className={filterLabelClass}>Event type</span>
+            <SimpleSelect
+              aria-label="Event type"
               value={eventType}
-              onChange={(event) => setEventType(event.target.value)}
-              className={cn(selectClassName, "w-full min-w-[10rem]")}
-            >
-              <option value="">All types</option>
-              {eventTypeOptions.map((option) => (
-                <option key={option.key} value={option.key}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+              onValueChange={setEventType}
+              className="min-w-[10rem]"
+              placeholder="All types"
+              options={[
+                { value: "", label: "All types" },
+                ...eventTypeOptions.map((option) => ({
+                  value: option.key,
+                  label: option.label,
+                })),
+              ]}
+            />
           </label>
 
           <label className="block min-w-[10rem]">
-            <span className="mb-1.5 block text-xs font-medium text-neutral-500">Decode status</span>
-            <select
+            <span className={filterLabelClass}>Decode status</span>
+            <SimpleSelect
+              aria-label="Decode status"
               value={decodeStatus}
-              onChange={(event) =>
-                setDecodeStatus(event.target.value as "" | "decoded" | "raw")
+              onValueChange={(nextValue) =>
+                setDecodeStatus(nextValue as "" | "decoded" | "raw")
               }
-              className={cn(selectClassName, "w-full min-w-[10rem]")}
-            >
-              <option value="">All statuses</option>
-              <option value="decoded">Decoded</option>
-              <option value="raw">Raw</option>
-            </select>
+              className="min-w-[10rem]"
+              placeholder="All statuses"
+              options={[
+                { value: "", label: "All statuses" },
+                { value: "decoded", label: "Decoded" },
+                { value: "raw", label: "Raw" },
+              ]}
+            />
           </label>
         </div>
       </div>
@@ -154,16 +166,23 @@ export function ContractEventsPanel({
         </p>
       ) : null}
 
-      <div className={cn(loading && "opacity-60")}>
-        <ContractEventsTable rows={rows} />
+      <div className={cn(loading && indexed && "opacity-60")}>
+        <ContractEventsTable
+          rows={rows}
+          emptyMessage={
+            indexed ? "No events match the current filters." : "No events indexed for this contract yet."
+          }
+        />
       </div>
 
-      <PaginationControls
-        pagination={pagination}
-        setPagination={setPagination}
-        totalCount={totalCount}
-        unit={(plural) => `event${plural ? "s" : ""}`}
-      />
+      {indexed ? (
+        <PaginationControls
+          pagination={pagination}
+          setPagination={setPagination}
+          totalCount={totalCount}
+          unit={(plural) => `event${plural ? "s" : ""}`}
+        />
+      ) : null}
     </div>
   );
 }
