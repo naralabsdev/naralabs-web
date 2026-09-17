@@ -7,7 +7,12 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hasSession = Boolean(request.cookies.get(AUTH_SESSION_COOKIE)?.value);
 
-  if ((pathname === "/login" || pathname === "/register") && hasSession) {
+  if (
+    (pathname === "/login" ||
+      pathname === "/register" ||
+      pathname === "/forgot-password") &&
+    hasSession
+  ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -21,5 +26,12 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/register", "/dashboard", "/dashboard/:path*"],
+  matcher: [
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/dashboard",
+    "/dashboard/:path*",
+  ],
 };
