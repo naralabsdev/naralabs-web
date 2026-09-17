@@ -5,6 +5,8 @@ export const AUTH_ERROR_CODES = {
   INVALID_TOKEN: "INVALID_TOKEN",
   TOKEN_EXPIRED: "TOKEN_EXPIRED",
   RESEND_COOLDOWN: "RESEND_COOLDOWN",
+  RESET_COOLDOWN: "RESET_COOLDOWN",
+  SAME_PASSWORD: "SAME_PASSWORD",
 } as const;
 
 export const AUTH_ERROR_MESSAGES = {
@@ -14,6 +16,8 @@ export const AUTH_ERROR_MESSAGES = {
   INVALID_TOKEN: "This verification link is invalid.",
   TOKEN_EXPIRED: "This verification link has expired.",
   RESEND_COOLDOWN: "Please wait before requesting another verification email.",
+  RESET_COOLDOWN: "Please wait before requesting another password reset email.",
+  SAME_PASSWORD: "New password must be different from your current password.",
 } as const;
 
 export type AuthErrorCode =
