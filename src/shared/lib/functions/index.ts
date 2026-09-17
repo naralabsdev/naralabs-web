@@ -10,6 +10,7 @@ export * from "./currency-formatter";
 export * from "./currency-zero-decimal";
 export * from "./datetime";
 export * from "./deep-equal";
+export * from "../docs-link";
 export * from "./domains";
 export * from "./fetch-with-retry";
 export * from "./fetch-with-timeout";

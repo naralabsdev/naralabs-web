@@ -11,8 +11,7 @@ export const timeAgo = (
   if (!timestamp) return "Never";
   const diff = Date.now() - new Date(timestamp).getTime();
   if (diff < 0 || diff > 82800000) {
-    // future timestamps or more than 23 hours
-    // similar to how Twitter displays timestamps
+    // future timestamps or more than 23 hours — show calendar date instead of relative time
     return new Date(timestamp).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
