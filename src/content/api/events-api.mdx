@@ -7,6 +7,8 @@ description: GET /v1/events — paginated Soroban events
 
 List and retrieve indexed Soroban events.
 
+**Authentication:** Send `Authorization: Bearer nl_api_…` for programmatic access. See [Authentication](/docs/api/authentication).
+
 ## List events
 
 ```
@@ -27,7 +29,8 @@ GET /v1/events
 ### Example
 
 ```bash
-curl "http://localhost:8080/v1/events?network=testnet&page=1&page_size=10&decode_status=raw"
+curl "http://localhost:8080/v1/events?network=testnet&page=1&page_size=10&decode_status=raw" \
+  -H "Authorization: Bearer $NARALABS_API_KEY"
 ```
 
 ### Response item fields

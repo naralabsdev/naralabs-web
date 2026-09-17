@@ -1,11 +1,11 @@
 ---
 title: Atlas API Overview
-description: REST read API for NaraLabs indexed Soroban data
+description: REST API for NaraLabs Soroban explorer, decoder, and schema registry
 ---
 
 # Atlas API Overview
 
-Atlas exposes a **read-only REST API** for explorer data. All endpoints live under `/v1` and require a `network` query parameter.
+Atlas exposes REST APIs for explorer reads, on-demand event decoding, and SEP-0048 schema registry operations. Most endpoints live under `/v1`.
 
 ## Base URL
 
@@ -14,13 +14,23 @@ Atlas exposes a **read-only REST API** for explorer data. All endpoints live und
 | Local | `http://localhost:8080` |
 | Production | Configure via `ATLAS_API_URL` |
 
-The web app proxies browser requests through `/api/atlas/*` (BFF).
+The Naralabs website proxies browser reads through `/api/atlas/*` (BFF). Integrations should call Atlas directly with an [API key](/docs/api/authentication).
+
+## Authentication summary
+
+| Credential | Prefix | Use case |
+| --- | --- | --- |
+| API key | `nl_api_` | Decode API + programmatic explore reads |
+| Publish token | `nl_live_` | Schema publishing (`POST /v1/schemas`) |
+| JWT session | — | Dashboard, `/v1/api-keys`, `/v1/auth/me` |
+
+See [Authentication](/docs/api/authentication) and [Quickstart](/docs/api/quickstart).
 
 ## Common parameters
 
 | Parameter | Description |
 | --- | --- |
-| `network` | Stellar network (`testnet`, `mainnet`) |
+| `network` | Stellar network (`testnet`, `mainnet`, `futurenet`) |
 | `page` | Page number (1-based, default `1`) |
 | `page_size` | Items per page (default `20`, max `100`) |
 
@@ -39,44 +49,51 @@ List endpoints return:
 
 ## Endpoints
 
+### Decoder
+
+| Method | Path | Auth | Description |
+| --- | --- | --- | --- |
+| POST | `/v1/decode` | API key | Decode one raw Soroban event |
+| POST | `/v1/decode/batch` | API key | Batch decode (max 50) |
+
+See [Decode API](/docs/api/decode-api).
+
 ### Explore (read)
 
-| Method | Path | Description |
-| --- | --- | --- |
-| GET | `/health` | Service health |
-| GET | `/v1/stats` | Network statistics |
-| GET | `/v1/home` | Homepage aggregate payload |
-| GET | `/v1/events` | Paginated events list |
-| GET | `/v1/events/{id}` | Event detail |
-| GET | `/v1/contracts` | Paginated contracts list |
-| GET | `/v1/contracts/{id}` | Contract detail |
-| GET | `/v1/contracts/{id}/events` | Contract events (paginated) |
+| Method | Path | Auth | Description |
+| --- | --- | --- | --- |
+| GET | `/health` | — | Service health |
+| GET | `/v1/stats` | API key recommended | Network statistics |
+| GET | `/v1/home` | API key recommended | Homepage aggregate payload |
+| GET | `/v1/events` | API key recommended | Paginated events list |
+| GET | `/v1/events/{id}` | API key recommended | Event detail |
+| GET | `/v1/contracts` | API key recommended | Paginated contracts list |
+| GET | `/v1/contracts/{id}` | API key recommended | Contract detail |
+| GET | `/v1/contracts/{id}/events` | API key recommended | Contract events (paginated) |
 
 ### Schema registry (SEP-0048)
 
-| Method | Path | Description |
-| --- | --- | --- |
-| POST | `/v1/schemas` | Publish new schema version |
-| GET | `/v1/schemas` | List schemas (`limit`, `offset`, `search`) |
-| GET | `/v1/schemas/{contract_id}` | Latest schema per event on a contract |
-| GET | `/v1/schemas/{contract_id}/{event_name}` | Get schema (`?version=` optional) |
+| Method | Path | Auth | Description |
+| --- | --- | --- | --- |
+| POST | `/v1/schemas` | Publish token | Publish new schema version |
+| GET | `/v1/schemas` | — | List schemas (`limit`, `offset`, `search`) |
+| GET | `/v1/schemas/{contract_id}` | — | Latest schema per event on a contract |
+| GET | `/v1/schemas/{contract_id}/{event_name}` | — | Get schema (`?version=` optional) |
 
 Registry list pagination uses `limit` / `offset`, not `page` / `page_size`.
 
-### Auth
+### Account & keys
 
-| Method | Path | Description |
-| --- | --- | --- |
-| POST | `/v1/auth/register` | Register account |
-| POST | `/v1/auth/login` | Login |
-| POST | `/v1/auth/verify-email` | Verify email token |
-| POST | `/v1/auth/resend-verification` | Resend verification |
-| GET | `/v1/auth/me` | Current user (Bearer JWT) |
+| Method | Path | Auth | Description |
+| --- | --- | --- | --- |
+| POST | `/v1/auth/register` | — | Register account |
+| POST | `/v1/auth/login` | — | Login |
+| POST | `/v1/auth/verify-email` | — | Verify email token |
+| POST | `/v1/auth/resend-verification` | — | Resend verification |
+| GET | `/v1/auth/me` | JWT | Current user |
+| POST/GET/DELETE | `/v1/api-keys` | JWT | Manage developer API keys |
+| POST/GET/DELETE | `/v1/tokens` | JWT | Manage publish tokens |
 
 ## OpenAPI / Scalar
 
-In development, Atlas serves interactive API docs at `/docs` on the Atlas server (Scalar UI).
-
-## Authentication
-
-Explore and schema registry read/publish endpoints do not require authentication today. Auth endpoints (`/v1/auth/*`) issue and validate JWT sessions for the web app login flow; `GET /v1/auth/me` requires a Bearer token.
+Atlas serves interactive API docs at `/docs` on the Atlas server (Scalar UI).
