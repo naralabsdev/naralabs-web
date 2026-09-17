@@ -1,11 +1,11 @@
 "use client";
 
 import { getEmailDisplayName } from "@/modules/auth/lib/auth-user";
+import { logout } from "@/modules/auth/lib/logout";
 import { cn } from "@/shared/lib";
 import { ChevronDown, CircleUser } from "@/shared/ui/icons/nucleo";
 import * as Popover from "@radix-ui/react-popover";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type UserMenuProps = {
@@ -35,7 +35,6 @@ const chevronClassNameByTheme = {
 } as const;
 
 export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -69,10 +68,8 @@ export function UserMenu({ email, className, theme = "light" }: UserMenuProps) {
     setOpen(false);
 
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      router.push("/");
-      router.refresh();
-    } finally {
+      await logout("/");
+    } catch {
       setIsLoggingOut(false);
     }
   }
