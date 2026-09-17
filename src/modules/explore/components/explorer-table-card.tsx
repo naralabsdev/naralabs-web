@@ -1,4 +1,4 @@
-import { detailCardSurfaceClass } from "@/shared/ui/detail-card-surface";
+import { landingElevatedCardClass } from "@/shared/ui/landing-card-surface";
 import { cn } from "@/shared/lib/cn";
 import type { ReactNode } from "react";
 
@@ -10,6 +10,6 @@ export function ExplorerTableCard({
   className?: string;
 }) {
   return (
-    <section className={cn(detailCardSurfaceClass, className)}>{children}</section>
+    <section className={cn(landingElevatedCardClass, className)}>{children}</section>
   );
 }
