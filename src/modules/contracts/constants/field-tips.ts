@@ -1,12 +1,10 @@
 export const CONTRACT_DETAIL_FIELD_TIPS: Record<string, string> = {
   "Contract ID":
     "The Soroban contract address on the Stellar network. All indexed events on this page belong to this contract.",
-  Network:
-    "The Stellar network where this contract is deployed and emitting events.",
   "Schema Status":
     "Whether NaraLabs can decode event payloads for this contract. Partial means some events decode; raw only means payloads are stored as XDR.",
   "Total Events":
-    "Total Soroban contract events indexed for this address, similar to SoroTrail contract stats.",
+    "Total Soroban contract events indexed for this contract address.",
   "Unique Transactions":
     "Number of distinct transactions that emitted at least one event from this contract.",
   "Decoded Events":

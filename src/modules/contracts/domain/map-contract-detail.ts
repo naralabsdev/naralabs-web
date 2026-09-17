@@ -42,6 +42,8 @@ function withFieldTip(row: DetailFieldRow): DetailFieldRow {
   };
 }
 
+const EMPTY_VALUE = "—";
+
 function buildOverviewRows(payload: ContractDetailPayload): DetailFieldRow[] {
   return [
     withFieldTip({
@@ -51,13 +53,13 @@ function buildOverviewRows(payload: ContractDetailPayload): DetailFieldRow[] {
       mono: true,
     }),
     withFieldTip({
-      label: "Network",
-      value: payload.network,
-    }),
-    withFieldTip({
       label: "Schema Status",
       value: formatSchemaLabel(payload.schema_status),
       badge: schemaBadge(payload.schema_status),
+    }),
+    withFieldTip({
+      label: "Published Schemas",
+      value: "See published schemas below",
     }),
     withFieldTip({
       label: "Total Events",
@@ -118,6 +120,7 @@ export function mapContractDetail(payload: ContractDetailPayload): ContractDetai
     id: payload.contract_id,
     displayName,
     network: payload.network,
+    indexed: true,
     schemaStatus: payload.schema_status,
     schemaLabel: formatSchemaLabel(payload.schema_status),
     eventCount: payload.event_count,
@@ -130,5 +133,75 @@ export function mapContractDetail(payload: ContractDetailPayload): ContractDetai
     activitySummary: buildActivitySummary(payload),
     overviewRows: buildOverviewRows(payload),
     typeBreakdown: mapTypeBreakdown(payload),
+  };
+}
+
+export function mapUnindexedContractDetail(
+  contractId: string,
+  network: string,
+): ContractDetailViewModel {
+  const displayName = truncateContractId(contractId);
+
+  return {
+    id: contractId,
+    displayName,
+    network,
+    indexed: false,
+    schemaStatus: "raw_only",
+    schemaLabel: "Not indexed",
+    eventCount: 0,
+    transactionCount: 0,
+    decodedCount: 0,
+    events24h: 0,
+    firstLedger: 0,
+    lastLedger: 0,
+    lastSeenAgo: EMPTY_VALUE,
+    activitySummary: "0 events · 0 transactions · not indexed yet",
+    overviewRows: [
+      withFieldTip({
+        label: "Contract ID",
+        value: contractId,
+        copyValue: contractId,
+        mono: true,
+      }),
+      withFieldTip({
+        label: "Schema Status",
+        value: "Not indexed",
+        badge: { text: "Not indexed", tone: "neutral" },
+      }),
+      withFieldTip({
+        label: "Published Schemas",
+        value: "See published schemas below",
+      }),
+      withFieldTip({
+        label: "Total Events",
+        value: "0",
+      }),
+      withFieldTip({
+        label: "Unique Transactions",
+        value: "0",
+      }),
+      withFieldTip({
+        label: "Decoded Events",
+        value: "0",
+      }),
+      withFieldTip({
+        label: "Events (24h)",
+        value: "0",
+      }),
+      withFieldTip({
+        label: "First Ledger",
+        value: EMPTY_VALUE,
+      }),
+      withFieldTip({
+        label: "Last Ledger",
+        value: EMPTY_VALUE,
+      }),
+      withFieldTip({
+        label: "Last Seen",
+        value: EMPTY_VALUE,
+      }),
+    ],
+    typeBreakdown: [],
   };
 }

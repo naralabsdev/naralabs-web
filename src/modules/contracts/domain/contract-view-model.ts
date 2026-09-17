@@ -29,6 +29,7 @@ export type ContractDetailViewModel = {
   id: string;
   displayName: string;
   network: string;
+  indexed: boolean;
   schemaStatus: string;
   schemaLabel: string;
   eventCount: number;
