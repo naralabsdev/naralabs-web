@@ -39,3 +39,32 @@ export async function proxyAtlasGet(
     },
   });
 }
+
+export async function proxyAtlasPost(
+  path: string,
+  body: string,
+  init: { requestId?: string; contentType?: string } = {},
+): Promise<Response> {
+  const { segments, search } = parseAtlasPath(path);
+  const target = `${getAtlasBackendUrl()}/${segments.join("/")}${search}`;
+
+  const response = await fetch(target, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": init.contentType ?? "application/json",
+      ...(init.requestId ? { "X-Request-ID": init.requestId } : {}),
+    },
+    body,
+    cache: "no-store",
+  });
+
+  const responseBody = await response.text();
+
+  return new Response(responseBody, {
+    status: response.status,
+    headers: {
+      "Content-Type": response.headers.get("content-type") ?? "application/json",
+    },
+  });
+}

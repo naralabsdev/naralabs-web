@@ -119,16 +119,24 @@ export async function proxyAtlasGet<T>(
 export async function proxyAtlasPost<T>(
   path: string,
   body: unknown,
+  authorization?: string,
 ): Promise<AtlasAuthResponse<T>> {
   const normalized = path.startsWith("/") ? path : `/${path}`;
   const target = `${getAtlasBackendUrl()}${normalized}`;
 
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
+  if (authorization) {
+    headers.Authorization = authorization.startsWith("Bearer ")
+      ? authorization
+      : `Bearer ${authorization}`;
+  }
+
   const response = await fetch(target, {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify(body),
     cache: "no-store",
   });
@@ -151,6 +159,93 @@ export async function proxyAtlasPost<T>(
         response.status === 404
           ? "Auth API not found. Restart Atlas server with the latest build."
           : message,
+    };
+  }
+
+  return {
+    ok: true,
+    status: response.status,
+    data: payload as T,
+  };
+}
+
+export async function proxyAtlasPatch<T>(
+  path: string,
+  body: unknown,
+  authorization: string,
+): Promise<AtlasAuthResponse<T>> {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  const target = `${getAtlasBackendUrl()}${normalized}`;
+
+  const response = await fetch(target, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: authorization.startsWith("Bearer ")
+        ? authorization
+        : `Bearer ${authorization}`,
+    },
+    body: JSON.stringify(body),
+    cache: "no-store",
+  });
+
+  const contentType = response.headers.get("content-type") ?? "";
+  const payload = isJsonContentType(contentType)
+    ? ((await response.json()) as T | HumaErrorBody)
+    : null;
+
+  if (!response.ok) {
+    const { code, message } = parseAtlasErrorPayload(payload, response.status);
+
+    return {
+      ok: false,
+      status: response.status,
+      data: payload as T,
+      code,
+      message,
+    };
+  }
+
+  return {
+    ok: true,
+    status: response.status,
+    data: payload as T,
+  };
+}
+
+export async function proxyAtlasDelete<T>(
+  path: string,
+  authorization: string,
+): Promise<AtlasAuthResponse<T>> {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  const target = `${getAtlasBackendUrl()}${normalized}`;
+
+  const response = await fetch(target, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      Authorization: authorization.startsWith("Bearer ")
+        ? authorization
+        : `Bearer ${authorization}`,
+    },
+    cache: "no-store",
+  });
+
+  const contentType = response.headers.get("content-type") ?? "";
+  const payload = isJsonContentType(contentType)
+    ? ((await response.json()) as T | HumaErrorBody)
+    : null;
+
+  if (!response.ok) {
+    const { code, message } = parseAtlasErrorPayload(payload, response.status);
+
+    return {
+      ok: false,
+      status: response.status,
+      data: payload as T,
+      code,
+      message,
     };
   }
 

@@ -20,4 +20,20 @@ export function getDefaultNetwork(): string {
   return process.env.NEXT_PUBLIC_STELLAR_NETWORK ?? "testnet";
 }
 
+/** Public WebSocket base URL for Atlas realtime (browser connects directly). */
+export function getRealtimeWsBaseUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_REALTIME_WS_URL?.trim();
+  if (configured) {
+    return trimTrailingSlash(configured);
+  }
+
+  const httpUrl = getAtlasBackendUrl();
+  if (httpUrl.startsWith("https://")) {
+    return trimTrailingSlash(httpUrl.replace(/^https:/, "wss:"));
+  }
+  return trimTrailingSlash(httpUrl.replace(/^http:/, "ws:"));
+}
+
+export const REALTIME_WS_PATH = "/v1/ws/home";
+
 export const BFF_ATLAS_PREFIX = "/api/atlas";
