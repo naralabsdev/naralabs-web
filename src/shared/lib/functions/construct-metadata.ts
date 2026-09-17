@@ -1,30 +1,18 @@
 import { Metadata } from "next";
 
+import { FAVICON_MANIFEST_PATH, SITE_FAVICONS } from "@/shared/config/favicons";
+
 export function constructMetadata({
   title,
   fullTitle,
   description = "Naralabs is the Soroban events infrastructure and SDK for modern apps.",
   image = "https://naralabs.io/thumbnail.jpg",
   video,
-  icons = [
-    {
-      rel: "apple-touch-icon",
-      url: "/apple-icon.png",
-    },
-    {
-      rel: "icon",
-      type: "image/png",
-      url: "/icon.png",
-    },
-    {
-      rel: "shortcut icon",
-      url: "/favicon.ico",
-    },
-  ],
+  icons = SITE_FAVICONS,
   url,
   canonicalUrl,
   noIndex = false,
-  manifest,
+  manifest = FAVICON_MANIFEST_PATH,
 }: {
   title?: string;
   fullTitle?: string;
