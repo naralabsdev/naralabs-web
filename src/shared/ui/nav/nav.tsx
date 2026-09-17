@@ -1,8 +1,7 @@
 "use client";
 
-import { cn, createHref, getMarketingAuthUrls } from "@/shared/lib";
+import { cn, createHref, getMarketingAuthUrls, resolveExternalLinkProps } from "@/shared/lib";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
-import * as Popover from "@radix-ui/react-popover";
 import { ArrowUpRight2 } from "@/shared/ui/icons";
 import { ChevronDown } from "@/shared/ui/icons/nucleo";
 import { LayoutGroup } from "motion/react";
@@ -150,6 +149,99 @@ export function Nav({
   const pathname = usePathname();
 
   const authUrls = getMarketingAuthUrls(domain);
+  const usesMegaMenu = items.some((item) => item.content);
+
+  function renderNavItem({
+    name,
+    href,
+    segments,
+    content: Content,
+    childItems,
+    dropdownVariant,
+    target,
+    external,
+  }: NavItem) {
+    const isActive = (segments ?? []).some((segment) =>
+      pathname?.startsWith(segment),
+    );
+
+    if (dropdownVariant === "simple" && childItems) {
+      return (
+        <SimpleNavDropdown
+          key={name}
+          name={name}
+          childItems={childItems}
+          isActive={isActive}
+        />
+      );
+    }
+
+    if (!usesMegaMenu) {
+      if (href === undefined) {
+        return null;
+      }
+
+      const linkProps = resolveExternalLinkProps(href, target, external);
+
+      return (
+        <Link
+          key={name}
+          id={`nav-${href}`}
+          href={createHref(href, domain, {
+            utm_source: "Custom Domain",
+            utm_medium: "Navbar",
+            utm_campaign: domain,
+            utm_content: name,
+          })}
+          target={linkProps.target}
+          rel={linkProps.rel}
+          className={cn(navItemClassName, linkProps.external && "gap-1")}
+          data-active={isActive}
+        >
+          {name}
+          {linkProps.external ? <ArrowUpRight2 className="size-3.5" /> : null}
+        </Link>
+      );
+    }
+
+    const linkProps = href ? resolveExternalLinkProps(href, target, external) : null;
+
+    return (
+      <NavigationMenuPrimitive.Item key={name}>
+        <WithTrigger trigger={!!Content}>
+          {href !== undefined ? (
+            <Link
+              id={`nav-${href}`}
+              href={createHref(href, domain, {
+                utm_source: "Custom Domain",
+                utm_medium: "Navbar",
+                utm_campaign: domain,
+                utm_content: name,
+              })}
+              target={linkProps?.target}
+              rel={linkProps?.rel}
+              className={cn(navItemClassName, linkProps?.external && "gap-1")}
+              data-active={isActive}
+            >
+              {name}
+              {linkProps?.external ? <ArrowUpRight2 className="size-3.5" /> : null}
+            </Link>
+          ) : (
+            <button className={navItemClassName} data-active={isActive}>
+              {name}
+              <AnimatedChevron className="ml-1.5 size-2.5 text-neutral-700 dark:text-white/70" />
+            </button>
+          )}
+        </WithTrigger>
+
+        {Content ? (
+          <NavigationMenuPrimitive.Content className="data-[motion=from-start]:animate-enter-from-left data-[motion=from-end]:animate-enter-from-right data-[motion=to-start]:animate-exit-to-left data-[motion=to-end]:animate-exit-to-right absolute left-0 top-0">
+            <Content domain={domain} />
+          </NavigationMenuPrimitive.Content>
+        ) : null}
+      </NavigationMenuPrimitive.Item>
+    );
+  }
 
   return (
     <NavContext.Provider value={{ theme }}>
@@ -195,102 +287,47 @@ export function Nav({
               </div>
 
               <div className="hidden items-center lg:flex">
-                <NavigationMenuPrimitive.Root
-                  delayDuration={0}
-                  className="relative"
-                >
-                  <NavigationMenuPrimitive.List className="group relative z-0 flex gap-1">
-                    {items.map(({ name, href, segments, content: Content, childItems, dropdownVariant, target, external }) => {
-                      const isActive = (segments ?? []).some((segment) =>
-                        pathname?.startsWith(segment),
-                      );
+                {usesMegaMenu ? (
+                  <NavigationMenuPrimitive.Root
+                    delayDuration={0}
+                    className="relative"
+                  >
+                    <NavigationMenuPrimitive.List className="group relative z-0 flex gap-1">
+                      {items.map((item) => renderNavItem(item))}
+                    </NavigationMenuPrimitive.List>
 
-                      if (dropdownVariant === "simple" && childItems) {
-                        return (
-                          <SimpleNavDropdown
-                            key={name}
-                            name={name}
-                            childItems={childItems}
-                            isActive={isActive}
-                          />
-                        );
-                      }
-
-                      return (
-                        <NavigationMenuPrimitive.Item key={name}>
-                          <WithTrigger trigger={!!Content}>
-                            {href !== undefined ? (
-                              <Link
-                                id={`nav-${href}`}
-                                href={createHref(href, domain, {
-                                  utm_source: "Custom Domain",
-                                  utm_medium: "Navbar",
-                                  utm_campaign: domain,
-                                  utm_content: name,
-                                })}
-                                target={target}
-                                rel={
-                                  target === "_blank" ? "noreferrer" : undefined
-                                }
-                                className={cn(
-                                  navItemClassName,
-                                  external && "gap-1",
-                                )}
-                                data-active={isActive}
-                              >
-                                {name}
-                                {external ? (
-                                  <ArrowUpRight2 className="size-3.5" />
-                                ) : null}
-                              </Link>
-                            ) : (
-                              <button
-                                className={navItemClassName}
-                                data-active={isActive}
-                              >
-                                {name}
-                                <AnimatedChevron className="ml-1.5 size-2.5 text-neutral-700 dark:text-white/70" />
-                              </button>
-                            )}
-                          </WithTrigger>
-
-                          {Content && (
-                            <NavigationMenuPrimitive.Content className="data-[motion=from-start]:animate-enter-from-left data-[motion=from-end]:animate-enter-from-right data-[motion=to-start]:animate-exit-to-left data-[motion=to-end]:animate-exit-to-right absolute left-0 top-0">
-                              <Content domain={domain} />
-                            </NavigationMenuPrimitive.Content>
-                          )}
-                        </NavigationMenuPrimitive.Item>
-                      );
-                    })}
-                  </NavigationMenuPrimitive.List>
-
-                  <div className="absolute left-1/2 top-full mt-3 -translate-x-1/2">
-                    <NavigationMenuPrimitive.Viewport
-                      className={cn(
-                        "relative flex origin-[top_center] justify-start overflow-hidden rounded-[20px] border border-neutral-200 bg-white shadow-md dark:border-white/[0.15] dark:bg-black",
-                        "data-[state=closed]:animate-scale-out-content data-[state=open]:animate-scale-in-content",
-                        "h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)] transition-[width,height]",
-                      )}
-                    />
+                    <div className="absolute left-1/2 top-full mt-3 -translate-x-1/2">
+                      <NavigationMenuPrimitive.Viewport
+                        className={cn(
+                          "relative flex origin-[top_center] justify-start overflow-hidden rounded-[20px] border border-neutral-200 bg-white shadow-md dark:border-white/[0.15] dark:bg-black",
+                          "data-[state=closed]:animate-scale-out-content data-[state=open]:animate-scale-in-content",
+                          "h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)] transition-[width,height]",
+                        )}
+                      />
+                    </div>
+                  </NavigationMenuPrimitive.Root>
+                ) : (
+                  <div className="flex items-center gap-1">
+                    {items.map((item) => renderNavItem(item))}
                   </div>
-                </NavigationMenuPrimitive.Root>
+                )}
 
                 {user ? (
-                  <>
+                  <div className="flex items-center">
                     <div
                       className="mx-2 h-5 w-px bg-neutral-200 dark:bg-white/15"
                       aria-hidden
                     />
                     <UserMenu email={user.email} theme={theme} />
-                  </>
+                  </div>
                 ) : !isAuthenticated ? (
-                  <>
+                  <div className="flex items-center">
                     <div
                       className="mx-2 h-5 w-px bg-neutral-200 dark:bg-white/15"
                       aria-hidden
                     />
                     <SignInLink href={authUrls.login} />
-                  </>
+                  </div>
                 ) : null}
               </div>
             </div>
@@ -371,46 +408,54 @@ function SimpleNavDropdown({
   useEffect(() => () => cancelClose(), []);
 
   return (
-    <Popover.Root open={open} onOpenChange={setOpen}>
-      <div className="relative" onMouseEnter={openMenu} onMouseLeave={scheduleClose}>
-        <Popover.Trigger asChild>
-          <button
-            className={navItemClassName}
-            data-active={isActive}
-            type="button"
-            onPointerDown={(event) => event.preventDefault()}
-          >
-            {name}
-            <ChevronDown
-              className={cn(
-                "ml-1.5 size-3.5 text-neutral-500 transition-transform duration-150 dark:text-white/70",
-                open && "rotate-180",
-              )}
-              aria-hidden
-            />
-          </button>
-        </Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Content
-            align="start"
-            sideOffset={8}
-            onMouseEnter={openMenu}
-            onMouseLeave={scheduleClose}
-            className="z-50 min-w-[10rem] rounded-lg bg-white p-1 shadow-md outline-none animate-slide-up-fade dark:bg-neutral-950"
-          >
-            {flatItems.map(({ title, href }) => (
+    <div className="relative" onMouseEnter={openMenu} onMouseLeave={scheduleClose}>
+      <button
+        className={navItemClassName}
+        data-active={isActive}
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="menu"
+        onPointerDown={(event) => event.preventDefault()}
+      >
+        {name}
+        <ChevronDown
+          className={cn(
+            "ml-1.5 size-3.5 text-neutral-500 transition-transform duration-150 dark:text-white/70",
+            open && "rotate-180",
+          )}
+          aria-hidden
+        />
+      </button>
+      {open ? (
+        <div
+          role="menu"
+          onMouseEnter={openMenu}
+          onMouseLeave={scheduleClose}
+          className="absolute left-0 top-full z-50 mt-2 min-w-[10rem] rounded-lg bg-white p-1 shadow-md outline-none animate-slide-up-fade dark:bg-neutral-950"
+        >
+          {flatItems.map(({ title, href }) => {
+            const linkProps = resolveExternalLinkProps(href);
+
+            return (
               <Link
                 key={href}
                 href={href}
-                className="block rounded-md px-3 py-2 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
+                role="menuitem"
+                target={linkProps.target}
+                rel={linkProps.rel}
+                className={cn(
+                  "block rounded-md px-3 py-2 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white",
+                  linkProps.external && "inline-flex items-center gap-1",
+                )}
                 onClick={() => setOpen(false)}
               >
                 {title}
+                {linkProps.external ? <ArrowUpRight2 className="size-3.5" /> : null}
               </Link>
-            ))}
-          </Popover.Content>
-        </Popover.Portal>
-      </div>
-    </Popover.Root>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
   );
 }

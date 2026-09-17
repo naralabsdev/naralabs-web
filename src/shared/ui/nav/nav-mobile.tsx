@@ -1,13 +1,13 @@
 "use client";
 
-import { cn, createHref, getMarketingAuthUrls } from "@/shared/lib";
+import { cn, createHref, getMarketingAuthUrls, resolveExternalLinkProps } from "@/shared/lib";
 import {
-  ArrowUpRight,
+  ArrowUpRight2,
   ChevronDown,
   CircleUser,
   Menu3,
   Xmark,
-} from "@/shared/ui/icons/nucleo";
+} from "@/shared/ui/icons";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ComponentProps, ReactNode, useEffect, useState } from "react";
@@ -24,6 +24,7 @@ import {
   getEmailDisplayName,
   type AuthUser,
 } from "@/modules/auth/lib/auth-user";
+import { logout } from "@/modules/auth/lib/logout";
 import { navItems, type NavItem, type NavTheme } from "./nav";
 import { UserMenu } from "./user-menu";
 
@@ -170,8 +171,7 @@ export function NavMobile({
                   className="block w-full rounded-md border-0 bg-transparent py-1.5 text-left text-sm font-medium text-red-600 outline-none transition-colors hover:bg-red-50 hover:text-red-700 focus:outline-none focus-visible:outline-none"
                   onClick={async () => {
                     setOpen(false);
-                    await fetch("/api/auth/logout", { method: "POST" });
-                    window.location.href = "/";
+                    await logout("/");
                   }}
                 >
                   Logout
@@ -289,6 +289,8 @@ const MobileNavItem = ({
     return null;
   }
 
+  const linkProps = resolveExternalLinkProps(href, target, external);
+
   return (
     <li className="py-3">
       <Link
@@ -298,16 +300,16 @@ const MobileNavItem = ({
           utm_campaign: domain,
           utm_content: name,
         })}
-        target={target}
-        rel={target === "_blank" ? "noreferrer" : undefined}
+        target={linkProps.target}
+        rel={linkProps.rel}
         onClick={() => setOpen(false)}
         className={cn(
           "flex w-full items-center font-semibold capitalize",
-          external && "gap-1.5",
+          linkProps.external && "gap-1.5",
         )}
       >
         {name}
-        {external ? <ArrowUpRight className="size-4" /> : null}
+        {linkProps.external ? <ArrowUpRight2 className="size-3.5" /> : null}
       </Link>
     </li>
   );
@@ -323,6 +325,7 @@ const ChildItem = ({
   size?: "normal" | "small";
 }) => {
   const { domain = "dub.co" } = useParams() as { domain: string };
+  const linkProps = resolveExternalLinkProps(href);
 
   const SpecialIcon = specialIcons?.[title];
 
@@ -334,6 +337,8 @@ const ChildItem = ({
         utm_campaign: domain,
         utm_content: title,
       })}
+      target={linkProps.target}
+      rel={linkProps.rel}
       onClick={() => setOpen(false)}
       className="flex w-full items-center gap-3"
     >
@@ -355,6 +360,7 @@ const ChildItem = ({
       <div>
         <div className="flex items-center gap-2">
           <h2 className="text-sm font-medium text-neutral-900">{title}</h2>
+          {linkProps.external ? <ArrowUpRight2 className="size-3.5 text-neutral-500" /> : null}
         </div>
         {description && (
           <p className="text-sm text-neutral-500">{description}</p>
