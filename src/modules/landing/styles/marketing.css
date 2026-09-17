@@ -21,7 +21,7 @@
 }
 
 .hero-aurora.hero-aurora--ready {
-  background: #0c1a33;
+  background: #1344af;
 }
 
 @media (min-width: 1024px) {
@@ -32,6 +32,10 @@
 
 .hero-aurora-bg {
   z-index: 0;
+}
+
+.explorer-aurora-strip {
+  padding-bottom: 0;
 }
 
 .hero-gradient-loading {
