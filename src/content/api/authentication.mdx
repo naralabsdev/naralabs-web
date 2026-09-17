@@ -1,0 +1,71 @@
+---
+title: Authentication
+description: API keys, publish tokens, and how to authenticate Atlas requests
+---
+
+# Authentication
+
+Naralabs Atlas uses **two separate credentials**:
+
+| Credential | Prefix | Purpose | Created from |
+| --- | --- | --- | --- |
+| **API key** | `nl_api_` | Decode API + programmatic explore read access | [API Dashboard](/dashboard/developers) |
+| **Publish token** | `nl_live_` | Publish SEP-0048 schemas via CLI or `POST /v1/schemas` | Schema Registry / CLI (`/v1/tokens`) |
+
+Do not use publish tokens for decode or explore reads. Do not use API keys for schema publishing.
+
+## API keys
+
+1. Sign in and open **[API Dashboard](/dashboard/developers)**
+2. Click **Create key**
+3. Copy the raw key immediately — it is shown **once**
+
+Send the key on every programmatic request:
+
+```http
+Authorization: Bearer nl_api_...
+```
+
+### Protected endpoints
+
+| Endpoint group | Auth |
+| --- | --- |
+| `POST /v1/decode`, `POST /v1/decode/batch` | API key **required** |
+| `GET /v1/events`, `/v1/contracts`, `/v1/stats`, … | Optional in browser BFF; **required for production integrations** |
+| `POST /v1/schemas` | Publish token (`nl_live_`) |
+| `/v1/api-keys` management | JWT session from login |
+
+### Error responses
+
+| Status | Code | Meaning |
+| --- | --- | --- |
+| 401 | `UNAUTHORIZED` | Missing or invalid API key / JWT |
+| 409 | `API_KEY_LIMIT` | Maximum active keys reached (3 per account) |
+| 404 | `API_KEY_NOT_FOUND` | Key already revoked or unknown |
+
+## Publish tokens
+
+Publish tokens are managed separately for schema authors:
+
+```bash
+naralabs registry publish
+# uses nl_live_ token from project setup
+```
+
+Or create/list/revoke via `POST/GET/DELETE /v1/tokens` with a JWT session.
+
+## Web explorer vs direct API
+
+The Naralabs website proxies public reads through `/api/atlas/*` without an API key so the explorer UI works in the browser.
+
+For apps, scripts, and backend services, call Atlas directly with your API key:
+
+```bash
+export NARALABS_API_KEY="nl_api_..."
+curl -H "Authorization: Bearer $NARALABS_API_KEY" \
+  "http://localhost:8080/v1/events?network=testnet"
+```
+
+## Interactive docs
+
+Atlas serves OpenAPI + Scalar at `/docs` on the Atlas server (local default: `http://localhost:8080/docs`).

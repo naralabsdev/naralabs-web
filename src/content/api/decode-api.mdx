@@ -1,0 +1,113 @@
+---
+title: Decode API
+description: POST /v1/decode — decode raw Soroban events with registered schemas
+---
+
+# Decode API
+
+Decode raw Soroban event topics and values into semantic JSON using schemas from the SEP-0048 registry.
+
+**Authentication:** API key required (`Authorization: Bearer nl_api_...`). See [Authentication](/docs/api/authentication).
+
+## Decode one event
+
+```
+POST /v1/decode
+```
+
+### Request body
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `network` | string | yes | `testnet`, `mainnet`, or `futurenet` |
+| `contractId` | string | yes | Emitting contract ID |
+| `eventName` | string | no | Hint when multiple schemas exist on the contract |
+| `schemaVersion` | number | no | Pin a specific schema version |
+| `topicsXdr` | string[] | one of topics | Base64 XDR topic array from RPC |
+| `topicsJson` | array | one of topics | RPC-style topic JSON (preferred when available) |
+| `valueXdr` | string | one of value | Base64 XDR event value |
+| `valueJson` | object | one of value | RPC-style value JSON |
+
+Provide either `topicsXdr` or `topicsJson`, and either `valueXdr` or `valueJson`.
+
+### Example
+
+```bash
+curl -X POST "http://localhost:8080/v1/decode" \
+  -H "Authorization: Bearer $NARALABS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "network": "testnet",
+    "contractId": "CBGROPHYFCL5FNTNJF6HXVJEWPLOMHZJ3MNISPTB2JHXLGKQMO2MCWK4",
+    "topicsJson": [
+      {"symbol": "cntr"},
+      {"symbol": "incr"}
+    ],
+    "valueJson": {"u32": 42}
+  }'
+```
+
+### Response
+
+```json
+{
+  "decodeStatus": "decoded",
+  "eventName": "counter_incremented",
+  "schemaVersion": 1,
+  "fields": {
+    "count": 42
+  },
+  "summary": "counter_incremented: count=42",
+  "level2": {
+    "topics": [
+      {"symbol": "cntr"},
+      {"symbol": "incr"}
+    ],
+    "value": {"u32": 42}
+  }
+}
+```
+
+When no matching schema exists, Atlas returns `decodeStatus: "raw"` with level-2 tagged JSON in `level2` and no `fields`.
+
+## Batch decode
+
+```
+POST /v1/decode/batch
+```
+
+```json
+{
+  "events": [
+    {
+      "network": "testnet",
+      "contractId": "CBGROPHYFCL5FNTNJF6HXVJEWPLOMHZJ3MNISPTB2JHXLGKQMO2MCWK4",
+      "topicsJson": [{"symbol": "cntr"}, {"symbol": "incr"}],
+      "valueJson": {"u32": 42}
+    }
+  ]
+}
+```
+
+Maximum **50 events** per request.
+
+### Response
+
+```json
+{
+  "items": [ { "decodeStatus": "decoded", "...": "..." } ],
+  "total": 1
+}
+```
+
+## Supported schema param types
+
+MVP semantic decode supports: `u32`, `i32`, `u64`, `i64`, `i128`, `u128`, `address`, `string`, `symbol`, `bool`.
+
+Param locations: `data`, `topic_list`.
+
+## Related
+
+- [Authentication](/docs/api/authentication)
+- [Events API](/docs/api/events-api) — query already-indexed decoded events
+- [Decoding events guide](/docs/guides/decoding-events)
