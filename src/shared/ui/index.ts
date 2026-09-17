@@ -34,6 +34,7 @@ export * from "./radio-group";
 export * from "./rich-text-area";
 export * from "./scroll-container";
 export * from "./sheet";
+export * from "./simple-select";
 export * from "./shimmer-dots";
 export * from "./slider";
 export * from "./smart-datetime-picker";

@@ -8,14 +8,14 @@ export const buttonVariants = cva("transition-all", {
   variants: {
     variant: {
       primary:
-        "border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:ring-4 hover:ring-primary/20",
+        "border-primary bg-primary text-primary-foreground hover:border-[var(--primary-hover)] hover:bg-[var(--primary-hover)]",
       secondary: cn(
         "border-border-subtle bg-bg-default text-content-emphasis hover:bg-bg-muted focus-visible:border-border-emphasis outline-none",
         "data-[state=open]:border-border-emphasis data-[state=open]:ring-4 data-[state=open]:ring-border-subtle",
       ),
       outline: "border-transparent text-content-default hover:bg-neutral-900/5",
       success:
-        "border-blue-500 bg-blue-500 text-white hover:bg-blue-600 hover:ring-4 hover:ring-blue-100",
+        "border-primary bg-primary text-primary-foreground hover:border-[var(--primary-hover)] hover:bg-[var(--primary-hover)]",
       danger:
         "border-red-500 bg-red-500 text-white hover:bg-red-600 hover:ring-4 hover:ring-red-100",
       "danger-outline":

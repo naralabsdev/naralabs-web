@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, createHref } from "@/shared/lib";
+import { cn, createHref, resolveExternalLinkProps } from "@/shared/lib";
 import { ChevronDown } from "@/shared/ui/icons/nucleo";
 import Image from "next/image";
 import Link from "next/link";
@@ -203,7 +203,14 @@ export function Footer({
               <div className="mt-10 md:mt-0">
                 <h3 className={linkListHeaderClassName}>Resources</h3>
                 <ul role="list" className={linkListClassName}>
-                  {navigation.resources.map((item) => (
+                  {navigation.resources.map((item) => {
+                    const linkProps = resolveExternalLinkProps(
+                      item.href,
+                      item.target,
+                      item.target === "_blank",
+                    );
+
+                    return (
                     <li key={item.name}>
                       <Link
                         href={createHref(item.href, domain, {
@@ -212,14 +219,16 @@ export function Footer({
                           utm_campaign: domain,
                           utm_content: item.name,
                         })}
-                        target={item.target}
+                        target={linkProps.target}
+                        rel={linkProps.rel}
                         className={cn(linkListItemClassName, "gap-1")}
                       >
                         {item.name}
-                        {item.target && <ReferredVia className="size-3.5" />}
+                        {linkProps.external ? <ReferredVia className="size-3.5" /> : null}
                       </Link>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               </div>
             </div>

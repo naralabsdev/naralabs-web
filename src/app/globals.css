@@ -14,9 +14,9 @@ body {
 
 @layer base {
   :root {
-    /* Brand primary: single source of truth */
-    --primary: #054fbf;
-    --primary-hover: #043a99;
+    /* Brand primary: charcoal CTA (login/register style), not blue */
+    --primary: #525252;
+    --primary-hover: #404040;
     --primary-foreground: #ffffff;
 
     --background: oklch(1 0 0);
@@ -61,8 +61,8 @@ body {
   }
 
   .dark {
-    --primary: #054fbf;
-    --primary-hover: #043a99;
+    --primary: #525252;
+    --primary-hover: #404040;
     --primary-foreground: #ffffff;
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
@@ -212,6 +212,7 @@ button[data-naralabs-variant="primary"]:not(:disabled) {
 }
 
 button[data-naralabs-variant="primary"]:not(:disabled):hover {
+  border-color: var(--primary-hover) !important;
   background-color: var(--primary-hover) !important;
 }
 
@@ -222,17 +223,18 @@ button[data-naralabs-variant="primary"]:not(:disabled):hover {
 }
 
 [data-slot="button"]:not(:disabled).bg-primary:hover {
+  border-color: var(--primary-hover) !important;
   background-color: var(--primary-hover) !important;
 }
 
-/* Auth pages: charcoal buttons (login, register, verify email) */
+/* Auth pages: same charcoal CTA as primary buttons */
 button.auth-button:not(:disabled) {
-  border-color: #525252 !important;
-  background-color: #525252 !important;
-  color: #ffffff !important;
+  border-color: var(--primary) !important;
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
 }
 
 button.auth-button:not(:disabled):hover {
-  border-color: #404040 !important;
-  background-color: #404040 !important;
+  border-color: var(--primary-hover) !important;
+  background-color: var(--primary-hover) !important;
 }

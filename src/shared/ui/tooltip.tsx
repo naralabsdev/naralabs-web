@@ -4,14 +4,7 @@ import { cn } from "@/shared/lib";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { CircleInfo } from "@/shared/ui/icons/nucleo";
 import Link from "next/link";
-import {
-  Fragment,
-  isValidElement,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Badge } from "./badge";
 import { Button, ButtonProps, buttonVariants } from "./button";
@@ -72,16 +65,8 @@ const TooltipMarkdown = ({
     </div>
   );
 };
-/** Radix Trigger with asChild cannot merge refs onto Fragment or custom components. */
+/** Radix Trigger with asChild needs a single DOM node — never pass Fragment/custom types through. */
 function getTooltipTriggerChild(children: ReactNode) {
-  if (
-    isValidElement(children) &&
-    children.type !== Fragment &&
-    typeof children.type === "string"
-  ) {
-    return children;
-  }
-
   return <span className="inline-flex">{children}</span>;
 }
 
