@@ -21,8 +21,10 @@ export function BorderlessTableHead({ children }: { children: ReactNode }) {
   return <thead>{children}</thead>;
 }
 
-const rowDividerClass =
+export const borderlessRowDividerClass =
   "bg-[linear-gradient(to_right,transparent_12px,rgba(0,0,0,0.06)_12px,rgba(0,0,0,0.06)_calc(100%-12px),transparent_calc(100%-12px))] bg-[length:100%_1px] bg-[position:0_100%] bg-no-repeat sm:bg-[linear-gradient(to_right,transparent_16px,rgba(0,0,0,0.06)_16px,rgba(0,0,0,0.06)_calc(100%-16px),transparent_calc(100%-16px))]";
+
+const rowDividerClass = borderlessRowDividerClass;
 
 export function BorderlessTableBody({ children }: { children: ReactNode }) {
   return <tbody>{children}</tbody>;
@@ -49,14 +51,18 @@ export function BorderlessHeaderCell({
 }) {
   return (
     <th className={cn("pb-3 pr-4 font-medium last:pr-0", className)}>
-      <span className="inline-flex items-center gap-1.5">
-        {infoTooltip ? (
-          <LandingInfoTooltip content={infoTooltip} />
-        ) : withInfo ? (
-          <CircleInfo className="size-3.5 text-neutral-400" aria-hidden />
-        ) : null}
-        {children}
-      </span>
+      {infoTooltip ? (
+        <LandingInfoTooltip content={infoTooltip} side="top">
+          {children}
+        </LandingInfoTooltip>
+      ) : (
+        <span className="inline-flex items-center gap-1.5">
+          {withInfo ? (
+            <CircleInfo className="size-3.5 text-neutral-400" aria-hidden />
+          ) : null}
+          {children}
+        </span>
+      )}
     </th>
   );
 }

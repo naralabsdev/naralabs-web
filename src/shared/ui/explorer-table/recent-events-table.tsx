@@ -1,8 +1,13 @@
+"use client";
+
+import { LayoutGroup } from "motion/react";
+
 import { DicebearAvatar } from "@/modules/landing/components/activity/dicebear-avatar";
 import { LANDING_TABLE_TOOLTIPS } from "@/modules/landing/constants/homepage-content";
 import { cn } from "@/shared/lib/cn";
 import Link from "next/link";
 
+import { AnimatedTableRow } from "./animated-table-row";
 import {
   BorderlessCell,
   BorderlessHeaderCell,
@@ -13,6 +18,7 @@ import {
   BorderlessTableHead,
   truncateMiddle,
 } from "./borderless-table";
+import { useAppendedRowIds } from "./use-appended-row-ids";
 
 export type ExplorerEventRow = {
   id: string;
@@ -27,31 +33,132 @@ export type ExplorerEventRow = {
   decodeLabel?: string;
 };
 
+function EventRowCells({
+  event,
+  showStatus,
+  showContract,
+}: {
+  event: ExplorerEventRow;
+  showStatus: boolean;
+  showContract: boolean;
+}) {
+  const decodeClass =
+    event.decodeStatus === "decoded"
+      ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
+      : "bg-neutral-100 text-neutral-600 ring-neutral-200";
+
+  return (
+    <>
+      <BorderlessCell>
+        <Link href={`/events/${event.id}`} className="group block">
+          <div className="flex items-center gap-2.5">
+            <DicebearAvatar seed={event.id} style="waves" />
+            <p className="font-medium text-neutral-900 group-hover:text-primary">
+              {event.eventType}
+            </p>
+          </div>
+        </Link>
+      </BorderlessCell>
+      <BorderlessCell className="max-w-[16rem] text-sm leading-snug text-neutral-600">
+        <Link href={`/events/${event.id}`} className="line-clamp-2 hover:text-primary">
+          {event.summary}
+        </Link>
+      </BorderlessCell>
+      {showContract && event.contractId ? (
+        <BorderlessCell>
+          <Link
+            href={`/contracts/${event.contractId}`}
+            className="font-medium text-neutral-900 hover:text-primary"
+          >
+            {event.contractName ?? event.contractId}
+          </Link>
+        </BorderlessCell>
+      ) : null}
+      {showStatus ? (
+        <BorderlessCell>
+          <span
+            className={cn(
+              "inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset",
+              decodeClass,
+            )}
+          >
+            {event.decodeLabel}
+          </span>
+        </BorderlessCell>
+      ) : null}
+      <BorderlessCell>
+        <Link
+          href={`/ledger/${event.ledger}`}
+          className="font-mono text-sm text-primary hover:underline"
+        >
+          #{event.ledger.toLocaleString()}
+        </Link>
+      </BorderlessCell>
+      <BorderlessCell>
+        <Link
+          href={`/tx/${event.txnHash}`}
+          className="font-mono text-sm text-primary hover:underline"
+        >
+          {truncateMiddle(event.txnHash, 6, 4)}
+        </Link>
+      </BorderlessCell>
+      <BorderlessCell className="whitespace-nowrap text-neutral-600">
+        {event.ago}
+      </BorderlessCell>
+    </>
+  );
+}
+
 export function RecentEventsTable({
   rows,
   showStatus = false,
   showContract = true,
   emptyMessage = "No events found.",
   className,
+  animated = false,
 }: {
   rows: ExplorerEventRow[];
   showStatus?: boolean;
   showContract?: boolean;
   emptyMessage?: string;
   className?: string;
+  animated?: boolean;
 }) {
+  const appendedIds = useAppendedRowIds(rows);
+
   if (rows.length === 0) {
     return (
       <p className="py-10 text-center text-sm text-neutral-500">{emptyMessage}</p>
     );
   }
 
+  const body = animated ? (
+    <LayoutGroup>
+      {rows.map((event) => (
+        <AnimatedTableRow key={event.id} isNew={appendedIds.has(event.id)}>
+          <EventRowCells
+            event={event}
+            showStatus={showStatus}
+            showContract={showContract}
+          />
+        </AnimatedTableRow>
+      ))}
+    </LayoutGroup>
+  ) : (
+    rows.map((event) => (
+      <BorderlessRow key={event.id}>
+        <EventRowCells
+          event={event}
+          showStatus={showStatus}
+          showContract={showContract}
+        />
+      </BorderlessRow>
+    ))
+  );
+
   return (
     <BorderlessTable
-      className={cn(
-        showStatus ? "min-w-[48rem]" : "min-w-[40rem]",
-        className,
-      )}
+      className={cn(showStatus ? "min-w-[48rem]" : "min-w-[40rem]", className)}
     >
       <BorderlessTableHead>
         <BorderlessHeaderRow>
@@ -66,7 +173,11 @@ export function RecentEventsTable({
               Contract
             </BorderlessHeaderCell>
           ) : null}
-          {showStatus ? <BorderlessHeaderCell>Status</BorderlessHeaderCell> : null}
+          {showStatus ? (
+            <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.events.status}>
+              Status
+            </BorderlessHeaderCell>
+          ) : null}
           <BorderlessHeaderCell infoTooltip={LANDING_TABLE_TOOLTIPS.events.ledger}>
             Ledger
           </BorderlessHeaderCell>
@@ -78,78 +189,7 @@ export function RecentEventsTable({
           </BorderlessHeaderCell>
         </BorderlessHeaderRow>
       </BorderlessTableHead>
-      <BorderlessTableBody>
-        {rows.map((event) => {
-          const decodeClass =
-            event.decodeStatus === "decoded"
-              ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
-              : "bg-neutral-100 text-neutral-600 ring-neutral-200";
-
-          return (
-            <BorderlessRow key={event.id}>
-              <BorderlessCell>
-                <Link href={`/events/${event.id}`} className="group block">
-                  <div className="flex items-center gap-2.5">
-                    <DicebearAvatar seed={event.id} style="waves" />
-                    <p className="font-medium text-neutral-900 group-hover:text-primary">
-                      {event.eventType}
-                    </p>
-                  </div>
-                </Link>
-              </BorderlessCell>
-              <BorderlessCell className="max-w-[16rem] text-sm leading-snug text-neutral-600">
-                <Link
-                  href={`/events/${event.id}`}
-                  className="line-clamp-2 hover:text-primary"
-                >
-                  {event.summary}
-                </Link>
-              </BorderlessCell>
-              {showContract && event.contractId ? (
-                <BorderlessCell>
-                  <Link
-                    href={`/contracts/${event.contractId}`}
-                    className="font-medium text-neutral-900 hover:text-primary"
-                  >
-                    {event.contractName ?? event.contractId}
-                  </Link>
-                </BorderlessCell>
-              ) : null}
-              {showStatus ? (
-                <BorderlessCell>
-                  <span
-                    className={cn(
-                      "inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset",
-                      decodeClass,
-                    )}
-                  >
-                    {event.decodeLabel}
-                  </span>
-                </BorderlessCell>
-              ) : null}
-              <BorderlessCell>
-                <Link
-                  href={`/ledger/${event.ledger}`}
-                  className="font-mono text-sm text-primary hover:underline"
-                >
-                  #{event.ledger.toLocaleString()}
-                </Link>
-              </BorderlessCell>
-              <BorderlessCell>
-                <Link
-                  href={`/tx/${event.txnHash}`}
-                  className="font-mono text-sm text-primary hover:underline"
-                >
-                  {truncateMiddle(event.txnHash, 6, 4)}
-                </Link>
-              </BorderlessCell>
-              <BorderlessCell className="whitespace-nowrap text-neutral-600">
-                {event.ago}
-              </BorderlessCell>
-            </BorderlessRow>
-          );
-        })}
-      </BorderlessTableBody>
+      <BorderlessTableBody>{body}</BorderlessTableBody>
     </BorderlessTable>
   );
 }
