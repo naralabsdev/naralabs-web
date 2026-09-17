@@ -6,9 +6,20 @@ import { MarketingContent } from "@/modules/landing/components/chrome/marketing-
 import { HeroNav } from "@/modules/landing/components/hero/hero-nav";
 import { EXPLORER_HERO } from "@/modules/landing/constants/homepage-content";
 import { HeroSearchBlock } from "@/modules/landing/components/hero/hero-search-block";
+import type {
+  ActiveContractRow,
+  RecentEventRow,
+} from "@/modules/landing/domain/home-view-model";
 
-export function HeroSection() {
+export function HeroSection({
+  recentEvents,
+  activeContracts,
+}: {
+  recentEvents: RecentEventRow[];
+  activeContracts: ActiveContractRow[];
+}) {
   const [auroraReady, setAuroraReady] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <section className={`hero-aurora relative ${auroraReady ? "hero-aurora--ready" : ""}`}>
@@ -16,7 +27,9 @@ export function HeroSection() {
 
       <HeroNav theme={auroraReady ? "dark" : "light"} />
 
-      <MarketingContent className="relative z-20 pt-8 sm:pt-10">
+      <MarketingContent
+        className={`relative pt-8 sm:pt-10 ${searchOpen ? "z-40" : "z-20"}`}
+      >
         <h1
           className={`text-left font-display text-2xl font-semibold tracking-[-0.02em] sm:text-[1.65rem] ${
             auroraReady ? "text-white" : "text-foreground"
@@ -26,7 +39,11 @@ export function HeroSection() {
         </h1>
 
         <div className="mt-4 max-w-2xl">
-          <HeroSearchBlock />
+          <HeroSearchBlock
+            recentEvents={recentEvents}
+            activeContracts={activeContracts}
+            onOpenChange={setSearchOpen}
+          />
         </div>
       </MarketingContent>
     </section>
