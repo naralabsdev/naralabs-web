@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { FAVICON_MANIFEST_PATH, SITE_FAVICONS } from "@/shared/config/favicons";
 import { getGithubUrl } from "@/shared/config/site";
 
 export const metadata: Metadata = {
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
     template: "%s | NaraLabs Docs",
   },
   description: "Documentation for the NaraLabs Stellar Soroban explorer and Atlas API",
+  manifest: FAVICON_MANIFEST_PATH,
+  icons: SITE_FAVICONS,
 };
 
 export const viewport: Viewport = {

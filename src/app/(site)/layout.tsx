@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { AppProviders } from "@/app/(site)/providers";
+import { FAVICON_MANIFEST_PATH, SITE_FAVICONS } from "@/shared/config/favicons";
 import { siteConfig } from "@/shared/config/site";
 
 import "../globals.css";
@@ -9,19 +10,8 @@ export const metadata: Metadata = {
   title: "Naralabs Explorer",
   description: "Stellar blockchain explorer for ledgers, transactions, and Soroban contracts",
   metadataBase: new URL(siteConfig.appUrl),
-  icons: {
-    icon: {
-      url: "/icon.png",
-      type: "image/png",
-      sizes: "32x32",
-    },
-    apple: {
-      url: "/apple-icon.png",
-      type: "image/png",
-      sizes: "180x180",
-    },
-    shortcut: "/favicon.ico",
-  },
+  manifest: FAVICON_MANIFEST_PATH,
+  icons: SITE_FAVICONS,
 };
 
 export default function SiteRootLayout({
