@@ -13,9 +13,11 @@ import { MarketingContent } from "@/modules/landing/components/chrome/marketing-
 export function ActivitySection({
   recentEvents,
   activeContracts,
+  animated = false,
 }: {
   recentEvents: RecentEventRow[];
   activeContracts: ActiveContractRow[];
+  animated?: boolean;
 }) {
   return (
     <section className="pb-12 pt-2">
@@ -26,7 +28,7 @@ export function ActivitySection({
             viewAllHref={ACTIVITY_SECTION.eventsHref}
             className="min-w-0"
           >
-            <RecentEventsTable rows={recentEvents} />
+            <RecentEventsTable rows={recentEvents} animated={animated} />
           </BorderlessTableSection>
 
           <BorderlessTableSection
@@ -35,6 +37,7 @@ export function ActivitySection({
             className="min-w-0"
           >
             <ActiveContractsTable
+              animated={animated}
               rows={activeContracts.map((contract) => ({
                 id: contract.id,
                 name: contract.name,
