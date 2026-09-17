@@ -15,19 +15,6 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: monorepoRoot,
   },
-  webpack(config, { isServer }) {
-    // Webpack dev can resolve the react-server entry for client libraries (floating-ui, swr).
-    // Alias to package dirs (not index.js) so watchpack and react/jsx-runtime keep working.
-    if (!isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        react: path.join(monorepoRoot, "node_modules/react"),
-        "react-dom": path.join(monorepoRoot, "node_modules/react-dom"),
-      };
-    }
-
-    return config;
-  },
   ...(isDev
     ? {
         experimental: {
@@ -35,6 +22,15 @@ const nextConfig: NextConfig = {
         },
       }
     : {}),
+  async redirects() {
+    return [
+      {
+        source: "/favicon.ico",
+        destination: "/favicon/favicon.ico",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     if (!isDev) {
       return [];
