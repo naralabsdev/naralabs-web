@@ -5,6 +5,7 @@ import {
   AUTH_ERROR_MESSAGES,
   resolveAuthErrorMessage,
 } from "@/modules/auth/constants/auth-errors";
+import { AuthTransitionLink } from "@/modules/auth/components/auth-transition-link";
 import {
   authButtonClass,
   authFieldLabelClass,
@@ -13,12 +14,12 @@ import {
   authFormWrapperClass,
   authInputClass,
   authPageFooterClass,
+  authPageLinkClass,
   authPageTitleClass,
 } from "@/modules/auth/styles/auth-styles";
 import { AnimatedSizeContainer } from "@/shared/ui/animated-size-container";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
-import { AuthTransitionLink } from "@/modules/auth/components/auth-transition-link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
@@ -139,6 +140,14 @@ export function LoginForm() {
                         onChange={(event) => setPassword(event.target.value)}
                       />
                     </label>
+                    <p className="text-right">
+                      <AuthTransitionLink
+                        href="/forgot-password"
+                        className={authPageLinkClass}
+                      >
+                        Forgot password?
+                      </AuthTransitionLink>
+                    </p>
                   </div>
                 ) : null}
 

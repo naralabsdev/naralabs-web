@@ -4,14 +4,19 @@ import { cn } from "@/shared/lib";
 import { useAuthPageTransition } from "@/modules/auth/components/auth-page-transition";
 import { authPageLinkClass } from "@/modules/auth/styles/auth-styles";
 import Link from "next/link";
-import { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
+
+type AuthTransitionLinkProps = {
+  href: ComponentProps<typeof Link>["href"];
+  className?: string;
+  children: ReactNode;
+};
 
 export function AuthTransitionLink({
   href,
   className,
   children,
-  ...rest
-}: ComponentProps<typeof Link>) {
+}: AuthTransitionLinkProps) {
   const { navigateWithFade, isExiting } = useAuthPageTransition();
 
   return (
@@ -23,7 +28,6 @@ export function AuthTransitionLink({
         event.preventDefault();
         navigateWithFade(typeof href === "string" ? href : href.toString());
       }}
-      {...rest}
     >
       {children}
     </Link>
