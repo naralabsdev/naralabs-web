@@ -1,10 +1,10 @@
-export const explorerPageHeaderClass = "mb-6 sm:mb-7";
+export const explorerPageHeaderClass = "w-full text-left";
 
 export const explorerPageTitleClass =
   "text-xl font-semibold tracking-tight text-white sm:text-2xl";
 
 export const explorerPageDescriptionClass =
-  "mt-1.5 max-w-2xl text-sm text-white";
+  "mt-1.5 max-w-2xl text-sm text-white/85 text-pretty";
 
 export function ExplorerPageHeader({
   title,
