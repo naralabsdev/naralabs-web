@@ -1,9 +1,7 @@
 import { cn } from "@/shared/lib/cn";
 
-import { ActivitySection } from "./activity/activity-section";
 import { MarketingChrome } from "./chrome/marketing-chrome";
-import { HeroSection } from "./hero/hero-section";
-import { NetworkStatsSection } from "./network/network-stats-section";
+import { LiveHomeDashboard } from "./live/live-home-dashboard";
 import type { HomePageViewModel } from "../domain/home-view-model";
 import { inter, satoshi } from "../fonts";
 import "../styles/marketing.css";
@@ -19,14 +17,7 @@ export function LandingPage({ data }: { data: HomePageViewModel }) {
     >
       <MarketingChrome>
         <main>
-          <div className="relative overflow-visible">
-            <HeroSection />
-            <NetworkStatsSection overview={data.networkOverview} />
-          </div>
-          <ActivitySection
-            recentEvents={data.recentEvents}
-            activeContracts={data.activeContracts}
-          />
+          <LiveHomeDashboard initialData={data} />
         </main>
       </MarketingChrome>
     </div>
