@@ -6,14 +6,19 @@ import { HighlightedJson } from "@/modules/events/components/highlighted-json";
 import { TopicsTable } from "@/modules/events/components/topics-table";
 import { ValueFields } from "@/modules/events/components/value-fields";
 import type { EventDetailViewModel } from "@/modules/events/domain/event-view-model";
+import { ExplorerDetailPageLayout } from "@/modules/explore/components/explorer-detail-page-layout";
+import { EXPLORER_DETAIL_PAGE_COPY } from "@/modules/explore/constants/explorer-page-copy";
 import { ExplorerPageShell } from "@/modules/explore/components/explorer-page-shell";
 import { DetailSectionCard } from "@/shared/ui/detail-section-card";
 import { DetailSummaryCard } from "@/shared/ui/detail-summary-card";
 
 export function EventDetailPage({ event }: { event: EventDetailViewModel }) {
   return (
-    <ExplorerPageShell>
-      <div>
+    <ExplorerPageShell auroraTheme="events">
+      <ExplorerDetailPageLayout
+        title={EXPLORER_DETAIL_PAGE_COPY.event.title}
+        description={EXPLORER_DETAIL_PAGE_COPY.event.description}
+      >
         <DetailSummaryCard>
           <EventOverviewSummary event={event} />
         </DetailSummaryCard>
@@ -33,7 +38,7 @@ export function EventDetailPage({ event }: { event: EventDetailViewModel }) {
         <DetailSectionCard title="XDR" flushContent>
           <HighlightedJson code={event.xdrJson} />
         </DetailSectionCard>
-      </div>
+      </ExplorerDetailPageLayout>
     </ExplorerPageShell>
   );
 }
