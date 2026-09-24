@@ -1,8 +1,11 @@
 "use client";
 
+import Link from "next/link";
+
 import { DicebearAvatar } from "@/modules/landing/components/activity/dicebear-avatar";
 import type { EventDetailViewModel } from "@/modules/events/domain/event-view-model";
 import { cn } from "@/shared/lib/cn";
+import { buttonVariants } from "@/shared/ui/button";
 
 export function EventOverviewSummary({ event }: { event: EventDetailViewModel }) {
   const decodeClass =
@@ -27,6 +30,17 @@ export function EventOverviewSummary({ event }: { event: EventDetailViewModel })
         </div>
         <p className="mt-0.5 line-clamp-1 text-xs text-neutral-600">{event.summary}</p>
         <p className="mt-0.5 text-[11px] text-neutral-500">{event.ingestedAgo}</p>
+        <div className="mt-2">
+          <Link
+            href={`/playground?fromEvent=${encodeURIComponent(event.id)}&tab=custom`}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "inline-flex h-8 items-center rounded-lg px-3 text-xs font-medium",
+            )}
+          >
+            Try in Playground
+          </Link>
+        </div>
       </div>
     </div>
   );
