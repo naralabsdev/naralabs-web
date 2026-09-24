@@ -1,11 +1,12 @@
 import { Footer, Layout, Navbar } from "nextra-theme-docs";
 import { getPageMap } from "nextra/page-map";
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { filterDocsPageMap } from "@/app/(docs)/filter-docs-page-map";
 import { FAVICON_MANIFEST_PATH, SITE_FAVICONS } from "@/shared/config/favicons";
 import { getGithubUrl } from "@/shared/config/site";
+import { Logo } from "@/shared/ui/logo";
 
 export const metadata: Metadata = {
   title: {
@@ -23,30 +24,10 @@ export const viewport: Viewport = {
 
 const navbar = (
   <Navbar
-    logo={
-      <Link href="/docs" className="flex items-center gap-2 no-underline">
-        <span className="font-semibold tracking-tight text-neutral-900">NaraLabs</span>
-        <span className="rounded-md bg-neutral-100 px-1.5 py-0.5 text-xs font-medium text-neutral-600">
-          Docs
-        </span>
-      </Link>
-    }
+    logo={<Logo variant="light" className="h-9 w-auto" priority />}
     logoLink="/docs"
     projectLink={getGithubUrl()}
-  >
-    <Link
-      href="/"
-      className="x:px-3 x:py-2 x:text-sm x:font-medium x:text-neutral-600 x:hover:text-neutral-900"
-    >
-      Explorer
-    </Link>
-    <Link
-      href="/dashboard/developers"
-      className="x:px-3 x:py-2 x:text-sm x:font-medium x:text-neutral-600 x:hover:text-neutral-900"
-    >
-      API Dashboard
-    </Link>
-  </Navbar>
+  />
 );
 
 const footer = (
@@ -56,6 +37,8 @@ const footer = (
 );
 
 export default async function DocsRootLayout({ children }: { children: ReactNode }) {
+  const pageMap = filterDocsPageMap(await getPageMap());
+
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>
@@ -67,9 +50,9 @@ export default async function DocsRootLayout({ children }: { children: ReactNode
         <Layout
           navbar={navbar}
           footer={footer}
-          pageMap={await getPageMap()}
+          pageMap={pageMap}
           docsRepositoryBase="https://github.com/naralabsdev/naralabs-web/tree/main/naralabs-frontend/src/content"
-          sidebar={{ defaultMenuCollapseLevel: 1 }}
+          sidebar={{ defaultMenuCollapseLevel: 2, autoCollapse: false, toggleButton: true }}
           editLink="Edit this page on GitHub"
           darkMode={false}
           nextThemes={{
