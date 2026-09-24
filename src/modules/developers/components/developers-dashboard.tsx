@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import Link from "next/link";
+
 import { DASHBOARD_USAGE_LIMITS } from "@/app/(site)/dashboard/constants";
 import type { APIKeyCreateResult, APIKeyPublic } from "@/modules/developers/types";
 import { Button } from "@/shared/ui/button";
@@ -103,6 +105,14 @@ export function DevelopersDashboard({ initialKeys }: { initialKeys: APIKeyPublic
 
   return (
     <>
+      <p className="text-sm text-neutral-600">
+        Try decoding in the{" "}
+        <Link href="/playground" className="font-medium text-neutral-900 underline-offset-2 hover:underline">
+          Decode Playground
+        </Link>
+        . Paste an API key there after you create one below.
+      </p>
+
       <DetailSectionCard
         title="My API Keys"
         description={`Create and manage keys for programmatic API access. Each account is limited to ${DASHBOARD_USAGE_LIMITS.apiKeys} active keys. For usage guides, see Atlas API in Docs.`}
