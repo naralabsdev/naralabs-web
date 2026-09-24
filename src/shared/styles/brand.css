@@ -1,0 +1,28 @@
+/**
+ * NaraLabs brand palette — single source for CSS.
+ * TS mirror: src/shared/config/brand.ts (aurora / canvas only).
+ */
+:root,
+.dark {
+  --brand-violet: #c263e1;
+  --brand-lilac: #8791e1;
+  --brand-blue: #1344af;
+
+  --primary: var(--brand-blue);
+  --primary-hover: #0f3690;
+  --primary-foreground: #ffffff;
+
+  --brand-button-gradient-angle: 313.39deg;
+  --brand-button-gradient: linear-gradient(
+    var(--brand-button-gradient-angle),
+    var(--brand-violet) -15.1%,
+    var(--brand-lilac) -15.08%,
+    var(--brand-blue) 120.89%
+  );
+  --brand-button-gradient-hover: linear-gradient(
+    var(--brand-button-gradient-angle),
+    color-mix(in srgb, var(--brand-violet) 90%, black) -15.1%,
+    color-mix(in srgb, var(--brand-lilac) 90%, black) -15.08%,
+    color-mix(in srgb, var(--brand-blue) 90%, black) 120.89%
+  );
+}
