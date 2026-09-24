@@ -24,7 +24,7 @@ export const SITE_FOOTER = {
     {
       title: "Developers",
       links: [
-        { label: "API Reference", href: "/developers" },
+        { label: "Decode Playground", href: "/playground" },
         { label: "Schemas", href: "/schemas" },
         { label: "GitHub", href: "github", external: true },
       ],

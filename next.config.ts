@@ -29,6 +29,11 @@ const nextConfig: NextConfig = {
         destination: "/favicon/favicon.ico",
         permanent: true,
       },
+      {
+        source: "/developers",
+        destination: "/playground",
+        permanent: false,
+      },
     ];
   },
   async headers() {

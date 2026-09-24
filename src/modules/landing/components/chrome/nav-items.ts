@@ -35,9 +35,14 @@ export const naralabsNavItems: NavItem[] = [
     segments: ["/schemas"],
   },
   {
+    name: "Playground",
+    href: "/playground",
+    segments: ["/playground"],
+  },
+  {
     name: "API",
-    href: "/developers",
-    segments: ["/developers"],
+    href: "/dashboard/developers",
+    segments: ["/dashboard/developers"],
   },
   {
     name: "Docs",
