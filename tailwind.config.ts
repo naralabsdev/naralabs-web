@@ -12,6 +12,7 @@ const config: Pick<Config, "presets" | "safelist"> = {
     "bg-checkout-info-banner",
     "text-checkout-info-banner-foreground",
     "border-checkout-info-banner-border",
+    "bg-brand-button",
     "bg-primary",
     "text-primary",
     "text-primary-foreground",
