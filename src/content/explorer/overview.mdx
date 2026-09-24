@@ -21,6 +21,7 @@ The NaraLabs explorer is the public-facing UI at [naralabs.io](https://naralabs.
 | --- | --- |
 | `/events` | Paginated events with search and decode-status filter |
 | `/contracts` | Paginated contracts with search and schema filter |
+| `/schemas` | SEP-0048 schema registry — contracts with published event schemas |
 
 ### Detail pages
 
@@ -28,6 +29,7 @@ The NaraLabs explorer is the public-facing UI at [naralabs.io](https://naralabs.
 | --- | --- |
 | `/events/[id]` | Full event payload, topics, value, decode status |
 | `/contracts/[id]` | Contract summary, type breakdown, recent events |
+| `/schemas/...` | Schema bundles, event definitions, trust tier (community / verified) |
 
 ## Decode status
 
@@ -38,6 +40,9 @@ Events may appear as:
 
 Contract schema status follows the same pattern at the contract level.
 
-## Account dashboard
+## Related docs
 
-Signed-in users can access `/dashboard` for watchlists, private tags, API keys, and profile settings.
+- [Events](/docs/explorer/events) — filters and detail views
+- [Contracts](/docs/explorer/contracts) — activity and schema status
+- [Schemas](/docs/explorer/schemas) — registry browsing
+- [Decoding events](/docs/getting-started/decoding-events) — how decode + registry fit together
