@@ -29,7 +29,7 @@ export function PaymentGateway() {
             </div>
             <button
               type="button"
-              className="rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+              className="rounded-lg bg-brand-button px-4 py-2.5 text-sm font-medium text-primary-foreground"
               disabled
             >
               Pay now
