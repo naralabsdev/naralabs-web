@@ -21,7 +21,7 @@
 }
 
 .hero-aurora.hero-aurora--ready {
-  background: #1344af;
+  background: var(--brand-blue);
 }
 
 @media (min-width: 1024px) {
