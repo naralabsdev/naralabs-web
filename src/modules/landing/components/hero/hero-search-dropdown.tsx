@@ -189,7 +189,7 @@ export function HeroSearchDropdown({
             className={cn(
               "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
               filter === option.id
-                ? "border-neutral-900 bg-neutral-900 text-white"
+                ? "border-primary bg-primary text-primary-foreground"
                 : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:text-neutral-900",
             )}
           >
