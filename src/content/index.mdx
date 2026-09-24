@@ -1,34 +1,55 @@
 ---
-title: NaraLabs Documentation
-description: Product documentation for the NaraLabs Stellar Soroban explorer
+title: Overview
+description: NaraLabs Soroban explorer, schema registry, and Atlas API
 ---
 
 # NaraLabs Documentation
 
-Welcome to the official docs for **NaraLabs** — a Stellar blockchain explorer focused on Soroban smart contracts, decoded events, and contract activity.
+**NaraLabs** is semantic infrastructure for Soroban: indexed events, SEP-0048 schema registry, and the Atlas decode API.
 
-## What is NaraLabs?
+## What you can do
 
-NaraLabs indexes Soroban contract events from the Stellar network, decodes them when schemas are available, and presents them in a readable explorer UI.
+- Browse **recent Soroban events** and decode status in the [explorer](/docs/explorer/overview)
+- Explore **contracts** and **published schemas**
+- Call the **Atlas API** to decode raw events or query indexed activity
 
-Use NaraLabs to:
+## Local development
 
-- Browse **recent Soroban events** across tracked contracts
-- Inspect **contract activity**, schemas, and event history
-- Query the **Atlas read API** for stats, events, and contracts
+1. **Start Atlas** (API + indexer):
 
-## Quick links
+```bash
+cd naralabs-atlas
+docker compose up -d
+```
 
-- [Getting started](/docs/getting-started/introduction) — networks, setup, and first steps
-- [Explorer overview](/docs/explorer/overview) — how the UI is organized
-- [Atlas API](/docs/api/overview) — REST endpoints for indexed data
+2. **Start the web app**:
 
-## Stack overview
+```bash
+cd naralabs-frontend
+cp .env.example .env
+npm install
+npm run dev
+```
+
+3. Open [http://localhost:3000](http://localhost:3000) (explorer) and [http://localhost:3000/docs](http://localhost:3000/docs) (this site).
+
+Key env vars: `ATLAS_API_URL`, `NEXT_PUBLIC_STELLAR_NETWORK` — see `.env.example`.
+
+## Doc map
+
+| Section | Contents |
+| --- | --- |
+| [Setup](/docs/getting-started/networks) | Networks, decoding & schemas |
+| [Explorer](/docs/explorer/overview) | UI routes for events, contracts, schemas |
+| [Atlas API](/docs/api/overview) | Decoder, reads, registry endpoints |
+
+## Stack
 
 | Component | Role |
 | --- | --- |
-| **NaraLabs Web** | Next.js frontend (`naralabs.io`) |
-| **Atlas Server** | Read API for stats, events, contracts |
-| **Atlas Worker** | Indexes Soroban events from Stellar RPC |
+| **NaraLabs Web** | Explorer UI + docs |
+| **Atlas Server** | Read API, decoder, schema registry |
+| **Atlas Worker** | Soroban event indexer |
+| **NaraLabs CLI** | Publish SEP-0048 schemas |
 
-Need help? Open an issue on [GitHub](https://github.com/naralabsdev/naralabs-web) or reach out to the team.
+Questions? [GitHub issues](https://github.com/naralabsdev/naralabs-web).
