@@ -1,3 +1,5 @@
+import { brandColors } from "@/shared/config/brand";
+
 export type AuroraTheme = "default" | "events" | "contracts" | "schemas";
 
 export type AuroraThemeConfig = {
@@ -8,9 +10,9 @@ export type AuroraThemeConfig = {
 
 /** Shared NaraLabs aurora palette — used on landing, dashboard, and explorer pages. */
 export const BRAND_AURORA: AuroraThemeConfig = {
-  colorA: "#1344AF",
-  colorB: "#8791E1",
-  fallback: "#1344AF",
+  colorA: brandColors.blue,
+  colorB: brandColors.lilac,
+  fallback: brandColors.blue,
 };
 
 export const AURORA_THEMES: Record<AuroraTheme, AuroraThemeConfig> = {
