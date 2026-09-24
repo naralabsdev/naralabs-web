@@ -128,6 +128,12 @@ export function useHomeWebSocket(initialData: HomePageViewModel) {
         reconnectAttemptRef.current = 0;
       };
 
+      socket.onerror = () => {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("[realtime] WebSocket error:", buildWsUrl(network));
+        }
+      };
+
       socket.onmessage = handleMessage;
 
       socket.onclose = () => {
