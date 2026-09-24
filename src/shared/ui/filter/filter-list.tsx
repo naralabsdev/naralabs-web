@@ -609,7 +609,7 @@ function OperatorFilterPill({
                                   className={cn(
                                     "flex h-4 w-4 items-center justify-center rounded border",
                                     isSelected
-                                      ? "border-neutral-900 bg-neutral-900"
+                                      ? "border-primary bg-primary"
                                       : "border-neutral-300",
                                   )}
                                 >

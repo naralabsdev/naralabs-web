@@ -45,7 +45,7 @@ export function FilterOptionRow({
       <div
         className={cn(
           "flex h-4 w-4 shrink-0 items-center justify-center rounded border",
-          checked ? "border-neutral-900 bg-neutral-900" : "border-neutral-300",
+          checked ? "border-primary bg-primary" : "border-neutral-300",
         )}
       >
         {checked && <Check className="h-3 w-3 text-white" />}
