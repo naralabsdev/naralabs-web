@@ -74,6 +74,7 @@ export function AnimatedEmptyState({
           <Link
             href={learnMoreHref}
             target={learnMoreTarget}
+            data-naralabs-variant={addButton ? "secondary" : "primary"}
             className={cn(
               buttonVariants({ variant: addButton ? "secondary" : "primary" }),
               "flex h-9 items-center whitespace-nowrap rounded-lg border px-4 text-sm",
