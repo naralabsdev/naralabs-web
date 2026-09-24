@@ -43,7 +43,7 @@ SEP-0048 event schemas are stored and served by **Atlas** (`naralabs-atlas`), no
 |---------|--------|
 | Publish / list / get schemas | Atlas API `POST/GET /v1/schemas` |
 | Explorer decode status UI | This frontend (`schema_status`, `decode_status` badges & filters) |
-| How decoding works | `/docs/guides/decoding-events` |
+| How decoding works | `/docs/getting-started/decoding-events` |
 
 There is no dedicated schema publish UI yet — use Atlas OpenAPI docs (`http://localhost:8080/docs`) or `curl` against `POST /v1/schemas`.
 
@@ -102,6 +102,7 @@ See [`.env.example`](./.env.example).
 | `APP_BASE_URL` | Server-side app origin (auth callbacks) |
 | `NEXT_PUBLIC_APP_URL` | Public app origin |
 | `NEXT_PUBLIC_STELLAR_NETWORK` | Stellar network (`testnet` / `mainnet`) |
+| `NEXT_PUBLIC_REALTIME_WS_URL` | WebSocket base URL for live dashboard (optional; auto-derived as `wss://api.<domain>`) |
 | `NEXT_PUBLIC_DOCS_URL` | Docs path (default `/docs`) |
 | `NEXT_PUBLIC_GITHUB_URL` | GitHub link for nav/footer |
 
@@ -129,10 +130,13 @@ src/
 | `APP_BASE_URL` | Yes | `https://naralabs.io` |
 | `NEXT_PUBLIC_APP_URL` | Yes | `https://naralabs.io` |
 | `NEXT_PUBLIC_STELLAR_NETWORK` | No | `testnet` |
+| `NEXT_PUBLIC_REALTIME_WS_URL` | No* | `wss://api.naralabs.io` |
+
+\*If omitted, derived from `NEXT_PUBLIC_APP_URL` → `wss://api.naralabs.io`. Set explicitly when API host differs.
 
 4. Deploy — build command: `npm run build`, output: Next.js default
 
-Ensure Atlas `CORS_ALLOWED_ORIGINS` and `WEB_APP_URL` include your production frontend URL.
+Ensure Atlas `CORS_ALLOWED_ORIGINS`, `REALTIME_ALLOWED_ORIGINS` (or CORS fallback), and `WEB_APP_URL` include your production frontend URL. On the VPS, set `HTTP_WRITE_TIMEOUT=0` and configure nginx WebSocket upgrade for `/v1/ws/home`.
 
 ## Related repos
 
