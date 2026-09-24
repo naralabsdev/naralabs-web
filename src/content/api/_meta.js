@@ -1,8 +1,6 @@
 export default {
   overview: "Overview",
-  authentication: "Authentication",
   quickstart: "Quickstart",
+  "api-credentials": "API credentials",
   "decode-api": "Decode API",
-  "events-api": "Events",
-  "contracts-api": "Contracts",
 };
