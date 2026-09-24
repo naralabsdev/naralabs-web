@@ -1,4 +1,4 @@
 export default {
-  introduction: "Introduction",
   networks: "Networks",
+  "decoding-events": "Decoding & schemas",
 };
