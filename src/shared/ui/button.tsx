@@ -4,20 +4,24 @@ import { ReactNode, forwardRef } from "react";
 import { LoadingSpinner } from "./icons";
 import { Tooltip } from "./tooltip";
 
-export const buttonVariants = cva("transition-all", {
+/** Filled CTA — gradient from `--brand-button-gradient` (see brand.css). */
+export const primaryButtonClassName =
+  "opacity-100 border-transparent bg-brand-button text-primary-foreground";
+
+export const buttonVariants = cva(
+  "opacity-100 transition-[color,background-color,background-image,border-color,box-shadow,transform]",
+  {
   variants: {
     variant: {
-      primary:
-        "border-primary bg-primary text-primary-foreground hover:border-[var(--primary-hover)] hover:bg-[var(--primary-hover)]",
+      primary: primaryButtonClassName,
       secondary: cn(
         "border-border-subtle bg-bg-default text-content-emphasis hover:bg-bg-muted focus-visible:border-border-emphasis outline-none",
         "data-[state=open]:border-border-emphasis data-[state=open]:ring-4 data-[state=open]:ring-border-subtle",
       ),
-      outline: "border-transparent text-content-default hover:bg-neutral-900/5",
-      success:
-        "border-primary bg-primary text-primary-foreground hover:border-[var(--primary-hover)] hover:bg-[var(--primary-hover)]",
+      outline: "border-transparent text-content-default hover:bg-primary/10",
+      success: primaryButtonClassName,
       danger:
-        "border-red-500 bg-red-500 text-white hover:bg-red-600 hover:ring-4 hover:ring-red-100",
+        "opacity-100 border-red-500 bg-red-500 text-white hover:bg-red-600 hover:ring-4 hover:ring-red-100",
       "danger-outline":
         "border-transparent bg-white text-red-500 hover:bg-red-600 hover:text-white",
     },
@@ -25,7 +29,8 @@ export const buttonVariants = cva("transition-all", {
   defaultVariants: {
     variant: "primary",
   },
-});
+  },
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -62,7 +67,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         <Tooltip content={disabledTooltip}>
           <div
             className={cn(
-              "flex h-10 w-full cursor-not-allowed items-center justify-center gap-x-2 rounded-md border border-neutral-200 bg-neutral-100 px-4 text-sm text-neutral-400 transition-all duration-150 ease-out focus:outline-none",
+              "flex h-10 w-full cursor-not-allowed items-center justify-center gap-x-2 rounded-md border border-neutral-200 bg-neutral-100 px-4 text-sm text-neutral-400 opacity-50 transition-[color,background-color,border-color,box-shadow,transform] duration-150 ease-out focus:outline-none",
               {
                 "border-transparent bg-transparent":
                   variant?.endsWith("outline"),
@@ -106,10 +111,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         // if onClick is passed, it's a "button" type, otherwise it's being used in a form, hence "submit"
         type={props.onClick ? "button" : "submit"}
         className={cn(
-          "group flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border px-3 text-sm transition-all duration-150 ease-out",
+          "group flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border px-3 text-sm transition-[color,background-color,border-color,box-shadow,transform] duration-150 ease-out",
           props.disabled || loading
-            ? "border-border-subtle bg-bg-subtle text-content-subtle cursor-not-allowed outline-none"
-            : buttonVariants({ variant }),
+            ? "cursor-not-allowed border-border-subtle bg-bg-subtle text-content-subtle opacity-50 outline-none"
+            : cn("opacity-100", buttonVariants({ variant })),
           className,
         )}
         disabled={props.disabled || loading}
@@ -133,7 +138,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               "hidden rounded px-2 py-0.5 text-xs font-light transition-all duration-75 md:inline-block",
               {
                 "bg-white/20 text-white group-hover:bg-white/30":
-                  variant === "primary",
+                  variant === "primary" || variant === "success",
                 "bg-neutral-200 text-neutral-400 group-hover:bg-neutral-100 group-hover:text-neutral-500":
                   variant === "secondary",
                 "bg-neutral-100 text-neutral-500 group-hover:bg-neutral-200":
