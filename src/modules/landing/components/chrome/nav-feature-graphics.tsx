@@ -236,7 +236,7 @@ export function InvoiceGraphic() {
           </span>
         </div>
 
-        <div className="rounded-lg bg-neutral-900 py-2 text-center text-sm font-medium text-white">
+        <div className="rounded-lg bg-brand-button py-2 text-center text-sm font-medium text-primary-foreground">
           Pay invoice
         </div>
       </div>
