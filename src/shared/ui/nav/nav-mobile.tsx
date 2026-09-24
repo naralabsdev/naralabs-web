@@ -371,13 +371,14 @@ const ChildItem = ({
 };
 
 export function AuthButton({
-  variant,
+  variant = "primary",
   className,
   ...rest
 }: Pick<ButtonProps, "variant"> & ComponentProps<typeof Link>) {
   return (
     <Link
       {...rest}
+      data-naralabs-variant={variant ?? "primary"}
       className={cn(
         "flex h-8 w-fit items-center whitespace-nowrap rounded-lg border px-3 text-[0.8125rem]",
         buttonVariants({ variant }),
