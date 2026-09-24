@@ -1,4 +1,5 @@
 @import "../shared/styles/themes.css";
+@import "../shared/styles/brand.css";
 
 @tailwind base;
 @tailwind components;
@@ -14,11 +15,6 @@ body {
 
 @layer base {
   :root {
-    /* Brand primary: charcoal CTA (login/register style), not blue */
-    --primary: #525252;
-    --primary-hover: #404040;
-    --primary-foreground: #ffffff;
-
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -61,9 +57,6 @@ body {
   }
 
   .dark {
-    --primary: #525252;
-    --primary-hover: #404040;
-    --primary-foreground: #ffffff;
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
@@ -155,6 +148,17 @@ body {
   .ring-primary {
     --tw-ring-color: var(--primary);
   }
+
+  .bg-brand-button {
+    border-color: transparent;
+    background-color: var(--brand-blue);
+    background-image: var(--brand-button-gradient);
+    color: var(--primary-foreground);
+  }
+
+  .bg-brand-button:hover {
+    background-image: var(--brand-button-gradient-hover);
+  }
 }
 
 .dub-scrollbar {
@@ -204,22 +208,41 @@ body > div:has(.stellar-wallets-kit) {
   z-index: 9999 !important;
 }
 
-/* Primary buttons: design system Button */
-button[data-naralabs-variant="primary"]:not(:disabled) {
-  border-color: var(--primary) !important;
-  background-color: var(--primary) !important;
+/* Primary / success buttons: design system Button + link CTAs */
+button[data-naralabs-variant="primary"]:not(:disabled),
+button[data-naralabs-variant="success"]:not(:disabled),
+a[data-naralabs-variant="primary"],
+a[data-naralabs-variant="success"] {
+  border-color: transparent !important;
+  background-color: var(--brand-blue) !important;
+  background-image: var(--brand-button-gradient) !important;
   color: var(--primary-foreground) !important;
+  opacity: 1 !important;
 }
 
-button[data-naralabs-variant="primary"]:not(:disabled):hover {
-  border-color: var(--primary-hover) !important;
-  background-color: var(--primary-hover) !important;
+button[data-naralabs-variant="primary"]:disabled,
+button[data-naralabs-variant="success"]:disabled,
+button.auth-button:disabled {
+  opacity: 0.5 !important;
+}
+
+button[data-naralabs-variant="primary"]:not(:disabled):hover,
+button[data-naralabs-variant="success"]:not(:disabled):hover,
+a[data-naralabs-variant="primary"]:hover,
+a[data-naralabs-variant="success"]:hover {
+  border-color: transparent !important;
+  background-image: var(--brand-button-gradient-hover) !important;
 }
 
 [data-slot="button"]:not(:disabled).bg-primary {
   border-color: var(--primary) !important;
   background-color: var(--primary) !important;
   color: var(--primary-foreground) !important;
+  opacity: 1 !important;
+}
+
+[data-slot="button"]:disabled.bg-primary {
+  opacity: 0.5 !important;
 }
 
 [data-slot="button"]:not(:disabled).bg-primary:hover {
@@ -227,14 +250,16 @@ button[data-naralabs-variant="primary"]:not(:disabled):hover {
   background-color: var(--primary-hover) !important;
 }
 
-/* Auth pages: same charcoal CTA as primary buttons */
+/* Auth pages: same brand gradient CTA as primary buttons */
 button.auth-button:not(:disabled) {
-  border-color: var(--primary) !important;
-  background-color: var(--primary) !important;
+  border-color: transparent !important;
+  background-color: var(--brand-blue) !important;
+  background-image: var(--brand-button-gradient) !important;
   color: var(--primary-foreground) !important;
+  opacity: 1 !important;
 }
 
 button.auth-button:not(:disabled):hover {
-  border-color: var(--primary-hover) !important;
-  background-color: var(--primary-hover) !important;
+  border-color: transparent !important;
+  background-image: var(--brand-button-gradient-hover) !important;
 }
