@@ -1,0 +1,37 @@
+---
+title: Decode Playground
+description: Try Atlas decoding on sample or custom Soroban event payloads in the browser
+---
+
+# Decode Playground
+
+The [Decode Playground](/playground) lets you run **`POST /v1/decode`** without writing a script first.
+
+## What it is for
+
+- **Developers** validating RPC event JSON before wiring production code
+- **Explorer users** checking why an event is **decoded** or **raw**
+
+## What it is not
+
+- Deploying or invoking Soroban contracts (use Stellar Lab or your CLI)
+- Uploading WASM or publishing schemas (use the [Schema Registry](/schemas) and CLI)
+
+## Modes
+
+### Samples (no account)
+
+Pick a built-in fixture and click **Run sample decode**. The server only accepts allowlisted `sampleId` values.
+
+### Custom payload (sign in)
+
+Paste `network`, contract ID, and JSON (`topicsJson` / `valueJson` or XDR fields). You need an Atlas API key (`nl_api_…`) from [API credentials](/docs/api/api-credentials). The key is sent to the NaraLabs BFF and forwarded to Atlas; it is not stored on our servers (optional session storage in your browser tab only).
+
+## From the explorer
+
+On an event detail page, use **Try in Playground** to prefill the custom form from indexed event data.
+
+## Related
+
+- [Decode API](/docs/api/decode-api)
+- [Decoding & schemas](/docs/getting-started/decoding-events)
