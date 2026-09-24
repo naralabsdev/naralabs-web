@@ -14,17 +14,16 @@ Atlas exposes REST APIs for explorer reads, on-demand event decoding, and SEP-00
 | Local | `http://localhost:8080` |
 | Production | Configure via `ATLAS_API_URL` |
 
-The Naralabs website proxies browser reads through `/api/atlas/*` (BFF). Integrations should call Atlas directly with an [API key](/docs/api/authentication).
+The Naralabs website proxies browser reads through `/api/atlas/*` (BFF). Integrations should call Atlas directly with an [API key](/docs/api/api-credentials).
 
-## Authentication summary
+## Credentials summary
 
 | Credential | Prefix | Use case |
 | --- | --- | --- |
 | API key | `nl_api_` | Decode API + programmatic explore reads |
 | Publish token | `nl_live_` | Schema publishing (`POST /v1/schemas`) |
-| JWT session | — | Dashboard, `/v1/api-keys`, `/v1/auth/me` |
 
-See [Authentication](/docs/api/authentication) and [Quickstart](/docs/api/quickstart).
+See [API Credentials](/docs/api/api-credentials) and [Quickstart](/docs/api/quickstart).
 
 ## Common parameters
 
@@ -79,20 +78,34 @@ See [Decode API](/docs/api/decode-api).
 | GET | `/v1/schemas` | — | List schemas (`limit`, `offset`, `search`) |
 | GET | `/v1/schemas/{contract_id}` | — | Latest schema per event on a contract |
 | GET | `/v1/schemas/{contract_id}/{event_name}` | — | Get schema (`?version=` optional) |
+| GET | `/v1/schemas/contracts` | — | Contract-level schema bundles |
+| GET | `/v1/schemas/summary` | — | Registry aggregate stats |
 
 Registry list pagination uses `limit` / `offset`, not `page` / `page_size`.
 
-### Account & keys
+### Events (`GET /v1/events`)
 
-| Method | Path | Auth | Description |
-| --- | --- | --- | --- |
-| POST | `/v1/auth/register` | — | Register account |
-| POST | `/v1/auth/login` | — | Login |
-| POST | `/v1/auth/verify-email` | — | Verify email token |
-| POST | `/v1/auth/resend-verification` | — | Resend verification |
-| GET | `/v1/auth/me` | JWT | Current user |
-| POST/GET/DELETE | `/v1/api-keys` | JWT | Manage developer API keys |
-| POST/GET/DELETE | `/v1/tokens` | JWT | Manage publish tokens |
+| Parameter | Description |
+| --- | --- |
+| `network` | **Required** — `testnet`, `mainnet`, … |
+| `page`, `page_size` | Pagination (max `page_size` 100) |
+| `search` | Event ID, contract ID, txn hash, payload |
+| `event_type` | Filter by type symbol |
+| `decode_status` | `decoded` or `raw` |
+
+`GET /v1/events/{id}?network=` returns full topics, value JSON, XDR, and decode metadata.
+
+### Contracts (`GET /v1/contracts`)
+
+| Parameter | Description |
+| --- | --- |
+| `network` | **Required** |
+| `page`, `page_size` | Pagination |
+| `search` | Contract ID |
+| `schema_status` | `decoded` or `raw_only` |
+
+`GET /v1/contracts/{id}` — summary and schema info.  
+`GET /v1/contracts/{id}/events` — paginated events for one contract (same filters as `/v1/events`).
 
 ## OpenAPI / Scalar
 

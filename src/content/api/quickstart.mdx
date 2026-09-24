@@ -1,26 +1,24 @@
 ---
 title: Quickstart
-description: Create an API key and make your first Atlas API calls
+description: Make your first Atlas decode and explore API calls
 ---
 
 # Quickstart
 
-Get from zero to a decoded Soroban event in four steps.
+Get from zero to a decoded Soroban event in three steps.
 
-## 1. Create an account
+## 1. Set your API key
 
-Register at [/register](/register) and verify your email.
-
-## 2. Create an API key
-
-Open **[API Dashboard](/dashboard/developers)**, click **Create key**, then copy the `nl_api_…` value.
+Use a NaraLabs **API key** (`nl_api_…`) for programmatic access:
 
 ```bash
 export NARALABS_API_KEY="nl_api_your_key_here"
 export ATLAS_URL="http://localhost:8080"
 ```
 
-## 3. Decode a raw event
+See [API Credentials](/docs/api/api-credentials) for how keys and publish tokens differ.
+
+## 2. Decode a raw event
 
 ```bash
 curl -X POST "$ATLAS_URL/v1/decode" \
@@ -36,7 +34,7 @@ curl -X POST "$ATLAS_URL/v1/decode" \
 
 If a matching schema is registered, you get `decodeStatus: "decoded"` with semantic `fields`.
 
-## 4. Query indexed events
+## 3. Query indexed events
 
 List events Naralabs has already indexed and decoded:
 
@@ -53,7 +51,7 @@ Other useful read endpoints:
 | `GET /v1/contracts` | Active contracts |
 | `GET /v1/schemas/{contractId}` | Published schemas |
 
-## Publish schemas (separate credential)
+## Publish schemas (publish token)
 
 Schema publishing uses **publish tokens** (`nl_live_…`), not API keys:
 
@@ -62,10 +60,9 @@ cd my-schema
 naralabs registry publish
 ```
 
-See [Authentication](/docs/api/authentication) for the full credential matrix.
-
 ## Next steps
 
 - [Decode API](/docs/api/decode-api) — request/response reference
-- [Events API](/docs/api/events-api) — filters and pagination
+- [Atlas API overview](/docs/api/overview) — events, contracts, registry
+- [Decoding & schemas](/docs/getting-started/decoding-events)
 - [Atlas OpenAPI](http://localhost:8080/docs) — interactive Scalar docs (local Atlas server)
