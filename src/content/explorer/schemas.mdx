@@ -1,0 +1,53 @@
+---
+title: Schema Registry
+description: Browse SEP-0048 event schemas in NaraLabs
+---
+
+# Schema Registry
+
+The schema explorer surfaces **SEP-0048 event schemas** published to Atlas — the shared semantic layer for Soroban contract events.
+
+## List page (`/schemas`)
+
+Browse contracts that have published schema bundles:
+
+- Contract ID and registry summary
+- Trust indicators (community vs verified schemas)
+- Links into bundle and event detail views
+
+## Detail views
+
+| Route pattern | Description |
+| --- | --- |
+| `/schemas/[contractId]` | Contract profile and published bundles |
+| `/schemas/[contractId]/v/[version]` | One publish batch — all events in the bundle |
+| `/schemas/[contractId]/[eventName]` | Single event schema and version history |
+
+## Trust tiers
+
+| Tier | Meaning |
+| --- | --- |
+| **Community** | Published by a developer with a publish token |
+| **Verified** | Contract claim verified via wallet signature (when completed) |
+
+Decoding prefers verified schemas when multiple versions exist for the same event.
+
+## Publishing (developers)
+
+Authors publish with the NaraLabs CLI and a **publish token** (`nl_live_…`):
+
+```bash
+naralabs init my-project
+naralabs registry publish
+```
+
+See [Decoding & schemas](/docs/getting-started/decoding-events) and [API Credentials](/docs/api/api-credentials).
+
+## API equivalent
+
+```bash
+GET /v1/schemas?network=testnet&search=CBGRO...
+GET /v1/schemas/contracts/{contract_id}
+```
+
+See [Atlas API overview](/docs/api/overview) for the full registry surface.
