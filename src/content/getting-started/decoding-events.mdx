@@ -1,0 +1,46 @@
+---
+title: Decoding & Schemas
+description: How NaraLabs decodes Soroban events with SEP-0048 schemas
+---
+
+# Decoding & Schemas
+
+NaraLabs uses **SEP-0048** event schemas to turn raw Soroban event payloads into readable fields and summaries.
+
+## Decode pipeline
+
+1. **Index** — Atlas worker ingests events from Stellar RPC (level 1–2)
+2. **Match schema** — Registry lookup by contract + event type
+3. **Decode** — Map topics and value to semantic fields (level 3)
+4. **Preview** — Generate `summary_preview` for list views
+
+## Decode status
+
+| Status | Meaning |
+| --- | --- |
+| `decoded` | Schema matched; semantic fields available |
+| `raw` | Indexed but no schema or partial decode |
+
+## Schema registry
+
+Most Soroban contracts emit events **without on-chain metadata**. Contract authors publish a **`naralabs.schema.yaml`** that maps:
+
+- `prefix_topics` — topic symbols emitted on-chain
+- `params` — human-readable field names, types, and locations
+
+The CLI can generate a starter template from contract metadata; edit it before `registry publish`.
+
+## Decode API
+
+For raw RPC payloads (before indexing), use the [Decode API](/docs/api/decode-api).
+
+## Publish with CLI
+
+```bash
+naralabs init my-schema
+cd my-schema
+naralabs registry validate
+naralabs registry publish
+```
+
+Schema HTTP details: [Atlas API overview](/docs/api/overview) and OpenAPI at `{ATLAS_URL}/docs`.
