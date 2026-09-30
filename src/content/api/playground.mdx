@@ -1,15 +1,15 @@
 ---
 title: Decode Playground
-description: Try Atlas decoding on sample or custom Soroban event payloads in the browser
+description: Try Atlas decoding on Soroban event payloads in the browser (testnet)
 ---
 
 # Decode Playground
 
-The [Decode Playground](/playground) lets you run **`POST /v1/decode`** without writing a script first.
+The [Decode Playground](/playground) runs Atlas decoding in your browser. No API key and no sign-in.
 
 ## What it is for
 
-- **Developers** validating RPC event JSON before wiring production code
+- **Developers** validating RPC event JSON or XDR before wiring production code
 - **Explorer users** checking why an event is **decoded** or **raw**
 
 ## What it is not
@@ -17,21 +17,20 @@ The [Decode Playground](/playground) lets you run **`POST /v1/decode`** without 
 - Deploying or invoking Soroban contracts (use Stellar Lab or your CLI)
 - Uploading WASM or publishing schemas (use the [Schema Registry](/schemas) and CLI)
 
-## Modes
+## How to use
 
-### Samples (no account)
+1. Open [/playground](/playground) (full-screen editor, **testnet** only for now).
+2. Select the emitting **contract ID** from the registry list.
+3. Paste payload as **JSON** (`topicsJson` / `valueJson`) or **XDR** (`topics_xdr` / `value_xdr`).
+4. Click **Decode** (or ⌘/Ctrl+Enter).
 
-Pick a built-in fixture and click **Run sample decode**. The server only accepts allowlisted `sampleId` values.
-
-### Custom payload (sign in)
-
-Paste `network`, contract ID, and JSON (`topicsJson` / `valueJson` or XDR fields). You need an Atlas API key (`nl_api_…`) from [API credentials](/docs/api/api-credentials). The key is sent to the NaraLabs BFF and forwarded to Atlas; it is not stored on our servers (optional session storage in your browser tab only).
+The Naralabs web app calls Atlas on your behalf; you never paste an `nl_api_` key into the playground.
 
 ## From the explorer
 
-On an event detail page, use **Try in Playground** to prefill the custom form from indexed event data.
+On an event detail page, use **Try in Playground** to prefill contract ID and payload (XDR when available).
 
 ## Related
 
-- [Decode API](/docs/api/decode-api)
+- [Decode API](/docs/api/decode-api): programmatic decode with your own API key
 - [Decoding & schemas](/docs/getting-started/decoding-events)

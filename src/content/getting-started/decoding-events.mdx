@@ -9,10 +9,10 @@ NaraLabs uses **SEP-0048** event schemas to turn raw Soroban event payloads into
 
 ## Decode pipeline
 
-1. **Index** — Atlas worker ingests events from Stellar RPC (level 1–2)
-2. **Match schema** — Registry lookup by contract + event type
-3. **Decode** — Map topics and value to semantic fields (level 3)
-4. **Preview** — Generate `summary_preview` for list views
+1. **Index**: Atlas worker ingests events from Stellar RPC (level 1–2)
+2. **Match schema**: Registry lookup by contract + event type
+3. **Decode**: Map topics and value to semantic fields (level 3)
+4. **Preview**: Generate `summary_preview` for list views
 
 ## Decode status
 
@@ -25,8 +25,8 @@ NaraLabs uses **SEP-0048** event schemas to turn raw Soroban event payloads into
 
 Most Soroban contracts emit events **without on-chain metadata**. Contract authors publish a **`naralabs.schema.yaml`** that maps:
 
-- `prefix_topics` — topic symbols emitted on-chain
-- `params` — human-readable field names, types, and locations
+- `prefix_topics`: topic symbols emitted on-chain
+- `params`: human-readable field names, types, and locations
 
 The CLI can generate a starter template from contract metadata; edit it before `registry publish`.
 

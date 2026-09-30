@@ -38,6 +38,8 @@ export const naralabsNavItems: NavItem[] = [
     name: "Playground",
     href: "/playground",
     segments: ["/playground"],
+    target: "_blank",
+    external: true,
   },
   {
     name: "API",

@@ -31,7 +31,7 @@ export const PLAYGROUND_SAMPLES: Record<string, PlaygroundSample> = {
   "counter-decoded": {
     id: "counter-decoded",
     title: "Counter increment",
-    description: "Registered SEP-0048 schema on a test counter contract — semantic fields returned.",
+    description: "Registered SEP-0048 schema on a test counter contract. Semantic fields returned.",
     expectedStatus: "decoded",
     request: {
       network: "testnet",
@@ -44,7 +44,7 @@ export const PLAYGROUND_SAMPLES: Record<string, PlaygroundSample> = {
   "unknown-contract-raw": {
     id: "unknown-contract-raw",
     title: "No matching schema",
-    description: "Valid Soroban payload but no registry entry — Atlas returns raw level-2 JSON only.",
+    description: "Valid Soroban payload but no registry entry. Atlas returns raw level-2 JSON only.",
     expectedStatus: "raw",
     request: {
       network: "testnet",
@@ -57,7 +57,7 @@ export const PLAYGROUND_SAMPLES: Record<string, PlaygroundSample> = {
   "prefix-mismatch-raw": {
     id: "prefix-mismatch-raw",
     title: "Topic prefix mismatch",
-    description: "Schema exists on contract but topic symbols do not match — falls back to raw.",
+    description: "Schema exists on contract but topic symbols do not match. Falls back to raw.",
     expectedStatus: "raw",
     request: {
       network: "testnet",
@@ -89,27 +89,28 @@ export function getPlaygroundSample(sampleId: string): PlaygroundSample | undefi
 }
 
 export function getSampleFormPrefill(sampleId: string): {
-  network: string;
   contractId: string;
+  payloadMode: "json" | "xdr";
   payloadJson: string;
 } | null {
   const sample = PLAYGROUND_SAMPLES[sampleId];
   if (!sample) {
     return null;
   }
-  const { network, contractId, topicsJson, valueJson, topicsXdr, valueXdr, eventName, schemaVersion } =
+  const { contractId, topicsJson, valueJson, topicsXdr, valueXdr, eventName, schemaVersion } =
     sample.request;
+  const payloadMode: "json" | "xdr" = topicsXdr?.length && valueXdr ? "xdr" : "json";
   const payload: Record<string, unknown> = {};
   if (topicsJson) payload.topicsJson = topicsJson;
   if (valueJson !== undefined) payload.valueJson = valueJson;
-  if (topicsXdr) payload.topicsXdr = topicsXdr;
-  if (valueXdr) payload.valueXdr = valueXdr;
+  if (topicsXdr) payload.topics_xdr = topicsXdr;
+  if (valueXdr) payload.value_xdr = valueXdr;
   if (eventName) payload.eventName = eventName;
   if (schemaVersion) payload.schemaVersion = schemaVersion;
 
   return {
-    network,
     contractId,
+    payloadMode,
     payloadJson: JSON.stringify(payload, null, 2),
   };
 }

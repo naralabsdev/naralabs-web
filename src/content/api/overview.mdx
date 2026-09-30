@@ -61,7 +61,7 @@ See [Decode API](/docs/api/decode-api).
 
 | Method | Path | Auth | Description |
 | --- | --- | --- | --- |
-| GET | `/health` | — | Service health |
+| GET | `/health` | None | Service health |
 | GET | `/v1/stats` | API key recommended | Network statistics |
 | GET | `/v1/home` | API key recommended | Homepage aggregate payload |
 | GET | `/v1/events` | API key recommended | Paginated events list |
@@ -75,11 +75,11 @@ See [Decode API](/docs/api/decode-api).
 | Method | Path | Auth | Description |
 | --- | --- | --- | --- |
 | POST | `/v1/schemas` | Publish token | Publish new schema version |
-| GET | `/v1/schemas` | — | List schemas (`limit`, `offset`, `search`) |
-| GET | `/v1/schemas/{contract_id}` | — | Latest schema per event on a contract |
-| GET | `/v1/schemas/{contract_id}/{event_name}` | — | Get schema (`?version=` optional) |
-| GET | `/v1/schemas/contracts` | — | Contract-level schema bundles |
-| GET | `/v1/schemas/summary` | — | Registry aggregate stats |
+| GET | `/v1/schemas` | None | List schemas (`limit`, `offset`, `search`) |
+| GET | `/v1/schemas/{contract_id}` | None | Latest schema per event on a contract |
+| GET | `/v1/schemas/{contract_id}/{event_name}` | None | Get schema (`?version=` optional) |
+| GET | `/v1/schemas/contracts` | None | Contract-level schema bundles |
+| GET | `/v1/schemas/summary` | None | Registry aggregate stats |
 
 Registry list pagination uses `limit` / `offset`, not `page` / `page_size`.
 
@@ -87,7 +87,7 @@ Registry list pagination uses `limit` / `offset`, not `page` / `page_size`.
 
 | Parameter | Description |
 | --- | --- |
-| `network` | **Required** — `testnet`, `mainnet`, … |
+| `network` | **Required**. `testnet`, `mainnet`, … |
 | `page`, `page_size` | Pagination (max `page_size` 100) |
 | `search` | Event ID, contract ID, txn hash, payload |
 | `event_type` | Filter by type symbol |
@@ -104,8 +104,8 @@ Registry list pagination uses `limit` / `offset`, not `page` / `page_size`.
 | `search` | Contract ID |
 | `schema_status` | `decoded` or `raw_only` |
 
-`GET /v1/contracts/{id}` — summary and schema info.  
-`GET /v1/contracts/{id}/events` — paginated events for one contract (same filters as `/v1/events`).
+`GET /v1/contracts/{id}`: summary and schema info.  
+`GET /v1/contracts/{id}/events`: paginated events for one contract (same filters as `/v1/events`).
 
 ## OpenAPI / Scalar
 

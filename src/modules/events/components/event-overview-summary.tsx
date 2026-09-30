@@ -32,7 +32,7 @@ export function EventOverviewSummary({ event }: { event: EventDetailViewModel })
         <p className="mt-0.5 text-[11px] text-neutral-500">{event.ingestedAgo}</p>
         <div className="mt-2">
           <Link
-            href={`/playground?fromEvent=${encodeURIComponent(event.id)}&tab=custom`}
+            href={`/playground?fromEvent=${encodeURIComponent(event.id)}`}
             className={cn(
               buttonVariants({ variant: "outline" }),
               "inline-flex h-8 items-center rounded-lg px-3 text-xs font-medium",

@@ -1,6 +1,6 @@
 # Naralabs Web
 
-Official web frontend for **[Naralabs](https://naralabs.io)** — a Stellar blockchain explorer for ledgers, transactions, and Soroban contracts.
+Official web frontend for **[Naralabs](https://naralabs.io)**: a Stellar blockchain explorer for ledgers, transactions, and Soroban contracts.
 
 **Live:** [https://naralabs.io](https://naralabs.io)
 
@@ -9,7 +9,7 @@ Official web frontend for **[Naralabs](https://naralabs.io)** — a Stellar bloc
 - [Next.js 16](https://nextjs.org/) (App Router, route groups)
 - [React 19](https://react.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Nextra 4](https://nextra.site/) — docs at `/docs`
+- [Nextra 4](https://nextra.site/): docs at `/docs`
 - TypeScript
 
 ## Features
@@ -17,15 +17,15 @@ Official web frontend for **[Naralabs](https://naralabs.io)** — a Stellar bloc
 ### Explorer
 
 - Marketing landing page with aurora hero, network stats, recent events, active contracts
-- Paginated event list (`/events`) — search, `event_type`, `decode_status` filters
-- Paginated contract list (`/contracts`) — search, `schema_status` filter (`decoded` / `raw_only`)
-- Event detail (`/events/[id]`) — topics, value, XDR, related links
-- Contract detail (`/contracts/[id]`) — activity, type breakdown, event history
+- Paginated event list (`/events`): search, `event_type`, `decode_status` filters
+- Paginated contract list (`/contracts`): search, `schema_status` filter (`decoded` / `raw_only`)
+- Event detail (`/events/[id]`): topics, value, XDR, related links
+- Contract detail (`/contracts/[id]`): activity, type breakdown, event history
 
 ### Auth & dashboard
 
 - Sign in / register / email verification (`/login`, `/register`, `/verify-email`)
-- Account dashboard (`/dashboard`) — overview, watchlist, tags, notes, verified addresses
+- Account dashboard (`/dashboard`): overview, watchlist, tags, notes, verified addresses
 - Profile settings (`/dashboard/settings/profile`)
 - API dashboard placeholder (`/dashboard/developers`)
 
@@ -33,7 +33,7 @@ Auth flows call Atlas via Next.js route handlers (`/api/auth/*`). Session uses H
 
 ### Docs
 
-- Product docs at **`/docs`** (Nextra) — getting started, explorer guides, API reference, decoding / schema registry guide
+- Product docs at **`/docs`** (Nextra): getting started, explorer guides, API reference, decoding / schema registry guide
 
 ### Schema registry (Atlas backend)
 
@@ -45,7 +45,7 @@ SEP-0048 event schemas are stored and served by **Atlas** (`naralabs-atlas`), no
 | Explorer decode status UI | This frontend (`schema_status`, `decode_status` badges & filters) |
 | How decoding works | `/docs/getting-started/decoding-events` |
 
-There is no dedicated schema publish UI yet — use Atlas OpenAPI docs (`http://localhost:8080/docs`) or `curl` against `POST /v1/schemas`.
+There is no dedicated schema publish UI yet. Use Atlas OpenAPI docs (`http://localhost:8080/docs`) or `curl` against `POST /v1/schemas`.
 
 ## Architecture
 
@@ -134,7 +134,7 @@ src/
 
 \*If omitted, derived from `NEXT_PUBLIC_APP_URL` → `wss://api.naralabs.io`. Set explicitly when API host differs.
 
-4. Deploy — build command: `npm run build`, output: Next.js default
+4. Deploy: build command `npm run build`, output Next.js default
 
 Ensure Atlas `CORS_ALLOWED_ORIGINS`, `REALTIME_ALLOWED_ORIGINS` (or CORS fallback), and `WEB_APP_URL` include your production frontend URL. On the VPS, set `HTTP_WRITE_TIMEOUT=0` and configure nginx WebSocket upgrade for `/v1/ws/home`.
 

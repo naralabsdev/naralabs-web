@@ -32,7 +32,7 @@ const navbar = (
 
 const footer = (
   <Footer>
-    MIT {new Date().getFullYear()} © NaraLabs — Stellar Soroban explorer
+    MIT {new Date().getFullYear()} © NaraLabs · Stellar Soroban explorer
   </Footer>
 );
 

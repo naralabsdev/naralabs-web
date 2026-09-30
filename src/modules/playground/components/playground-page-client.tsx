@@ -1,118 +1,97 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { useAuthSession } from "@/modules/auth/hooks/use-auth-session";
-import {
-  PLAYGROUND_SAMPLE_LIST,
-  getSampleFormPrefill,
-} from "@/modules/playground/constants/samples";
+import { PlaygroundCodePane } from "@/modules/playground/components/playground-code-pane";
+import { PlaygroundContractIdField } from "@/modules/playground/components/playground-contract-id-field";
 import type { DecodeResult, PlaygroundCustomPrefill } from "@/modules/playground/types";
-import { ExplorerPageShell } from "@/modules/explore/components/explorer-page-shell";
-import { ExplorerListSection } from "@/modules/explore/components/explorer-list-section";
-import { ExplorerPageHeader } from "@/modules/explore/components/explorer-page-header";
-import { explorerHeroZoneClass } from "@/modules/explore/components/explorer-aurora-backdrop";
+import { fetchSchemaContractsList } from "@/modules/registry/services/fetch-schema-contracts-list";
 import { cn } from "@/shared/lib/cn";
-import { fieldInputClass } from "@/shared/ui/field-styles";
-import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
+import { Tooltip } from "@/shared/ui/tooltip";
 
-const API_KEY_STORAGE_KEY = "naralabs_playground_api_key";
+const DEFAULT_JSON_PAYLOAD = `{
+  "topicsJson": [
+    { "symbol": "cntr" },
+    { "symbol": "incr" }
+  ],
+  "valueJson": { "u32": 42 }
+}`;
 
-const DEFAULT_PAYLOAD =
-  '{\n  "topicsJson": [\n    { "symbol": "cntr" },\n    { "symbol": "incr" }\n  ],\n  "valueJson": { "u32": 42 }\n}';
+const DEFAULT_XDR_PAYLOAD = `{
+  "topics_xdr": [
+    "AAAADAAAAAE=",
+    "AAAADAAAAAI="
+  ],
+  "value_xdr": "AAAAAwAAAAE="
+}`;
 
-const labelClass = "mb-1 block text-sm text-neutral-600";
+type PayloadMode = "json" | "xdr";
 
 export function PlaygroundPageClient({
   customPrefill,
 }: {
-  initialTab?: "samples" | "custom";
   customPrefill?: PlaygroundCustomPrefill | null;
 }) {
-  const { user, isLoading: authLoading } = useAuthSession();
-
-  const [exampleId, setExampleId] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<DecodeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const [network, setNetwork] = useState(customPrefill?.network ?? "testnet");
-  const [contractId, setContractId] = useState(customPrefill?.contractId ?? "");
-  const [payloadJson, setPayloadJson] = useState(customPrefill?.payloadJson ?? DEFAULT_PAYLOAD);
-  const [apiKey, setApiKey] = useState("");
+  const [contractId, setContractId] = useState("");
+  const contractSearchSeed = customPrefill?.contractId ?? "";
+  const [payloadMode, setPayloadMode] = useState<PayloadMode>(
+    customPrefill?.payloadMode ?? "json",
+  );
+  const [payloadText, setPayloadText] = useState(
+    customPrefill?.payloadJson ??
+      (customPrefill?.payloadMode === "xdr" ? DEFAULT_XDR_PAYLOAD : DEFAULT_JSON_PAYLOAD),
+  );
+
+  const outputText = useMemo(
+    () => (result ? JSON.stringify(result, null, 2) : ""),
+    [result],
+  );
+
+  const contractIdTrimmed = contractId.trim();
+  const canDecode = Boolean(contractIdTrimmed);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    const hint = customPrefill?.contractId?.trim();
+    if (!hint) {
       return;
     }
-    const stored = window.sessionStorage.getItem(API_KEY_STORAGE_KEY);
-    if (stored) {
-      setApiKey(stored);
-    }
-  }, []);
 
-  const persistApiKey = useCallback((value: string) => {
-    setApiKey(value);
-    if (typeof window !== "undefined") {
-      if (value.trim()) {
-        window.sessionStorage.setItem(API_KEY_STORAGE_KEY, value.trim());
-      } else {
-        window.sessionStorage.removeItem(API_KEY_STORAGE_KEY);
+    let cancelled = false;
+    void fetchSchemaContractsList({
+      network: "testnet",
+      search: hint,
+      pageSize: 20,
+    }).then(({ items }) => {
+      if (cancelled) {
+        return;
       }
-    }
-  }, []);
+      const match = items.find((item) => item.contractId === hint);
+      if (match) {
+        setContractId(match.contractId);
+      }
+    });
 
-  const onExampleChange = (id: string) => {
-    setExampleId(id);
-    if (!id) {
-      return;
-    }
-    const prefill = getSampleFormPrefill(id);
-    if (prefill) {
-      setNetwork(prefill.network);
-      setContractId(prefill.contractId);
-      setPayloadJson(prefill.payloadJson);
-    }
-  };
+    return () => {
+      cancelled = true;
+    };
+  }, [customPrefill?.contractId]);
 
   const decode = useCallback(async () => {
     setError(null);
+    if (!contractIdTrimmed) {
+      return;
+    }
     setLoading(true);
 
-    const canUseCustom = Boolean(user && apiKey.trim());
-    const useSample = exampleId && !canUseCustom;
-
     try {
-      if (useSample) {
-        const res = await fetch("/api/playground/decode", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sampleId: exampleId }),
-        });
-        const data = (await res.json()) as DecodeResult & { error?: string };
-        if (!res.ok) {
-          throw new Error(data.error ?? "Decode failed");
-        }
-        setResult(data);
-        return;
-      }
-
-      if (!user) {
-        setError("Sign in to decode your own payload, or pick an example above.");
-        return;
-      }
-
-      if (!apiKey.trim()) {
-        setError("Add your Atlas API key, or pick an example to run without a key.");
-        return;
-      }
-
-      let payloadPart: Record<string, unknown>;
       try {
-        payloadPart = JSON.parse(payloadJson) as Record<string, unknown>;
+        JSON.parse(payloadText);
       } catch {
         toast.error("Payload JSON is invalid");
         return;
@@ -122,147 +101,176 @@ export function PlaygroundPageClient({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          network: network.trim(),
-          contractId: contractId.trim(),
-          apiKey: apiKey.trim(),
-          ...payloadPart,
+          contractId: contractIdTrimmed,
+          payloadMode,
+          payloadText,
         }),
       });
-      const data = (await res.json()) as DecodeResult & { error?: string };
+      const data = (await res.json()) as DecodeResult & { error?: string; message?: string };
       if (!res.ok) {
-        throw new Error(data.error ?? "Decode failed");
+        throw new Error(data.message ?? data.error ?? "Decode failed");
       }
       setResult(data);
-      persistApiKey(apiKey.trim());
     } catch (err) {
       const message = err instanceof Error ? err.message : "Decode failed";
       setError(message);
     } finally {
       setLoading(false);
     }
-  }, [apiKey, contractId, exampleId, network, payloadJson, persistApiKey, user]);
+  }, [contractIdTrimmed, payloadMode, payloadText]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+        if (!canDecode || loading) {
+          return;
+        }
+        event.preventDefault();
+        void decode();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [canDecode, decode, loading]);
+
+  const onPayloadModeChange = (mode: PayloadMode) => {
+    setPayloadMode(mode);
+    if (mode === "xdr" && payloadText === DEFAULT_JSON_PAYLOAD) {
+      setPayloadText(DEFAULT_XDR_PAYLOAD);
+    } else if (mode === "json" && payloadText === DEFAULT_XDR_PAYLOAD) {
+      setPayloadText(DEFAULT_JSON_PAYLOAD);
+    }
+  };
 
   return (
-    <ExplorerPageShell auroraTheme="contracts">
-      <section className="pb-16">
-        <div className={cn(explorerHeroZoneClass, "flex items-center")}>
-          <ExplorerPageHeader
-            title="Decode Playground"
-            description="Paste a Soroban event payload and decode it with Atlas."
-          />
-        </div>
+    <div className="playground-theme flex h-dvh flex-col overflow-hidden">
+      <header className="flex h-11 shrink-0 items-center gap-3 border-b border-[#333] bg-[#252526] px-4">
+        <Link
+          href="/events"
+          className="shrink-0 text-sm font-semibold tracking-tight text-[#cccccc] hover:text-white"
+        >
+          Naralabs
+        </Link>
+        <span className="text-[#858585]">/</span>
+        <span className="text-sm text-[#cccccc]">Decode Playground</span>
+        <span className="rounded bg-[#3c3c3c] px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wide text-[var(--brand-lilac)]">
+          testnet
+        </span>
 
-        <ExplorerListSection className="pt-10 sm:pt-12">
-          <div className="mx-auto max-w-xl space-y-8">
-            <div className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6">
-              <div>
-                <label htmlFor="playground-example" className={labelClass}>
-                  Example
-                </label>
-                <select
-                  id="playground-example"
-                  value={exampleId}
-                  onChange={(event) => onExampleChange(event.target.value)}
-                  className={cn(fieldInputClass, "max-w-none font-normal")}
-                >
-                  <option value="">None — use your own payload</option>
-                  {PLAYGROUND_SAMPLE_LIST.map((sample) => (
-                    <option key={sample.id} value={sample.id}>
-                      {sample.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="playground-network" className={labelClass}>
-                  Network
-                </label>
-                <Input
-                  id="playground-network"
-                  value={network}
-                  onChange={(event) => setNetwork(event.target.value)}
-                  className="max-w-none font-mono text-sm"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="playground-contract" className={labelClass}>
-                  Contract ID
-                </label>
-                <Input
-                  id="playground-contract"
-                  value={contractId}
-                  onChange={(event) => setContractId(event.target.value)}
-                  placeholder="C…"
-                  className="max-w-none font-mono text-sm"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="playground-payload" className={labelClass}>
-                  Payload JSON
-                </label>
-                <textarea
-                  id="playground-payload"
-                  value={payloadJson}
-                  onChange={(event) => setPayloadJson(event.target.value)}
-                  rows={10}
-                  spellCheck={false}
-                  className={cn(
-                    fieldInputClass,
-                    "max-w-none min-h-[160px] resize-y font-mono text-xs leading-relaxed",
-                  )}
-                />
-              </div>
-
-              {!authLoading && user ? (
-                <div>
-                  <label htmlFor="playground-api-key" className={labelClass}>
-                    API key
-                  </label>
-                  <Input
-                    id="playground-api-key"
-                    type="password"
-                    autoComplete="off"
-                    value={apiKey}
-                    onChange={(event) => persistApiKey(event.target.value)}
-                    placeholder="nl_api_…"
-                    className="max-w-none font-mono text-sm"
-                  />
-                </div>
-              ) : !authLoading ? (
-                <p className="text-sm text-neutral-600">
-                  <Link href={`/login?next=${encodeURIComponent("/playground")}`} className="underline">
-                    Sign in
-                  </Link>{" "}
-                  with an API key to decode your payload. Examples work without an account.
-                </p>
-              ) : null}
-
-              <Button type="button" disabled={loading} className="w-full sm:w-auto" onClick={() => void decode()}>
+        <div className="ml-auto flex items-center gap-3">
+          <span className="hidden text-[11px] text-[#858585] sm:inline">⌘ / Ctrl + Enter</span>
+          <Tooltip
+            content="Pilih contract ID dari daftar terlebih dahulu."
+            disabled={canDecode || loading}
+          >
+            <span className="inline-flex">
+              <button
+                type="button"
+                disabled={!canDecode || loading}
+                onClick={() => void decode()}
+                className="inline-flex h-8 items-center rounded-md bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-[var(--primary-hover)] disabled:cursor-not-allowed disabled:opacity-40"
+              >
                 {loading ? "Decoding…" : "Decode"}
-              </Button>
+              </button>
+            </span>
+          </Tooltip>
+        </div>
+      </header>
 
-              {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+        <section className="flex min-h-[45dvh] flex-1 flex-col border-b border-[#333] lg:min-h-0 lg:min-w-0 lg:flex-1 lg:border-b-0 lg:border-r">
+          <div className="shrink-0 border-b border-[#333] bg-[#252526] px-4 py-3">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#cccccc]">
+                  Contract ID
+                </p>
+                <p className="mt-0.5 text-[11px] leading-snug text-[#858585]">
+                  Pick a contract with a published schema from the registry list.
+                </p>
+              </div>
+              {contractIdTrimmed ? (
+                <span className="shrink-0 rounded bg-[#2d4a2d] px-1.5 py-0.5 font-mono text-[10px] text-[#89d185]">
+                  Selected
+                </span>
+              ) : null}
+            </div>
+            <PlaygroundContractIdField
+              value={contractId}
+              onChange={setContractId}
+              searchSeed={contractSearchSeed}
+            />
+          </div>
+
+          <div className="flex min-h-0 flex-1 flex-col">
+            <div className="flex shrink-0 items-end border-b border-[#333] bg-[#2d2d2d]">
+              <div
+                className="flex border-r border-[#333] bg-[#1e1e1e] px-3 py-2 text-xs text-[#cccccc]"
+                role="presentation"
+              >
+                <span className="font-medium">payload</span>
+                <span className="ml-1.5 text-[#858585]">
+                  .{payloadMode === "json" ? "json" : "xdr"}
+                </span>
+              </div>
+              <div className="ml-auto flex gap-0.5 p-1">
+                {(["json", "xdr"] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => onPayloadModeChange(mode)}
+                    className={cn(
+                      "rounded px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide",
+                      payloadMode === mode
+                        ? "bg-primary text-primary-foreground"
+                        : "text-[#858585] hover:bg-[#333] hover:text-[#cccccc]",
+                    )}
+                  >
+                    {mode}
+                  </button>
+                ))}
+              </div>
             </div>
 
+            <PlaygroundCodePane value={payloadText} onChange={setPayloadText} />
+          </div>
+        </section>
+
+        <section className="flex min-h-[45dvh] flex-1 flex-col lg:min-h-0 lg:min-w-0 lg:flex-1">
+          <div className="flex h-[41px] shrink-0 items-center gap-2 border-b border-[#333] bg-[#2d2d2d] px-4">
+            <span className="text-xs font-medium text-[#cccccc]">response.json</span>
             {result ? (
-              <div className="space-y-2">
-                <p className="text-sm text-neutral-700">
-                  <span className="font-medium text-neutral-900">
-                    {result.decodeStatus === "decoded" ? "Decoded" : "Raw"}
-                  </span>
-                  {result.summary ? ` — ${result.summary}` : null}
-                </p>
-                <pre className="overflow-x-auto rounded-2xl border border-neutral-200 bg-neutral-50 p-4 font-mono text-xs leading-relaxed text-neutral-800">
-                  {JSON.stringify(result, null, 2)}
-                </pre>
-              </div>
+              <span
+                className={cn(
+                  "rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+                  result.decodeStatus === "decoded"
+                    ? "bg-emerald-900/60 text-emerald-300"
+                    : "bg-amber-900/50 text-amber-200",
+                )}
+              >
+                {result.decodeStatus === "decoded" ? "Decoded" : "Raw"}
+              </span>
+            ) : null}
+            {result?.summary ? (
+              <span className="min-w-0 truncate text-[11px] text-[#858585]">{result.summary}</span>
             ) : null}
           </div>
-        </ExplorerListSection>
-      </section>
-    </ExplorerPageShell>
+
+          <div className="flex min-h-0 flex-1 flex-col">
+            <PlaygroundCodePane
+              value={outputText}
+              readOnly
+              placeholder="// Decode output appears here"
+            />
+          </div>
+
+          {error ? (
+            <p className="shrink-0 border-t border-[#5a1d1d] bg-[#3a1f1f] px-4 py-2.5 text-xs text-[#f48771]">
+              {error}
+            </p>
+          ) : null}
+        </section>
+      </div>
+    </div>
   );
 }

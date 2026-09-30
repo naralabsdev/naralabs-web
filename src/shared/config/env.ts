@@ -82,8 +82,8 @@ export const REALTIME_WS_PATH = "/v1/ws/home";
 
 export const BFF_ATLAS_PREFIX = "/api/atlas";
 
-/** Server-only key for public playground samples (POST /v1/decode allowlist). */
-export function getPlaygroundDemoApiKey(): string | null {
-  const key = process.env.ATLAS_PLAYGROUND_DEMO_API_KEY?.trim();
+/** Server-only token for Naralabs web playground → Atlas /v1/playground/decode. */
+export function getPlaygroundBffToken(): string | null {
+  const key = process.env.PLAYGROUND_BFF_TOKEN?.trim();
   return key || null;
 }

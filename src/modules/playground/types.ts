@@ -31,8 +31,8 @@ export type PlaygroundSampleMeta = {
 };
 
 export type PlaygroundCustomPrefill = {
-  network: string;
   contractId: string;
   eventName?: string;
+  payloadMode: "json" | "xdr";
   payloadJson: string;
 };
