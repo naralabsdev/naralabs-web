@@ -35,7 +35,10 @@ function SchemaEventSummary({ schema }: { schema: EventSchemaDetailViewModel }) 
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-sm font-semibold text-neutral-900">{schema.schemaName}</h2>
-          <SchemaTrustBadge verified={schema.trustTier === "verified"} />
+          <SchemaTrustBadge
+            verified={schema.trustTier === "verified"}
+            verifiedWallet={schema.verifiedWallet}
+          />
           <span className="rounded-md bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-700">
             v{schema.version}
           </span>
@@ -94,13 +97,22 @@ function SchemaDefinitionSection({ schema }: { schema: EventSchemaDetailViewMode
               <p className="mt-1 text-sm text-neutral-900">{schema.author}</p>
             </div>
           ) : null}
-          {schema.verifiedWallet ? (
+          {schema.verifiedWallet && schema.verifiedWallet !== "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF" ? (
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
                 Verified wallet
               </p>
               <p className="mt-1 break-all font-mono text-sm text-neutral-900">
                 {schema.verifiedWallet}
+              </p>
+            </div>
+          ) : schema.trustTier === "verified" ? (
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+                Trust
+              </p>
+              <p className="mt-1 text-sm text-neutral-700">
+                Operator-reviewed catalog entry (not deployer-signed verification).
               </p>
             </div>
           ) : null}

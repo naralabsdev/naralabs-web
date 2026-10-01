@@ -1,9 +1,20 @@
 import { StatusBadge } from "@/shared/ui/status-badge";
 
-export function SchemaTrustBadge({ verified }: { verified: boolean }) {
+const PLACEHOLDER_WALLET = "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF";
+
+export function SchemaTrustBadge({
+  verified,
+  verifiedWallet,
+}: {
+  verified: boolean;
+  verifiedWallet?: string | null;
+}) {
+  const operatorReviewed =
+    verified && (!verifiedWallet || verifiedWallet === PLACEHOLDER_WALLET);
+
   return (
     <StatusBadge variant={verified ? "success" : "neutral"} size="sm">
-      {verified ? "Verified" : "Community"}
+      {verified ? (operatorReviewed ? "Reviewed" : "Verified") : "Community"}
     </StatusBadge>
   );
 }

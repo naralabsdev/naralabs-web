@@ -40,6 +40,9 @@ export type EventDetailViewModel = {
   overviewRows: DetailFieldRow[];
   topicRows: TopicTableRow[];
   valueRows: ValueFieldRow[];
+  decodedFieldRows: ValueFieldRow[];
+  decodedEventName?: string;
+  schemaVersion?: number;
   xdrJson: string;
   actionDescription: string;
 };

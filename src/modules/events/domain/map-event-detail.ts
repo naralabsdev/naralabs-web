@@ -184,6 +184,15 @@ function withFieldTip(row: DetailFieldRow): DetailFieldRow {
   };
 }
 
+function parseDecodedFieldRows(fields: Record<string, unknown> | null | undefined): ValueFieldRow[] {
+  if (!fields || typeof fields !== "object") return [];
+  return Object.entries(fields).map(([key, raw]) => ({
+    label: formatEventLabel(key),
+    type: typeof raw,
+    display: stringifyUnknownValue(raw),
+  }));
+}
+
 function buildOverviewRows(payload: EventDetailPayload): DetailFieldRow[] {
   const decodeBadge =
     payload.decode_status === "decoded"
@@ -202,6 +211,23 @@ function buildOverviewRows(payload: EventDetailPayload): DetailFieldRow[] {
       value: payload.decode_status === "decoded" ? "Decoded" : "Raw payload",
       badge: decodeBadge,
     }),
+    ...(payload.schema_version
+      ? [
+          withFieldTip({
+            label: "Schema version",
+            value: String(payload.schema_version),
+            mono: true,
+          }),
+        ]
+      : []),
+    ...(payload.decoded_event_name
+      ? [
+          withFieldTip({
+            label: "Decoded event",
+            value: payload.decoded_event_name,
+          }),
+        ]
+      : []),
     withFieldTip({
       label: "Contract",
       value: payload.contract_id,
@@ -243,6 +269,11 @@ function buildActionDescription(payload: EventDetailPayload): string {
 }
 
 export function mapEventDetail(payload: EventDetailPayload): EventDetailViewModel {
+  const decodedFields =
+    payload.decoded_fields && typeof payload.decoded_fields === "object"
+      ? payload.decoded_fields
+      : null;
+
   return {
     id: payload.id,
     eventType: formatEventLabel(payload.event_type),
@@ -259,6 +290,9 @@ export function mapEventDetail(payload: EventDetailPayload): EventDetailViewMode
     overviewRows: buildOverviewRows(payload),
     topicRows: parseTopicRows(payload.topics),
     valueRows: parseValueRows(payload.value),
+    decodedFieldRows: parseDecodedFieldRows(decodedFields),
+    decodedEventName: payload.decoded_event_name,
+    schemaVersion: payload.schema_version,
     xdrJson: prettyJson({
       topics_xdr: payload.topics_xdr,
       value_xdr: payload.value_xdr,

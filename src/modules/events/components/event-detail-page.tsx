@@ -35,6 +35,16 @@ export function EventDetailPage({ event }: { event: EventDetailViewModel }) {
           <ValueFields rows={event.valueRows} />
         </DetailSectionCard>
 
+        {event.decodedFieldRows.length > 0 ? (
+          <DetailSectionCard
+            title="Decoded fields"
+            description="Semantic decode from the published schema registry."
+            flushContent
+          >
+            <ValueFields rows={event.decodedFieldRows} />
+          </DetailSectionCard>
+        ) : null}
+
         <DetailSectionCard title="XDR" flushContent>
           <HighlightedJson code={event.xdrJson} />
         </DetailSectionCard>

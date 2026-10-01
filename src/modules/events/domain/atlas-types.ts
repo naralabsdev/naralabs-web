@@ -10,6 +10,10 @@ export type EventDetailPayload = {
   ingested_at: string;
   summary_preview: string;
   decode_status: string;
+  decoded_event_name?: string;
+  schema_version?: number;
+  decode_summary?: string;
+  decoded_fields?: Record<string, unknown> | null;
   topics: unknown;
   value: unknown;
   topics_xdr: string[];
