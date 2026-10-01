@@ -16,7 +16,7 @@ export function parseAtlasPath(path: string): ParsedAtlasPath {
 
 export async function proxyAtlasGet(
   path: string,
-  init: { requestId?: string } = {},
+  init: { requestId?: string; authorization?: string | null } = {},
 ): Promise<Response> {
   const { segments, search } = parseAtlasPath(path);
   const target = `${getAtlasBackendUrl()}/${segments.join("/")}${search}`;
@@ -26,6 +26,7 @@ export async function proxyAtlasGet(
     headers: {
       Accept: "application/json",
       ...(init.requestId ? { "X-Request-ID": init.requestId } : {}),
+      ...(init.authorization ? { Authorization: init.authorization } : {}),
     },
     cache: "no-store",
   });
@@ -43,7 +44,11 @@ export async function proxyAtlasGet(
 export async function proxyAtlasPost(
   path: string,
   body: string,
-  init: { requestId?: string; contentType?: string } = {},
+  init: {
+    requestId?: string;
+    contentType?: string;
+    authorization?: string | null;
+  } = {},
 ): Promise<Response> {
   const { segments, search } = parseAtlasPath(path);
   const target = `${getAtlasBackendUrl()}/${segments.join("/")}${search}`;
@@ -54,6 +59,7 @@ export async function proxyAtlasPost(
       Accept: "application/json",
       "Content-Type": init.contentType ?? "application/json",
       ...(init.requestId ? { "X-Request-ID": init.requestId } : {}),
+      ...(init.authorization ? { Authorization: init.authorization } : {}),
     },
     body,
     cache: "no-store",

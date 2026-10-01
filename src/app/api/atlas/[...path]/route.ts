@@ -18,6 +18,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return proxyAtlasGet(upstreamPath, {
       requestId: request.headers.get("x-request-id") ?? crypto.randomUUID(),
+      authorization: request.headers.get("authorization"),
     });
   } catch (error) {
     console.error("[api/atlas]", error);
@@ -39,6 +40,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     return proxyAtlasPost(upstreamPath, body, {
       requestId: request.headers.get("x-request-id") ?? crypto.randomUUID(),
       contentType: request.headers.get("content-type") ?? "application/json",
+      authorization: request.headers.get("authorization"),
     });
   } catch (error) {
     console.error("[api/atlas]", error);
